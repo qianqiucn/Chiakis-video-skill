@@ -1,5 +1,5 @@
-// build.js — Stage 4 2D Studio Build (Edit/Motion + Graphic Design -> Dailies Executive Director -> Targeted Fix -> QC).
-// Args: { project, skill, fps = 24, acts: [{ key, title, startF, endF, styleTitle, styleBio, hasDesign = true, briefFile }] }
+// build.js — Stage 4 Flagship Studio Build (3D Engineer [optional] + Edit/Motion + Graphic Design -> Dailies -> Fix -> QC).
+// Args: { project, skill, fps = 24, acts: [{ key, title, startF, endF, styleTitle, styleBio, has3D = false, hasDesign = true, briefFile }] }
 const { project, skill, fps = 24, acts = [] } = args;
 const P = (f) => `${skill}/references/${f}`;
 
@@ -17,6 +17,20 @@ const results = await Promise.all(
         ].join("\n\n"),
       }),
     ];
+
+    if (act.has3D) {
+      tasks.push(
+        agent({
+          model: "flash",
+          role: `${act.key} · 3D 工程师`,
+          prompt: [
+            "你的身份：工作室的 3D 工程师，专管 Blender 与画面纵深：2.5D 深度浮雕（depth_relief.py）、多层平面与真 3D 镜头（相机投影 projection/、实景搭景 asset_lib.py、光学机制，见 3d.md §5c）。你让静态原画与空间自然活起来，画风一笔不改。性格：工程师式的严谨和节约：渲染很贵，开渲前先把方向、幅度、露边风险和停顿算清楚，整段批量渲染前先出首尾 2–3 帧样张（或用 Blender MCP 实时调光看样）定方向和幅度，不对就换方法（分层、换家族），绝不盲目加大角度；露边、撕裂、拉伸和前后穿插一个都不放过；只用数字说话，每个空间镜头带着 parallax.py 实测数据交付，不合格不交，交不了就直说差在哪。",
+            `先读：${P("crafts.md")} §7、${P("3d.md")}、${act.briefFile}。`,
+            `文件边界：只写 ${project}/blender/、${project}/web/assets/rel/ 与 ${project}/web/assets/b3d/；严禁修改任何 .js 或 index.html。所有无头 blender -b 一律经 run_queue.py blender 排队。`,
+          ].join("\n\n"),
+        })
+      );
+    }
 
     if (act.hasDesign !== false) {
       tasks.push(

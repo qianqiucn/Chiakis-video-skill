@@ -88,6 +88,19 @@ By medium, what the picture is made of (its route in the entry):
 - **Route**: SVG with SSR-matrix isometric faces, or CSS-3D multiplane (`lib/multiplane.js`) + crisp cast shadows.
 - **Sound**: bright plucky tech melody (FM marimba/pluck); a soft click/pop on every tile or building landing; airy whoosh on the pull-back.
 
+## 4. 3D 渲染系（C4D/Blender 质感） 3D Render / CGI Motion Design
+**4 3D Render** · tone: luxury, tactile, organic · medium: 3D and CGI (Blender)
+- **Used for**: high-end product films (phones, drinks, sneakers) and brand idents; tactile soft rubber, glass, metal, cloth with clone arrays and physics.
+- **Signatures**: PBR materials, shallow depth of field, soft studio lighting, cloner arrays, soft-body collisions, candy-coloured gummy surfaces
+- **Techniques**:
+  - MoGraph core: a cloner array animated in waves by Random/Plain effectors (Blender: a Geometry Nodes grid).
+  - Material trio: SSS for the gummy look + AO + HDRI with three-point lighting (`scripts/blender/asset_lib.py`); mix SSS gummy, glossy plastic, frosted glass, or chrome.
+  - Long-tail ease: 80 % of the distance in the first 20 % of the move, a very slow settle, real motion blur.
+  - 24/25 fps film rate + f/1.8-feel shallow DOF, separating it from crisp flat 2D styles.
+  - The hero object is the axis; particles/fluid/cloth/clones are choreographed around it (hero drops in with a damped-spring jiggle and displaces the field).
+- **Route**: Headless Blender CLI (`scripts/run_queue.py blender -- blender -b --python shot.py`, Cycles GPU with OIDN denoise or EEVEE; live look-dev via Blender MCP) → PNG sequence (`lib/sequence.js`) + HTML/Canvas typography overlay (`z=20`); 24 fps.
+- **Sound**: ASMR-style soft thuds, squishes, and bubbly pops over an airy cinematic pad; hits frame-synced to impacts.
+
 ## 5. 逐帧手绘 / 线条沸腾 Cel Animation / Frame-by-Frame & Line Boil
 **5 Cel** · ★ fast-cut · tone: handmade, playful, anime · medium: hand-drawn frame by frame (Canvas2D brush)
 - **Used for**: anti-digital, hand-made charm, either fully frame-by-frame or as frame-by-frame texture over vector animation; Giant Ant and Buck accent their work with cel FX (smoke, splashes, speed lines).

@@ -122,28 +122,44 @@ def check_ffmpeg():
 
 
 def check_blender():
+    found = None
     env = os.environ.get("CHIAKI_BLENDER") or os.environ.get("BLENDER_PATH")
     if env and os.path.exists(env):
-        ok("Blender (optional 2.5D)", env)
-        return
-    w = shutil.which("blender")
-    if w:
-        ok("Blender (optional 2.5D)", w)
-        return
-    cands = []
-    if sys.platform == "win32":
-        for base in [Path(r"C:\Program Files\Blender Foundation")]:
-            if base.exists():
-                cands += sorted(base.glob("Blender */blender.exe"), reverse=True)
-    elif sys.platform == "darwin":
-        cands.append(Path("/Applications/Blender.app/Contents/MacOS/Blender"))
+        found = env
     else:
-        cands.append(Path("/usr/bin/blender"))
-    for p in cands:
-        if p.exists():
-            ok("Blender (optional 2.5D)", str(p))
-            return
-    warn("Blender (optional 2.5D)", "not found — only needed for scripts/blender/depth_relief.py (set CHIAKI_BLENDER or install Blender)")
+        w = shutil.which("blender")
+        if w:
+            found = w
+        else:
+            cands = []
+            if sys.platform == "win32":
+                for base in [Path(r"C:\Program Files\Blender Foundation")]:
+                    if base.exists():
+                        cands += sorted(base.glob("Blender */blender.exe"), reverse=True)
+            elif sys.platform == "darwin":
+                cands.append(Path("/Applications/Blender.app/Contents/MacOS/Blender"))
+            else:
+                cands.append(Path("/usr/bin/blender"))
+            for p in cands:
+                if p.exists():
+                    found = str(p)
+                    break
+    if found:
+        ok("Blender (2.5D / 3D)", found)
+    else:
+        warn("Blender (2.5D / 3D)", "not found — optional, for depth_relief.py, projection/ & built sets (set CHIAKI_BLENDER or install Blender 4.2+/5.x)")
+
+    # Quick non-blocking check if live Blender MCP server is listening on 127.0.0.1:9876
+    import socket
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout(0.25)
+    try:
+        s.connect(("127.0.0.1", 9876))
+        ok("Blender MCP (live)", "listening on 127.0.0.1:9876 (interactive look-dev ready)")
+    except Exception:
+        warn("Blender MCP (live)", "not running on 127.0.0.1:9876 — optional; headless Blender CLI works without MCP (see README)")
+    finally:
+        s.close()
 
 
 def check_py_pkgs():

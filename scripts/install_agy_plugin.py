@@ -75,9 +75,9 @@ def main() -> int:
     }
     plugin_obj = {
         "name": SKILL_SLUG,
-        "displayName": "Chiaki's-video-skill (2D Motion Video Studio)",
-        "version": "1.2.0",
-        "description": "Deterministic HTML/JS/Canvas 2D motion graphics, fast-cut PV/MV, kinetic typography, and 2.5D relief studio plugin (/chiaki).",
+        "displayName": "Chiaki's-video-skill (Flagship 2D + Blender 3D Video Studio)",
+        "version": "1.3.0",
+        "description": "Flagship deterministic 2D + 2.5D + Blender 3D motion graphics, fast-cut PV/MV, and kinetic typography studio plugin (/chiaki).",
         "license": "MIT",
     }
 

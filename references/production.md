@@ -77,12 +77,19 @@ python -X utf8 <sk>/scripts/run_queue.py --status
 - **Motion tracking / measurement**: `python -X utf8 <sk>/scripts/measure.py ...`
 - **Frame-to-frame diff / cut detection**: `python -X utf8 <sk>/scripts/framediff.py film.mp4`
 
-### 2.5D Depth Relief (`scripts/vision/depth.py`, `scripts/blender/depth_relief.py`, `scripts/vision/parallax.py`)
+### 3D & Blender (`depth_relief.py`, `projection/`, `assets3d.py`, `asset_lib.py`, Blender MCP)
 - **Softened 16-bit depth map** (requires optional `pip install torch transformers`):
   `python -X utf8 <sk>/scripts/vision/depth.py art.png work/art_depth.png --bits 16 --soften`
-- **Headless Blender relief sequence** (always through `run_queue.py blender`; see `references/relief-25d.md`):
+- **Headless Blender 2.5D relief sequence** (always through `run_queue.py blender`; see `references/3d.md` §3.2):
   `python -X utf8 <sk>/scripts/run_queue.py blender --lane relief -- blender -b --python <sk>/scripts/blender/depth_relief.py -- --image art.png --depth work/art_depth.png --out web/assets/rel/shot01 --frames 48 --fps 24 --orbit -8 --crane 4 --dof 0.28`
+- **Camera projection dolly** (`scripts/blender/projection/`, see `references/3d.md` §3.6):
+  Copy `scripts/blender/projection/` to `<proj>/blender/<SHOT>/eng/scripts/`, run `design.py sim` → `design.py build <y0>` → `textures.py`, then render via `run_queue.py blender -- blender -b --python dolly_scene.py -- --eng <SHOT>/eng --out <dir>`.
+- **Free 3D asset library** (`scripts/assets3d.py` + `scripts/blender/asset_lib.py`, see `references/3d.md` §5b):
+  `python -X utf8 <sk>/scripts/assets3d.py search all "studio lamp" --kind model --license cc0,by`
+  `python -X utf8 <sk>/scripts/assets3d.py get polyhaven studio_small_09 --res 2k --project <proj>`
+  `python -X utf8 <sk>/scripts/assets3d.py credits <proj>`
 - **Parallax check**: `python -X utf8 <sk>/scripts/vision/parallax.py f001.png f048.png --depth work/art_depth.png --out work/parallax.jpg`
+- **Live look-dev via Blender MCP** (`references/3d.md` §5d): use open Blender MCP (`http://127.0.0.1:9876/mcp` on Blender 5.1+, or `uvx blender-mcp` on Blender 4.2+) for interactive staging, lighting, and camera tweaks; always run final batch renders headless through `run_queue.py blender`.
 
 ### Audio (`mgaudio` & Freesound)
 ```python
@@ -101,7 +108,7 @@ ffmpeg -hide_banner -y -i out/film_2k.mp4 -i work/master.wav -map 0:v:0 -map 1:a
 ```
 
 ## 5. Canvas 2D & Environment Pitfalls
-- **Windows console UTF-8**: always run Python scripts with `python -X utf8 -X utf8` (isolated mode ignores `PYTHONUTF8`); write helper scripts to `.py` files instead of quoting Chinese inside PowerShell `-c` strings.
+- **Windows console UTF-8**: always run Python scripts with `python -X utf8` (isolated mode ignores `PYTHONUTF8`); write helper scripts to `.py` files instead of quoting Chinese inside PowerShell `-c` strings.
 - **FFmpeg v8/v9+ frame extraction**: use `-fps_mode vfr` or `-fps_mode passthrough` (never the removed `-vsync 0`).
 - **Exact rational segment bounds**: on 24 or 30 fps timelines, declare segment `start` and `end` as exact fractions (`f0 / FPS`, `f1 / FPS`), never rounded decimals (`11.67`), or Chrome and `T3.seek` will miss a boundary frame by 1 frame.
 - **Canvas `ctx.save()` / `ctx.restore()` discipline**: never mutate `ctx.filter`, `ctx.globalAlpha`, or `ctx.globalCompositeOperation` without balanced `save`/`restore`, and always reset `ctx.shadowBlur = 0` after glows so downstream layers do not inherit expensive blurs.
@@ -113,7 +120,7 @@ ffmpeg -hide_banner -y -i out/film_2k.mp4 -i work/master.wav -map 0:v:0 -map 1:a
 |---|---|
 | Pitch writers, Creative Director, Executive Producer (`chiaki-writer`) | `pro` |
 | Editor / 2D Motion Compositor (`chiaki-builder`) | `pro` |
-| Graphic Designer, Sound Designer, Fixer (`chiaki-builder`) | `flash` |
+| 3D Engineer, Graphic Designer, Sound Designer, Fixer (`chiaki-builder`) | `flash` |
 | Production Assistant (`chiaki-builder`) | `flash_lite` |
 | Dailies Executive Director, 3 Final Review Lenses, 3 Verifiers, Independent Scorer (`chiaki-reviewer`) | `pro` |
 | QC Recheck (`chiaki-reviewer`) | `flash` |

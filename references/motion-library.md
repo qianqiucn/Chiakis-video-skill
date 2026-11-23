@@ -7,7 +7,7 @@ Read before any motion is designed or coded: by every craft that moves anything,
 - **id**: `<group>.<slug>`, lower case.
 - **grade**: `A` house-verified standard · `B` proven inside accepted 2D motion templates · `H` house rule · `R` reference idiom · `P` experimental / pending (under «Pending»).
 - **reuse**: `craft` (free in any film) · `signature` (reusable helper only, never copy the visual look).
-- **owner craft**: `edit` (editor/compositor), `design` (graphic designer), `all`.
+- **owner craft**: `edit` (editor/compositor), `design` (graphic designer), `3d` (Blender 3D / depth engineer), `all`.
 - **code**: `LIB <module> <call>` (`assets/template/lib/motion/`) · `EXISTING <lib file> <call>` (`assets/template/lib/`) · `PROSE` (rule in its reference home).
 
 ## Setup
@@ -117,8 +117,10 @@ Even a short preview sample follows the same workflow: template `lib/motion` loa
   Timing: → `style-grammar.md` §6c.
 - **`cam.insert-push`** · gentle S-curve push or pull on an insert · R · craft · edit · PROSE
   Timing: → `style-grammar.md` §6c.
-- **`cam.orbit-crane`** · Blender 2.5D depth-relief orbit or crane · H · craft · edit · PROSE
-  Timing: → `relief-25d.md` §2 (`scripts/blender/depth_relief.py` + `scripts/vision/depth.py --soften`).
+- **`cam.orbit-crane`** · Blender 2.5D depth-relief orbit or crane · H · craft · 3d · PROSE
+  Timing: → `3d.md` §3.2 (`scripts/blender/depth_relief.py` + `scripts/vision/depth.py --soften`).
+- **`cam.projection`** · Blender camera projection dolly into an intricate painted space · A · craft · 3d · PROSE
+  Timing: → `3d.md` §3.6, §5c (`scripts/blender/projection/`, quartic ease-out dolly; play frame-for-frame, no `T3.relX`).
 - **`cam.punch`** · crash-zoom punch at the cut · R · craft · edit · PROSE
   Timing: → «shot-recipes: crash-zoom-punch».
 - **`cam.multiplane`** · layered 2D planes at CSS-3D depths · H · craft · edit · EXISTING multiplane.js T3.multiplane
@@ -178,7 +180,7 @@ Even a short preview sample follows the same workflow: template `lib/motion` loa
 - **`time.twos`** · stepped clock (`Posterize Time`) with optional landing re-anchors · A · craft · edit · LIB timing.js T3.twos
   When: deliberate stepped / `Posterize Time` passages or PV remakes (`n = T3.FPS / targetFps`, e.g. `2.5` for 12 fps on 30 fps) · Timing: → `style-grammar.md` §6e.
 - **`time.relief`** · relief sequence playback remapper undoing Blender's SINE ease · B · craft · edit · LIB timing.js T3.relX
-  Look: maps progress `s` via `(n - 1) * acos(1 - 2s) / pi` so Blender `depth_relief.py` sequences play on any `T3.EZ` curve through `T3.sequence({ frac: true })` · Timing: → `relief-25d.md` §3.
+  Look: maps progress `s` via `(n - 1) * acos(1 - 2s) / pi` so Blender `depth_relief.py` sequences play on any `T3.EZ` curve through `T3.sequence({ frac: true })` · Timing: → `3d.md` §6.
 
 ## Pending
 - **`trans.sheet`** · shared-plane rotation transition · P · signature · edit · PROSE

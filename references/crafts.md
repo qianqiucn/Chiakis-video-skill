@@ -71,3 +71,22 @@ Every role reads its craft card here together with its verbatim persona from `re
   - `独立成片评分员` (7-dimension scorecard via `score_brief.md`, Model `pro`)
 - **Reread**: `house-style.md`, `quality-bar.md`, `style-grammar.md`, `REVIEW_BRIEF.md` / `SCORE_BRIEF.md`.
 - **Hard boundary**: physically **cannot edit project code**. Every finding must cite exact frame numbers/timestamps, measured metrics or visual evidence, and an actionable fix assigned to the owning craft.
+
+---
+
+## 7. 3D & Depth — Blender 2.5D Relief, Projection & Built Sets (`chiaki-builder` · Model: `flash`)
+- **Role**: `3D 工程师` (Blender depth relief, camera projection, built sets, optical mechanisms, and optional live look-dev via Blender MCP).
+- **Reread**: `3d.md` (full), `house-style.md` §4 & §7, `production.md` §3 «3D & Blender».
+- **Owns**:
+  - `<project>/blender/` (Blender shot scripts, `design.json`, `.blend` files)
+  - `<project>/web/assets/rel/<ID>/` (SINE-keyed `depth_relief.py` sequences, played via `T3.relX`)
+  - `<project>/web/assets/b3d/<ID>/` (per-frame curved camera projection & built-set sequences, played frame-for-frame)
+  - `<project>/work/assets3d_used.json` (borrowed 3D asset credits via `scripts/assets3d.py get ... --project`)
+  - NEVER edits `.js` segment files or `web/index.html`.
+- **Tools**: `scripts/vision/depth.py`, `scripts/vision/parallax.py`, `scripts/blender/depth_relief.py`, `scripts/blender/projection/*`, `scripts/assets3d.py`, `scripts/blender/asset_lib.py`, `scripts/run_queue.py blender`, optional live **Blender MCP** (look-dev only).
+- **Most often missed checks**:
+  1. Render 2–3 sample frames (first + last) and inspect full-size before batch rendering a sequence.
+  2. Always queue headless `blender -b` commands through `scripts/run_queue.py blender`; use live Blender MCP for interactive look-dev only (never batch renders), and never `taskkill /IM blender.exe`.
+  3. Run `scripts/vision/parallax.py` on every spatial shot (`>= 20 px` and `>= 15 %` share) and report camera constants + measured parallax.
+  4. Never mix `T3.relX` onto `b3d/` sequences (already curve-keyed) and never skip `T3.relX` on `rel/` sequences (SINE-keyed).
+  5. Record every Poly Haven / ambientCG / Sketchfab / BlenderKit asset with `--project` so `assets3d.py credits` is complete.

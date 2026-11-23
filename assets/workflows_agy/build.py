@@ -1,10 +1,10 @@
-"""Antigravity run_workflow script: Stage 4 2D Studio Build (Edit + Design -> Dailies -> Fix -> QC).
+"""Antigravity run_workflow script: Stage 4 Flagship Studio Build (3D [optional] + Edit + Design -> Dailies -> Fix -> QC).
 
 Args:
   project (str): absolute path to project
   skill   (str): absolute path to Chiaki's-video-skill
   fps     (int): 24 or 30
-  acts    (list[dict]): [{ "key", "title", "startF", "endF", "styleTitle", "styleBio", "hasDesign", "briefFile" }]
+  acts    (list[dict]): [{ "key", "title", "startF", "endF", "styleTitle", "styleBio", "has3D", "hasDesign", "briefFile" }]
 """
 project = args["project"]
 skill = args["skill"]
@@ -31,6 +31,19 @@ def build_act(act):
             ]),
         )
     ]
+    if act.get("has3D", False):
+        craft_fns.append(
+            lambda: agent(
+                type="chiaki-builder",
+                model="flash",
+                role=f"{key} · 3D 工程师",
+                prompt="\n\n".join([
+                    "你的身份：工作室的 3D 工程师，专管 Blender 与画面纵深：2.5D 深度浮雕（depth_relief.py）、多层平面与真 3D 镜头（相机投影 projection/、实景搭景 asset_lib.py、光学机制，见 3d.md §5c）。你让静态原画与空间自然活起来，画风一笔不改。性格：工程师式的严谨和节约：渲染很贵，开渲前先把方向、幅度、露边风险和停顿算清楚，整段批量渲染前先出首尾 2–3 帧样张（或用 Blender MCP 实时调光看样）定方向和幅度，不对就换方法（分层、换家族），绝不盲目加大角度；露边、撕裂、拉伸和前后穿插一个都不放过；只用数字说话，每个空间镜头带着 parallax.py 实测数据交付，不合格不交，交不了就直说差在哪。",
+                    f"先读：{P('crafts.md')} §7、{P('3d.md')}、{brief}。",
+                    f"只写 {project}/blender/、{project}/web/assets/rel/ 与 {project}/web/assets/b3d/；严禁修改 .js 或 index.html。所有无头 blender -b 一律经 run_queue.py blender 排队。",
+                ]),
+            )
+        )
     if act.get("hasDesign", True):
         craft_fns.append(
             lambda: agent(
