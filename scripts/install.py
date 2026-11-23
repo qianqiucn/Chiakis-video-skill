@@ -175,6 +175,7 @@ def main() -> int:
     )
     ap.add_argument("--dest", default="", help="Optional custom destination directory (single target only)")
     ap.add_argument("--dry-run", action="store_true", help="Preview planned paths without writing files")
+    ap.add_argument("--skip-doctor", action="store_true", help="Skip automatic post-install dependency check")
     args = ap.parse_args()
 
     dest = args.dest or None
@@ -188,6 +189,13 @@ def main() -> int:
         install_codex(dest, args.dry_run)
     elif args.target == "claude":
         install_claude(dest, args.dry_run)
+
+    if not args.dry_run and not args.skip_doctor:
+        import subprocess
+        print("\n=== Post-Install Dependency Check (read-only) ===")
+        r = subprocess.run([sys.executable, "-X", "utf8", str(ROOT / "scripts" / "doctor.py")])
+        if r.returncode != 0:
+            print('\nTip: inside Antigravity / Claude Code / Codex, type `/chiaki 检查依赖` (or `$chiaki 检查依赖`) for the guided setup wizard!')
     return 0
 
 

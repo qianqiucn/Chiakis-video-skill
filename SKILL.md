@@ -57,6 +57,14 @@ Commands: `<py>` = `python -X utf8` (or your venv Python with `requirements.txt`
 
 ## Pipeline (13 Flagship Stages)
 
+### 0. Preflight Dependency Check & Guided Setup (mandatory on first run or when asked to check deps)
+- Before starting a new video — or whenever the client asks to check/install dependencies (`/chiaki 检查依赖`, `$chiaki setup`, "检查依赖") — run `python -X utf8 <sk>/scripts/doctor.py --json` (read-only).
+- If all required items are `[OK]` and the client is starting a film, proceed straight to Stage 1 with a one-line status note.
+- If required dependencies are missing or the client explicitly asks to configure the environment, show a concise status table and ask **two questions before installing anything**:
+  1. **Which tier they want**: `2d` (lightweight core `requirements.txt`), `3d` (`2d` + Blender + `CHIAKI_ASSETS3D` + zero-dependency `scripts/blender/mcp_bridge.py`), or `full` (`3d` + `torch`/`transformers` for `vision/depth.py`).
+  2. **Where to install**: custom Python venv path (e.g. a non-system drive) or current Python, plus optional `CHIAKI_BLENDER`, `CHIAKI_ASSETS3D`, `CHIAKI_FONTS`, and MCP client target (`antigravity` / `codex` / `claude`).
+- Once confirmed, run `python -X utf8 <sk>/scripts/setup_env.py --profile ...` and re-run `doctor.py` to confirm green.
+
 ### 1. Brief & Audio / Reference Analysis (never guess beats by ear)
 - Confirm topic, duration, act count, target FPS (`24` or `30`), music track (or procedural `mgaudio` bed), visual asset / art generation route (`user_files` / `gemini` / `codex` / `custom_api` / `code_only`), Blender 3D scope, and mode (Original / Lyric PV / Study Replica). Fill harmless defaults and report them in one concise line.
 - Run `python -X utf8 <sk>/scripts/beats.py <audio> --fps <FPS>` for BPM & beat grid, and `python -X utf8 <sk>/scripts/onsets.py <audio> <f0-f1> --fps <FPS>` to lock key drops/hits onto exact broadband downbeats (`floor(onset_frame)`).

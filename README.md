@@ -137,10 +137,18 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-### 2. One-Command Doctor & Self-Test / 一键体检与自测
+### 2. Conversational Setup Wizard or One-Command Doctor / 对话式依赖向导与一键体检
+Installed the skill in **Antigravity (Gemini) / Claude Code / Codex (GPT)**? Just open a chat and type:
+```text
+/chiaki 检查依赖      # Antigravity / Claude Code (or `/chiaki setup`)
+$chiaki 检查依赖      # Codex (GPT)
+```
+The agent runs a read-only check (`scripts/doctor.py --json`), shows what is installed vs missing, **asks which tier you want (`2d` / `3d` / `full`) and which folder/drive to install into** (never blindly filling `C:`), and configures your venv, paths, and Blender MCP via `scripts/setup_env.py` after you confirm!
+
+Or run directly from your terminal:
 ```bash
 python -X utf8 scripts/doctor.py                          # Check Node >=22, Chrome, FFmpeg, Blender, MCP & fonts
-python -X utf8 scripts/skill_check.py                     # Verify 13 manuals, 57 motion IDs, workflows & hygiene
+python -X utf8 scripts/skill_check.py                     # Verify 14 manuals, 57 motion IDs, workflows & hygiene
 node assets/examples/motion/run_tests.mjs                 # Run all 8 motion unit test suites (174 assertions)
 node scripts/motion_lint.mjs assets/template/index.html   # Lint the starter 2D template
 ```
@@ -165,6 +173,7 @@ One single slash command (**`/chiaki`** on Antigravity / Claude Code, **`$chiaki
 
 | Command | Action |
 |---|---|
+| `/chiaki 检查依赖` or `$chiaki setup` | Interactive dependency wizard: runs read-only `doctor.py --json`, asks which tier (`2d`/`3d`/`full`) & target folder/drive you want, then runs `setup_env.py` |
 | `/chiaki <想法>` or `$chiaki new` | Start a new film (full 13-stage pipeline: beats → 3-angle pitch → shot table → Gate A → art → 3-craft build → master → review → render → score → polish → re-render → Gate B2) |
 | `/chiaki art <project>` | Initialize, run, or verify pluggable Art Stage (`scripts/art_gen.py`: `user_files` / `gemini` / `codex` / `custom_api` / `code_only`) |
 | `/chiaki fonts [query / project]` | Search 59 bundled fonts / 1,900+ Google Fonts, check missing glyphs & pack WOFF2 |

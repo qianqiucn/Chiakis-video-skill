@@ -1,6 +1,6 @@
 ---
 name: chiaki
-description: Chiaki's-video-skill 统一快捷入口（/chiaki 与 Codex $chiaki）：一条指令覆盖旗舰级 13 步 2D + 2.5D + Blender 3D 动效视频全流程 — 开新片（/chiaki 或 /chiaki new）、多源出图（/chiaki art）、选字打包（/chiaki fonts）、Blender 3D 与 2.5D 浮雕/投影/免费素材（/chiaki 3d 或 /chiaki relief）、快速预览与曲线图（/chiaki preview）、三视角物理只读终审（/chiaki review）、终混渲染与独立打分→修一轮→重渲→Gate B2（/chiaki deliver）、进度与环境体检（/chiaki status）。仅在用户明确写 /chiaki、/Chiaki、$chiaki 或要求按 Chiaki's-video-skill 做视频时使用。
+description: Chiaki's-video-skill 统一快捷入口（/chiaki、/Chiaki 与 Codex $chiaki）：一条指令覆盖依赖体检安装向导（/chiaki 检查依赖 或 /chiaki setup）与旗舰级 13 步 2D + 2.5D + Blender 3D 动效视频全流程 — 开新片（/chiaki 或 /chiaki new）、多源出图（/chiaki art）、选字打包（/chiaki fonts）、Blender 3D 与 2.5D 浮雕/投影/免费素材（/chiaki 3d 或 /chiaki relief）、快速预览与曲线图（/chiaki preview）、三视角物理只读终审（/chiaki review）、终混渲染与独立打分→修一轮→重渲→Gate B2（/chiaki deliver）、进度与环境体检（/chiaki status）。仅在用户明确写 /chiaki、/Chiaki、$chiaki 或要求按 Chiaki's-video-skill 做视频/检查依赖时使用。
 ---
 
 # `/chiaki`（Codex: `$chiaki`）— Chiaki's-video-skill 统一工作台入口
@@ -17,6 +17,7 @@ description: Chiaki's-video-skill 统一快捷入口（/chiaki 与 Codex $chiaki
 
 | 用户输入 | 路由动作 |
 |---|---|
+| `/chiaki setup`、`/Chiaki 检查依赖`、`/chiaki doctor` 或 `$chiaki 检查依赖` | **0. 交互式依赖体检与安装向导（先查 → 问需求与安装路径 → 一键配置）** |
 | `/chiaki`、`$chiaki`、`/chiaki new <想法>` 或直接粘贴填好的需求表 | **1. 开新片（完整 13 步旗舰流）** |
 | `/chiaki art <项目路径>` | **2. 多源出图与素材验收（`art_manifest.json` + `art_gen.py`）** |
 | `/chiaki fonts [关键词 / 项目路径]` | **3. 选字、测缺字与本地打包** |
@@ -30,6 +31,23 @@ description: Chiaki's-video-skill 统一快捷入口（/chiaki 与 Codex $chiaki
 ---
 
 ## 各子指令执行流程
+
+### 0. 交互式依赖体检与安装向导（`setup` / `检查依赖` / `安装依赖` / `doctor`）
+**原则：先只读体检，再询问用户「要装什么」和「想装在哪里」，绝不未经确认私自往系统盘塞大包。**
+1. **只读全盘体检**：运行 `python -X utf8 "<SKILL_DIR>/scripts/doctor.py" --json`，把结果整理成一张简明中文状态表发给用户（区分「核心 2D 必选」「Blender 3D / MCP 可选」「2.5D AI 深度图可选」）。
+2. **向用户确认两件事**（如果一切已全绿，直接告知已就绪无需安装；如有缺项或用户想补齐可选功能，则一次问清）：
+   - **① 需要哪一档功能？**
+     - **`2d`（轻量纯 2D 版）**：仅补齐核心渲染/字体/音效依赖（`requirements.txt`，约 180 MB），不装 Blender 和 PyTorch；
+     - **`3d`（2D + Blender 3D / MCP 旗舰版）**：核心 2D + 绑定 Blender 路径（`CHIAKI_BLENDER`）+ 免费 3D 素材缓存（`CHIAKI_ASSETS3D`）+ 自动把零依赖 `scripts/blender/mcp_bridge.py` 接入当前 AI 客户端（Antigravity / Codex / Claude Code）；
+     - **`full`（全功能满血版）**：以上全部 + 2.5D AI 深度图依赖（`torch` + `transformers`，约 1.5–3 GB）。
+   - **② 想安装/存放到哪个目录或盘符？**
+     - Python 虚拟环境路径（例如默认 `<SKILL_DIR>/.venv`，或指定非 C 盘目录如 `D:\AI\chiaki-venv`；也可选择直接装入当前 Python）；
+     - 若选 `3d`/`full`：本机已有 `blender.exe` 的路径（若未装，给出 Windows `winget` / macOS `brew` / 官网安装引导）、3D 素材库缓存目录（`CHIAKI_ASSETS3D`）、以及是否自动配置当前 AI 客户端的 Blender MCP；
+     - 可选共享字体库目录（`CHIAKI_FONTS`）。
+3. **经用户点头后一键落地并复查**：
+   - 运行 `python -X utf8 "<SKILL_DIR>/scripts/setup_env.py" --profile <2d|3d|full> --venv "<用户指定路径>" [--blender "<路径>"] [--assets3d "<路径>"] [--fonts-dir "<路径>"] [--wire-mcp <antigravity|codex|claude|none>]`（先跑 `--dry-run` 或直接按确认方案执行）。
+   - 若缺 **Node.js ≥ 22** 或 **Chrome/Edge** 等系统软件，给出对应系统的一键命令（如 `winget` / `brew`）或在用户明确同意后代为执行。
+   - 装完自动用目标 Python 重跑 `doctor.py`，把最终全绿验收报告发给用户。
 
 ### 1. 开新片（13 步旗舰全流程：`new` 或直接写需求）
 1. **环境体检 & Brief**：跑 `python -X utf8 "<SKILL_DIR>/scripts/doctor.py"`；补齐主题、幕数、时长、FPS（24/30）、音乐、出图路线（`user_files` / `gemini` / `codex` / `custom_api` / `code_only`）、Blender 3D 范围并一行汇报；有音乐立即跑 `scripts/beats.py` 与 `scripts/onsets.py` 锁死鼓点帧号。

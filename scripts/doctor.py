@@ -1,15 +1,18 @@
 """doctor.py — one-command environment & bundled-asset check for Chiaki's-video-skill.
 
 Usage:
-  python -X utf8 scripts/doctor.py
+  python -X utf8 scripts/doctor.py          # human-readable report
+  python -X utf8 scripts/doctor.py --json   # structured JSON report for agent setup wizards
 """
 from __future__ import annotations
 
+import argparse
 import importlib
 import json
 import os
 import re
 import shutil
+import socket
 import subprocess
 import sys
 from pathlib import Path
@@ -21,20 +24,28 @@ for _s in (sys.stdout, sys.stderr):
         pass
 
 ROOT = Path(__file__).resolve().parent.parent
-req_missing = []
-opt_missing = []
+req_missing: list[str] = []
+opt_missing: list[str] = []
+checks: list[dict[str, str]] = []
+JSON_MODE = False
+
+
+def _emit(status: str, label: str, detail: str):
+    checks.append({"status": status, "label": label, "detail": detail})
+    if not JSON_MODE:
+        print(f"  [{status:4s}] {label:26s} {detail}")
 
 
 def ok(label: str, detail: str):
-    print(f"  [OK]   {label:24s} {detail}")
+    _emit("OK", label, detail)
 
 
 def warn(label: str, detail: str):
-    print(f"  [WARN] {label:24s} {detail}")
+    _emit("WARN", label, detail)
 
 
 def fail(label: str, detail: str):
-    print(f"  [FAIL] {label:24s} {detail}")
+    _emit("FAIL", label, detail)
 
 
 def check_python():
@@ -149,8 +160,6 @@ def check_blender():
     else:
         warn("Blender (2.5D / 3D)", "not found — optional, for depth_relief.py, projection/ & built sets (set CHIAKI_BLENDER or install Blender 4.2+/5.x)")
 
-    # Quick non-blocking check if live Blender MCP server is listening on 127.0.0.1:9876
-    import socket
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.settimeout(0.25)
     try:
@@ -180,7 +189,6 @@ def check_py_pkgs():
         else:
             warn(label, f"missing: {', '.join(miss)}")
             opt_missing.extend(miss)
-    # Optional Depth Anything V2 deps for vision/depth.py
     dmiss = []
     for m in ("torch", "transformers"):
         try:
@@ -215,7 +223,14 @@ def check_bundled():
 
 
 def main() -> int:
-    print(f"=== Chiaki's-video-skill Doctor ({ROOT}) ===")
+    global JSON_MODE
+    ap = argparse.ArgumentParser(description="Environment & dependency doctor for Chiaki's-video-skill")
+    ap.add_argument("--json", action="store_true", help="Output structured JSON for automated setup wizards")
+    args = ap.parse_args()
+    JSON_MODE = args.json
+
+    if not JSON_MODE:
+        print(f"=== Chiaki's-video-skill Doctor ({ROOT}) ===")
     check_python()
     check_node()
     check_chrome()
@@ -223,6 +238,27 @@ def main() -> int:
     check_blender()
     check_py_pkgs()
     check_bundled()
+
+    if JSON_MODE:
+        payload = {
+            "skill_root": str(ROOT),
+            "platform": sys.platform,
+            "python_executable": sys.executable,
+            "env": {
+                "CHIAKI_CHROME": os.environ.get("CHIAKI_CHROME", ""),
+                "CHIAKI_FFMPEG": os.environ.get("CHIAKI_FFMPEG", ""),
+                "CHIAKI_BLENDER": os.environ.get("CHIAKI_BLENDER", ""),
+                "CHIAKI_ASSETS3D": os.environ.get("CHIAKI_ASSETS3D", ""),
+                "CHIAKI_FONTS": os.environ.get("CHIAKI_FONTS", ""),
+            },
+            "checks": checks,
+            "required_missing": req_missing,
+            "python_packages_missing": opt_missing,
+            "ready_core": not req_missing,
+            "ready_all": not req_missing and not opt_missing,
+        }
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
+        return 0 if not req_missing else 1
 
     print()
     if req_missing:
