@@ -16,7 +16,7 @@
 | **Bundled CC0 2D Textures** | `assets/textures/` | 4K dust overlays (`dust_01..04`), 35mm & fine film grain (`2048px`), paper & washi textures (~11 MB, CC0) |
 | **2.5D Blender Depth Relief (Optional)** | `scripts/blender/depth_relief.py`, `scripts/vision/{depth,parallax}.py` | Turn any 2D illustration into a displaced 2.5D relief with real optical orbit/crane/DOF (`Depth Anything V2` `--soften` + headless Blender Eevee/Cycles) and play it back deterministically via `lib/sequence.js` + `T3.relX` (`references/relief-25d.md`) |
 | **Cross-Platform CLI Toolchain** | `scripts/` | `doctor.py` (one-command setup check), `install_agy_plugin.py`, `snap.mjs` (contact sheets), `render_fast.mjs` (parallel piped MP4 / 2K render), `qa.mjs`, `motion_lint.mjs`, `run_queue.py` (`web` + `blender` queue), `beats.py` / `onsets.py` / `cadence.py` / `motion.py` / `look.py` / `measure.py` / `framediff.py`, `fonts.py`, `freesound.py`, `skill_check.py`, `pack_skill.py` |
-| **2D Studio Craft & Multi-Agent Guardrails** | `references/`, `assets/workflows/`, `assets/workflows_agy/`, `rules/`, `hooks/`, `agents/` | 12 focused craft manuals (`house-style`, `style-grammar`, `graphic-design`, `motion-library`, `mg-styles`, `shot-recipes`, `script-writing`, `quality-bar`, `crafts`, `personas`, `build-brief`, `production`), pitch/build/review workflows, verbatim persona roster, and optional Antigravity guardrail hook (`hooks/chiaki_guard.py`) |
+| **2D Studio Craft & Multi-Agent Guardrails** | `references/`, `assets/workflows/`, `assets/workflows_agy/`, `rules/`, `hooks/`, `agents/` | 13 focused craft manuals (`house-style`, `style-grammar`, `graphic-design`, `motion-library`, `relief-25d`, `mg-styles`, `shot-recipes`, `script-writing`, `quality-bar`, `crafts`, `personas`, `build-brief`, `production`), pitch/build/review workflows, verbatim persona roster, and optional Antigravity guardrail hook (`hooks/chiaki_guard.py`) |
 
 > **Scope note**: This edition focuses on **2D motion graphics, fast-cut PV/MV, lyric typography, MAD, optional 2.5D Blender depth-relief for illustrations, and study replicas**. Leaderboard/ranking dashboards, full 3D set/rigging pipelines, and proprietary AI character-generation wrappers have been removed to keep the repository lean and portable.
 
@@ -65,18 +65,44 @@ python -X utf8 scripts/run_queue.py web --lane demo -- node scripts/render_fast.
 python -X utf8 scripts/run_queue.py web --lane demo -- node scripts/motion_lint.mjs assets/template/index.html --curves
 ```
 
+### 4. Expanding the Font Library / 按需扩展字体库
+To keep `git clone` fast and stay well within GitHub's size limits, the repository bundles **59 high-frequency OFL-1.1 / Apache-2.0 families (~99 MB)** rather than the full ~2.2 GB Google Fonts mirror (~1,960 families). All remaining commercial-safe fonts can be fetched on demand via `scripts/fonts.py` (with automatic OpenType license verification):
+```bash
+# Search the bundled offline library (59 families, instant)
+python -X utf8 scripts/fonts.py search --local --group cjk-serif
+
+# Search online across 1,900+ Google Fonts + Fontsource + curated GitHub CJK fonts
+python -X utf8 scripts/fonts.py search "WenKai"
+
+# Download any specific family (e.g. LXGW WenKai, Shippori Mincho B1) into assets/fonts/
+python -X utf8 scripts/fonts.py get "LXGW WenKai" "Shippori Mincho B1"
+
+# Download all remaining families from the 68-family starter shelf (+~128 MB)
+python -X utf8 scripts/fonts.py get starter
+
+# Optional: build a full offline Google Fonts mirror (~2.2 GB; preview size first with --estimate)
+python -X utf8 scripts/fonts.py get --all-google --estimate
+python -X utf8 scripts/fonts.py get --all-google --jobs 4
+
+# Pack subset WOFF2 + Base64 fonts into a video project (offline, zero web fonts)
+python -X utf8 scripts/fonts.py use <project_dir> "Smiley Sans" "Syne" "JetBrains Mono"
+```
+> Tip: set `CHIAKI_FONTS=/path/to/your/fonts` if you want to store a large shared font mirror outside the repository.
+
 ---
 
 ## 🧩 Installing as an AI Agent Skill / 安装到 AI 代理
 
 ### Claude Code / Codex
-Copy or symlink this folder into your skills directory:
+Clone and copy (or symlink) into your skills directory:
 ```bash
+git clone https://github.com/qianqiucn/Chiakis-video-skill.git
+
 # Claude Code
-cp -r "Chiaki's-video-skill" ~/.claude/skills/chiakis-video-skill
+cp -r Chiakis-video-skill ~/.claude/skills/chiakis-video-skill
 
 # Codex
-cp -r "Chiaki's-video-skill" ~/.codex/skills/chiakis-video-skill
+cp -r Chiakis-video-skill ~/.codex/skills/chiakis-video-skill
 ```
 Or package a `.skill` zip archive (use `--lite` for platforms with a 200-file upload limit such as claude.ai):
 ```bash
@@ -103,7 +129,7 @@ Chiaki's-video-skill/
 ├── THIRD_PARTY_NOTICES.md      # GSAP, mg-styles-15, video-shotcraft, OFL/Apache fonts
 ├── package.json                # Convenience npm scripts (zero node_modules required)
 ├── requirements.txt            # Python deps (fonttools, numpy, cv2, mgaudio)
-├── references/                 # 12 studio craft manuals (2D motion, typography, cadence, QA, personas)
+├── references/                 # 13 studio craft manuals (2D motion, 2.5D relief, typography, cadence, QA, personas)
 ├── scripts/                    # Cross-platform render, QA, lint, audio/video analysis, font & queue CLIs
 ├── assets/
 │   ├── template/               # engine.js, index.html, GSAP 3.15.1, lib/motion/*, 2D/2.5D helpers
