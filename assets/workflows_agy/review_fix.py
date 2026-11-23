@@ -1,4 +1,4 @@
-"""Antigravity run_workflow script: Stage 6 Three-Lens Adversarial Review -> 3 Verifiers -> Fix -> QC.
+"""Antigravity run_workflow script: Stage 9 Three-Lens Adversarial Review -> 3 Verifiers -> Fix -> QC.
 
 Args:
   project      (str): absolute path to project
@@ -11,6 +11,7 @@ skill = args["skill"]
 review_brief = args["reviewBrief"]
 files_by_owner = args.get("filesByOwner", [])
 P = lambda f: f"{skill}/references/{f}"
+STR = {"type": "string"}
 
 LENSES = [
     (
@@ -36,60 +37,67 @@ LENSES = [
     ),
 ]
 
-raw_notes = parallel(
-    [
-        lambda l=lens: agent(
-            type="chiaki-reviewer",
-            model="pro",
-            role=l[1],
-            prompt="\n\n".join([
-                l[3],
-                f"物理只读：严禁修改任何文件。先读 {review_brief}、{P('house-style.md')}、{P('quality-bar.md')}、{P('style-grammar.md')}，核查项目 {project} 并输出帧级问题单。",
-            ]),
-        )
-        for lens in LENSES
-    ]
+phase("Stage 9a · 3 Independent Read-Only Lenses")
+raw_notes = await parallel(
+    LENSES,
+    lambda lens: agent(
+        type_name="chiaki-reviewer",
+        model="pro",
+        role=lens[1],
+        schema=STR,
+        prompt="\n\n".join([
+            lens[3],
+            f"物理只读：严禁修改任何文件。先读 {review_brief}、{P('crafts.md')} §6、{P('house-style.md')}、{P('quality-bar.md')}、{P('style-grammar.md')}，核查项目 {project} 并输出帧级问题单。",
+        ]),
+    ),
 )
 
-verified = parallel(
-    [
-        lambda i=idx, l=lens: agent(
-            type="chiaki-reviewer",
-            model="pro",
-            role=l[2],
-            prompt="\n\n".join([
-                l[4],
-                f"物理只读：对照 {review_brief}、{P('house-style.md')} 与截图核实以下审片单，逐条判定成立或驳回：\n\n{raw_notes[i]}",
-            ]),
-        )
-        for idx, lens in enumerate(LENSES)
-    ]
+phase("Stage 9b · 3 Independent Read-Only Verifiers")
+verified = await parallel(
+    list(enumerate(LENSES)),
+    lambda pair: agent(
+        type_name="chiaki-reviewer",
+        model="pro",
+        role=pair[1][2],
+        schema=STR,
+        prompt="\n\n".join([
+            pair[1][4],
+            f"物理只读：先读 {review_brief}、{P('crafts.md')} §6 与 {P('house-style.md')}，逐条核实以下审片单并判定成立或驳回：\n\n{raw_notes[pair[0]]}",
+        ]),
+    ),
 )
 
 confirmed = "\n\n---\n\n".join(str(v) for v in verified)
-fixes = parallel(
-    [
-        lambda g=grp: agent(
-            type="chiaki-builder",
+fixes = []
+qc = None
+
+if files_by_owner:
+    phase("Stage 9c · Scoped Pre-Render Fixes")
+    fixes = await parallel(
+        files_by_owner,
+        lambda grp: agent(
+            type_name="chiaki-builder",
             model="flash",
-            role=f"修改员 · {g['owner']}",
+            role=f"修改员 · {grp['owner']}",
+            schema=STR,
             prompt="\n\n".join([
-                f"你的身份：工作室的「{g['owner']}」，这些文件就是你搭的。性格：手稳、克制：改动最小，只修复核成立的问题，不碰没问题的帧，不顺手重做整段，交回去之前先跑静态 motion_lint 和局部截图自己验收。",
-                f"只允许编辑：{', '.join(g['files'])}。\n\n复核通过的问题单：\n{confirmed}",
+                f"你的身份：工作室的「{grp['owner']}」，这些文件就是你搭的。性格：手稳、克制：改动最小，只修复核成立的问题，不碰没问题的帧，不顺手重做整段，交回去之前先跑静态 motion_lint 和局部截图自己验收。",
+                f"对照 {P('crafts.md')} 与 {review_brief}，只允许编辑：{', '.join(grp['files'])}。\n\n复核通过的问题单：\n{confirmed}",
             ]),
-        )
-        for grp in files_by_owner
-    ]
-)
+        ),
+    )
 
-qc = agent(
-    type="chiaki-reviewer",
-    model="flash",
-    role="终审质检（QC）",
-    prompt="\n\n".join([
-        "你的身份：工作室交片前的最后一道质检。性格：不讲情面、只认画面：修好了才签字，看不清或没验到就绝不标 ok；手快，每条只截它涉及的帧、原尺寸一张，没修好的记为未通过交主线程。",
-        f"物理只读：逐条复验已成立的问题是否修好，输出 PASS / FAIL 汇总。\n\n复核单：\n{confirmed}",
-    ]),
-)
+    phase("Stage 9d · Read-Only QC Verification")
+    qc = await agent(
+        type_name="chiaki-reviewer",
+        model="flash",
+        role="终审质检（QC）",
+        schema=STR,
+        prompt="\n\n".join([
+            "你的身份：工作室交片前的最后一道质检。性格：不讲情面、只认画面：修好了才签字，看不清或没验到就绝不标 ok；手快，每条只截它涉及的帧、原尺寸一张，没修好的记为未通过交主线程。",
+            f"物理只读：按 {P('crafts.md')} §6 与 {P('quality-bar.md')} 逐条复验已成立的问题是否修好，输出 PASS / FAIL 汇总。\n\n复核单：\n{confirmed}",
+        ]),
+    )
 
-result = {"raw_notes": raw_notes, "verified": verified, "fixes": fixes, "qc": qc}
+log("Stage 9 review_fix finished")
+{"raw_notes": raw_notes, "verified": verified, "fixes": fixes, "qc": qc}

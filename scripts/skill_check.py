@@ -97,14 +97,24 @@ def workflow_models(problems):
             chunk = s[m.start():m.start() + 500]
             if "model:" not in chunk and "model :" not in chunk:
                 problems.append(f"workflow agent() missing explicit model in {rel}")
-    # Check AGY Python workflows syntax
-    for p in sorted(glob.glob(ROOT + "/assets/workflows_agy/*.py")):
+    # Check AGY Python workflows (top-level await + native run_workflow agent() kwargs)
+    py_files = sorted(glob.glob(ROOT + "/assets/workflows_agy/*.py"))
+    for p in py_files:
         rel = os.path.relpath(p, ROOT).replace("\\", "/")
+        s = read(p)
         try:
-            compile(read(p), rel, "exec")
+            import ast as _ast
+            compile(s, rel, "exec", flags=_ast.PyCF_ALLOW_TOP_LEVEL_AWAIT)
         except SyntaxError as e:
             problems.append(f"Python syntax error in {rel}: {e}")
-    return f"{len(js_files)} JS workflow(s) ok"
+        for m in re.finditer(r"\bagent\s*\(", s):
+            chunk = s[m.start():m.start() + 500]
+            if re.search(r"\btype\s*=", chunk):
+                problems.append(f"AGY workflow uses `type=` instead of `type_name=` in {rel}")
+            for req in ("type_name=", "model=", "schema="):
+                if req not in chunk:
+                    problems.append(f"AGY workflow agent() missing `{req}` in {rel}")
+    return f"{len(js_files)} JS + {len(py_files)} AGY Python workflow(s) ok"
 
 
 def check():

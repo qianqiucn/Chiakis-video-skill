@@ -1,4 +1,4 @@
-"""Antigravity run_workflow script: Stage 2 Pitch Meeting (chiaki-writer, Model=pro).
+"""Antigravity run_workflow script: Stage 2 Pitch Meeting (chiaki-writer, model=pro).
 
 Args:
   project (str): absolute path to the video project directory
@@ -9,6 +9,7 @@ project = args["project"]
 skill = args["skill"]
 acts = args.get("acts", [])
 P = lambda f: f"{skill}/references/{f}"
+STR = {"type": "string"}
 
 ANGLES = [
     (
@@ -29,47 +30,52 @@ ANGLES = [
 ]
 
 
-def pitch_act(act):
+async def pitch_act(act):
     key, title, brief = act["key"], act["title"], act["brief"]
-    pitches = parallel(
-        [
-            lambda a=ang: agent(
-                type="chiaki-writer",
-                model="pro",
-                role=f"{key} · {a[1]}",
-                prompt="\n\n".join([
-                    a[2],
-                    f"先读：{P('house-style.md')}、{P('script-writing.md')}、{P('mg-styles.md')}、{P('shot-recipes.md')}、{P('crafts.md')} §1。",
-                    f"为项目 {project} 的幕次「{title}」（key: {key}）写完整 2D 视觉提案，写入 {project}/work/pitch/{key}_{a[0]}.md。",
-                    f"导演简报：{brief}",
-                ]),
-            )
-            for ang in ANGLES
-        ]
+    pitches = await parallel(
+        ANGLES,
+        lambda ang: agent(
+            type_name="chiaki-writer",
+            model="pro",
+            role=f"{key} · {ang[1]}",
+            schema=STR,
+            prompt="\n\n".join([
+                ang[2],
+                f"先读：{P('house-style.md')}、{P('script-writing.md')}、{P('mg-styles.md')}、{P('shot-recipes.md')}、{P('3d.md')}、{P('crafts.md')} §1。",
+                f"任务：为项目 {project} 的幕次「{title}」（key: {key}）写一份完整视觉提案，写入 {project}/work/pitch/{key}_{ang[0]}.md。",
+                f"导演简报：{brief}",
+            ]),
+        ),
     )
-    pick = agent(
-        type="chiaki-writer",
+    pick = await agent(
+        type_name="chiaki-writer",
         model="pro",
         role=f"{key} · 创意总监",
+        schema=STR,
         prompt="\n\n".join([
             "你是「创意总监」：你是工作室的创意总监，替总导演兼制片人主持提案会，这几个方案都不是你写的，定稿交总导演签字。你最看重想象力：视觉形式新鲜、紧扣主题/歌词本身、有明确的核心画面机制、看完记得住；其次才是实现成本。性格：眼光挑剔，不和稀泥，敢选最大胆且自洽的那个，同时写清技术风险与执行边界；目标是获奖级别的商业动态设计作品（house-style §0），明确指出每个方案离它差在哪。",
-            f"阅读 {project}/work/pitch/{key}_medium.md、{key}_stage.md、{key}_lens.md，选出定稿写入 {project}/work/pitch/{key}_pick.md。",
+            f"先读 {P('house-style.md')} 与 {P('crafts.md')} §1；阅读 {project}/work/pitch/{key}_medium.md、{key}_stage.md、{key}_lens.md，选出定稿写入 {project}/work/pitch/{key}_pick.md。",
         ]),
     )
     return {"key": key, "pitches": pitches, "pick": pick}
 
 
-picks = parallel([lambda act=a: pitch_act(act) for a in acts])
+phase("Pitch Meeting · 3 Competing Angles -> Creative Director")
+picks = await parallel(acts, pitch_act)
+
 slate = None
 if len(acts) > 1:
-    slate = agent(
-        type="chiaki-writer",
+    phase("Executive Producer · Full-Film Slate Check")
+    slate = await agent(
+        type_name="chiaki-writer",
         model="pro",
         role="执行制片 · 全片统筹",
+        schema=STR,
         prompt="\n\n".join([
             "你是「执行制片」：你是工作室的执行制片，替总导演兼制片人统筹整支片的提案。性格：冷静、统筹全局，眼里是整支片的起承转合和节奏变化，而不是某一段的局部得失；核查各幕的视觉媒介、调色弧线、主字体和跨幕转场是否撞车。",
-            f"核查所有定稿（{', '.join(a['key'] + '_pick.md' for a in acts)}），输出统筹结论到 {project}/work/pitch/SLATE.md。",
+            f"先读 {P('house-style.md')} 与 {P('crafts.md')} §1；核查所有定稿（{', '.join(a['key'] + '_pick.md' for a in acts)}），输出统筹结论到 {project}/work/pitch/SLATE.md。",
         ]),
     )
 
-result = {"picks": picks, "slate": slate}
+log(f"Pitch completed for {len(acts)} act(s)")
+{"picks": picks, "slate": slate}

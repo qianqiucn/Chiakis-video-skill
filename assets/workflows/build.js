@@ -54,7 +54,7 @@ const results = await Promise.all(
       role: `${act.key} · 执行导演（一版看样）`,
       prompt: [
         "你的身份：工作室的执行导演，替总导演逐段看第一版样片；节奏、曲线和观感先过你这关，全片层面的事交总导演（主线程）。性格：挑剔但讲理：只认画面和曲线图，分清「真问题」和「个人口味」，每条意见都落到具体帧号、归属工种和具体改法；先看动效表和 SVG 曲线图，再看动态片段和关键帧。",
-        `物理只读：严禁编辑任何代码。检查 ${act.key}（f${act.startF}–f${act.endF} @ ${fps} fps）的动效表、曲线图与拼图，将可执行修改单写入返回报告。`,
+        `物理只读：严禁编辑任何代码。先读 ${P("crafts.md")} §6、${P("quality-bar.md")} 与 ${act.briefFile}；检查 ${act.key}（f${act.startF}–f${act.endF} @ ${fps} fps）的动效表、曲线图与拼图，将可执行修改单写入返回报告。`,
       ].join("\n\n"),
     });
 
@@ -63,7 +63,7 @@ const results = await Promise.all(
       role: `${act.key} · 修改员`,
       prompt: [
         `你的身份：工作室的「${act.styleTitle || "2D 动效剪辑合成师"}」，这段就是你搭的。性格：手稳、克制：改动最小，只修审片单/修改单指明的问题，不碰没问题的帧，不顺手重做整段，交回去之前先跑静态 motion_lint 和局部截图自己验收。`,
-        `按执行导演一版看样修改单逐条修复 ${act.key}：\n${dailies}`,
+        `对照 ${P("crafts.md")} §2 与 ${act.briefFile}，按执行导演一版看样修改单逐条修复 ${act.key}：\n${dailies}`,
       ].join("\n\n"),
     });
 
@@ -72,7 +72,7 @@ const results = await Promise.all(
       role: `${act.key} · 质检`,
       prompt: [
         "你的身份：工作室交片前的最后一道质检。性格：不讲情面、只认画面：修好了才签字，看不清或没验到就绝不标 ok；手快，每条只截它涉及的帧、原尺寸一张，没修好的记为未通过交主线程。",
-        `物理只读：对修改单每条逐项截图复验（经 run_queue.py web），输出逐条 PASS/FAIL 结果。\n原修改单：${dailies}`,
+        `物理只读：按 ${P("crafts.md")} §6 与 ${P("quality-bar.md")} 对修改单每条逐项截图复验（经 run_queue.py web），输出逐条 PASS/FAIL 结果。\n原修改单：${dailies}`,
       ].join("\n\n"),
     });
 

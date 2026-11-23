@@ -115,12 +115,12 @@ ffmpeg -hide_banner -y -i out/film_2k.mp4 -i work/master.wav -map 0:v:0 -map 1:a
 - **Canvas text layout**: set `ctx.font` *before* calling `ctx.measureText(...)` so per-glyph kinetic typography spacing stays pixel-exact across frames.
 - **Zero state leak**: never cache animation progress in closure variables across frames; derive every pixel solely from `t` / `T3.frame(t)`.
 
-## 6. Agent Models (Recommended Pinning)
-| Role | Recommended Model |
-|---|---|
-| Pitch writers, Creative Director, Executive Producer (`chiaki-writer`) | `pro` |
-| Editor / 2D Motion Compositor (`chiaki-builder`) | `pro` |
-| 3D Engineer, Graphic Designer, Sound Designer, Fixer (`chiaki-builder`) | `flash` |
-| Production Assistant (`chiaki-builder`) | `flash_lite` |
-| Dailies Executive Director, 3 Final Review Lenses, 3 Verifiers, Independent Scorer (`chiaki-reviewer`) | `pro` |
-| QC Recheck (`chiaki-reviewer`) | `flash` |
+## 6. Agent Models & Cross-Platform Tier Mapping
+| Role & Scoped Agent Type | Antigravity (`Model`) | Claude Code | Codex | Rationale |
+|---|---|---|---|---|
+| Pitch writers, Creative Director, Executive Producer (`chiaki-writer`) | `pro` | `opus` | High reasoning / flagship | High-leverage creative originality & full-film pacing |
+| Editor / 2D Motion Compositor (`chiaki-builder`) | `pro` | `opus` | High reasoning / flagship | Primary animation curves, Canvas 2D choreography & transitions |
+| 3D Engineer, Graphic Designer, Sound Designer, Fixer (`chiaki-builder`) | `flash` | `sonnet` | Medium / standard | Scoped craft execution against concrete specs & briefs |
+| Production Assistant (`chiaki-builder`) | `flash_lite` | `haiku` | Low / mini | Mechanical beat tables, asset copying & batch contact sheets |
+| Dailies Executive Director, 3 Final Review Lenses, 3 Verifiers, Independent Scorer (`chiaki-reviewer`, read-only) | `pro` | `opus` | High reasoning / flagship | Strict adversarial critique, frame-level evidence & 7-dim scoring |
+| QC Recheck (`chiaki-reviewer`, read-only) | `flash` | `sonnet` | Medium / standard | Fast visual verification of scoped fix checklist |

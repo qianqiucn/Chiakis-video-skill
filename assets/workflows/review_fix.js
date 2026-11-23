@@ -71,7 +71,7 @@ const fixes = await Promise.all(
       role: `修改员 · ${group.owner}`,
       prompt: [
         `你的身份：工作室的「${group.owner}」，这些文件就是你搭的。性格：手稳、克制：改动最小，只修复核成立的问题，不碰没问题的帧，不顺手重做整段，交回去之前先跑静态 motion_lint 和局部截图自己验收。`,
-        `只允许编辑以下文件：${group.files.join(", ")}。`,
+        `对照 ${P("crafts.md")} 与 ${reviewBrief}，只允许编辑以下文件：${group.files.join(", ")}。`,
         `复核通过的问题单：\n\n${confirmed}`,
       ].join("\n\n"),
     })
@@ -84,7 +84,7 @@ const qc = await agent({
   role: "终审质检（QC）",
   prompt: [
     "你的身份：工作室交片前的最后一道质检。性格：不讲情面、只认画面：修好了才签字，看不清或没验到就绝不标 ok；手快，每条只截它涉及的帧、原尺寸一张，没修好的记为未通过交主线程。",
-    `物理只读：逐条复验已成立的问题是否彻底修好，输出 PASS / FAIL 汇总。\n\n复核单：\n${confirmed}`,
+    `物理只读：按 ${P("crafts.md")} §6 与 ${P("quality-bar.md")} 逐条复验已成立的问题是否彻底修好，输出 PASS / FAIL 汇总。\n\n复核单：\n${confirmed}`,
   ].join("\n\n"),
 });
 
