@@ -26,6 +26,9 @@ def should_include(rel: str, lite: bool) -> bool:
         return False
     if Path(rel).suffix.lower() in SKIP_EXTS:
         return False
+    # Keep exactly one SKILL.md inside .skill archives (exclude nested slash-command SKILL.md)
+    if rel.startswith("commands/"):
+        return False
     if lite:
         # Keep <= 200 files with exactly 1 SKILL.md for strict upload targets (e.g. claude.ai)
         if rel.startswith("assets/fonts/") and rel != "assets/fonts/catalog.json":

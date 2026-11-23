@@ -153,14 +153,26 @@ python -X utf8 scripts/run_queue.py web --lane demo -- node scripts/motion_lint.
 
 ---
 
-## 🧩 Install for AI Agents / 安装到 AI 代理
+## 🧩 Install & Unified `/chiaki` Command / 安装与 `/chiaki` 总指令
+
+One single slash command **`/chiaki`** drives the entire studio without cluttering your command menu or colliding with other video skills:
+
+| Command | Action |
+|---|---|
+| `/chiaki <想法/歌名>` or `/chiaki new` | Start a new film (doctor → beat/onset grid → pitch meeting → 2D build) |
+| `/chiaki fonts [query / project]` | Search 59 bundled fonts / 1,900+ Google Fonts, check missing glyphs & pack WOFF2 |
+| `/chiaki relief <image.png>` | 2D illustration → softened 16-bit depth → Blender 2.5D relief → parallax check |
+| `/chiaki preview [start end]` | Static `motion_lint` → 720p MP4 preview + SVG curve sheet + contact sheet |
+| `/chiaki review` | Gate B1 `qa.mjs` → 3-lens read-only review + verifiers → targeted fix → QC |
+| `/chiaki deliver` | `mgaudio` −14 LUFS master → 1080p/2K FLAC → independent 7-dim scorecard → font credits |
+| `/chiaki status` | Read-only project progress, render queue status & `doctor.py` check |
 
 | Platform | How to Install | Notes |
 |---|---|---|
-| **Claude Code** | `cp -r Chiakis-video-skill ~/.claude/skills/chiakis-video-skill` | Root `SKILL.md` discovered automatically |
-| **Codex** | `cp -r Chiakis-video-skill ~/.codex/skills/chiakis-video-skill` | Root `SKILL.md` discovered automatically |
-| **Antigravity (Plugin)** | `python -X utf8 scripts/install_agy_plugin.py` | Stages `skills/chiakis-video-skill/SKILL.md`, `rules/AGENTS.md`, `agents/`, and resolved `hooks.json` guardrail (`--dry-run` supported) |
-| **claude.ai / `.skill` zip** | Download from [GitHub Releases](https://github.com/qianqiucn/Chiakis-video-skill/releases) or run `python -X utf8 scripts/pack_skill.py --lite` | `--lite` produces a `≤ 200`-file archive (`~0.6 MB`); fetch fonts on demand via `scripts/fonts.py` |
+| **Antigravity (Plugin)** | `python -X utf8 scripts/install_agy_plugin.py` | Installs `skills/chiaki/SKILL.md` (`/chiaki`), `skills/chiakis-video-skill/`, `rules/AGENTS.md`, `agents/`, `assets/logo.svg`, and resolved `hooks.json` |
+| **Claude Code** | `cp -r Chiakis-video-skill ~/.claude/skills/chiakis-video-skill` + `cp Chiakis-video-skill/commands/chiaki/SKILL.md ~/.claude/commands/chiaki.md` | Activates both the skill and `/chiaki` slash command |
+| **Codex** | `cp -r Chiakis-video-skill ~/.codex/skills/chiakis-video-skill` + `cp -r Chiakis-video-skill/commands/chiaki ~/.codex/skills/chiaki` | Activates both the skill and `$chiaki` command |
+| **claude.ai / `.skill` zip** | Download from [GitHub Releases](https://github.com/qianqiucn/Chiakis-video-skill/releases) or run `python -X utf8 scripts/pack_skill.py --lite` | `--lite` stays `≤ 200` files (`~0.6 MB`); fetch fonts on demand via `scripts/fonts.py` |
 
 ---
 
@@ -226,6 +238,7 @@ Chiakis-video-skill/
 ├── LICENSE                     # MIT License
 ├── THIRD_PARTY_NOTICES.md      # GSAP, mg-styles-15, video-shotcraft, OFL/Apache fonts
 ├── docs/                       # Visual banner, live 24fps demo.gif, curve sheet & font specimen
+├── commands/chiaki/            # Unified /chiaki slash-command router (new/fonts/relief/preview/review/deliver/status)
 ├── references/                 # 13 studio craft manuals
 ├── scripts/                    # Cross-platform render, QA, lint, audio/video analysis, fonts, doctor, queue
 │   ├── blender/                # Optional headless Blender 2.5D depth_relief.py

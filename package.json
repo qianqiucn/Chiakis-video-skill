@@ -1,6 +1,6 @@
 {
   "name": "chiakis-video-skill",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "description": "Chiaki's-video-skill: Deterministic HTML/JS/Canvas 2D motion graphics, fast-cut PV/MV, and kinetic typography studio skill for AI coding agents.",
   "license": "MIT",

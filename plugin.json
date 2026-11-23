@@ -1,7 +1,7 @@
 {
   "name": "chiakis-video-skill",
   "displayName": "Chiaki's-video-skill (2D Motion Video Studio)",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Deterministic HTML/JS/Canvas 2D motion graphics, fast-cut PV/MV, and kinetic typography studio skill with bundled open-source fonts, GSAP 3.15.1, mgaudio SFX engine, CC0 textures, and multi-agent craft guardrails.",
   "license": "MIT",
   "skills": ["."],

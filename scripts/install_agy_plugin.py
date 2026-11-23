@@ -59,6 +59,7 @@ def main() -> int:
 
     dest = Path(args.dest).resolve()
     skill_dir = dest / "skills" / SKILL_SLUG
+    cmd_dir = dest / "skills" / "chiaki"
     hook_script = dest / "hooks" / "chiaki_guard.py"
     hook_cmd = f'"{sys.executable}" -X utf8 "{hook_script.as_posix()}"'
 
@@ -75,8 +76,8 @@ def main() -> int:
     plugin_obj = {
         "name": SKILL_SLUG,
         "displayName": "Chiaki's-video-skill (2D Motion Video Studio)",
-        "version": "1.1.0",
-        "description": "Deterministic HTML/JS/Canvas 2D motion graphics, fast-cut PV/MV, and kinetic typography studio plugin.",
+        "version": "1.2.0",
+        "description": "Deterministic HTML/JS/Canvas 2D motion graphics, fast-cut PV/MV, kinetic typography, and 2.5D relief studio plugin (/chiaki).",
         "license": "MIT",
     }
 
@@ -87,6 +88,8 @@ def main() -> int:
         print(f"  - {hook_script}")
         print(f"  - {dest / 'rules' / 'AGENTS.md'}")
         print(f"  - {dest / 'agents' / 'chiaki-*.md'}")
+        print(f"  - {dest / 'assets' / 'logo.svg'}")
+        print(f"  - {cmd_dir / 'SKILL.md'}  (/chiaki unified slash command)")
         print(f"  - {skill_dir / 'SKILL.md'} (+ references/, scripts/, assets/)")
         return 0
 
@@ -94,15 +97,25 @@ def main() -> int:
         shutil.rmtree(dest)
     dest.mkdir(parents=True, exist_ok=True)
     skill_dir.mkdir(parents=True, exist_ok=True)
+    cmd_dir.mkdir(parents=True, exist_ok=True)
 
-    # 1. Manifest + hooks + rules + agents
+    # 1. Manifest + hooks + rules + agents + plugin logo
     (dest / "plugin.json").write_text(json.dumps(plugin_obj, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (dest / "hooks.json").write_text(json.dumps(hooks_obj, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     copy_tree(ROOT / "hooks", dest / "hooks")
     copy_tree(ROOT / "rules", dest / "rules")
     copy_tree(ROOT / "agents", dest / "agents")
+    if (ROOT / "assets" / "logo.svg").exists():
+        (dest / "assets").mkdir(parents=True, exist_ok=True)
+        shutil.copy2(ROOT / "assets" / "logo.svg", dest / "assets" / "logo.svg")
 
-    # 2. Skill payload under skills/chiakis-video-skill/
+    # 2. Unified /chiaki command skill with resolved absolute <SKILL_DIR>
+    cmd_src = ROOT / "commands" / "chiaki" / "SKILL.md"
+    if cmd_src.exists():
+        cmd_txt = cmd_src.read_text(encoding="utf-8").replace("<SKILL_DIR>", skill_dir.as_posix())
+        (cmd_dir / "SKILL.md").write_text(cmd_txt, encoding="utf-8", newline="\n")
+
+    # 3. Core skill payload under skills/chiakis-video-skill/
     for fname in ("SKILL.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "requirements.txt"):
         if (ROOT / fname).exists():
             shutil.copy2(ROOT / fname, skill_dir / fname)
@@ -110,8 +123,9 @@ def main() -> int:
         copy_tree(ROOT / sub, skill_dir / sub)
 
     print(f"Installed Antigravity plugin cleanly -> {dest}")
-    print(f"  Skill:  {skill_dir / 'SKILL.md'}")
-    print(f"  Hook:   {dest / 'hooks.json'}")
+    print(f"  Command: /chiaki ({cmd_dir / 'SKILL.md'})")
+    print(f"  Skill:   {skill_dir / 'SKILL.md'}")
+    print(f"  Hook:    {dest / 'hooks.json'}")
     print("Restart or reload plugins in Antigravity Customizations to activate.")
     return 0
 

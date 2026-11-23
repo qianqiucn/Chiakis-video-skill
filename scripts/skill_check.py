@@ -43,6 +43,7 @@ def texts():
         ROOT + "/assets/workflows_agy/*",
         ROOT + "/rules/*.md",
         ROOT + "/agents/*.md",
+        ROOT + "/commands/**/*.md",
     ]
     for pat in patterns:
         for p in glob.glob(pat, recursive=True):
