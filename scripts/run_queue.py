@@ -1,11 +1,12 @@
-"""run_queue.py — cross-platform machine-wide queue for headless Chrome rendering jobs.
+"""run_queue.py — cross-platform machine-wide queue for headless Chrome & Blender rendering jobs.
 
-At most 1 browser job runs at once across projects and sessions, starting only when the machine
-has enough free RAM. Prevents multiple concurrent headless Chromes from starving RAM/GPU.
+At most 1 browser job and 2 Blender jobs run at once across projects and sessions, starting only when the machine
+has enough free RAM. Prevents concurrent headless Chromes or Blenders from starving RAM/GPU.
 
 Usage:
   python -X utf8 scripts/run_queue.py web --lane <who> -- node scripts/snap.mjs <index.html> <outDir> "0-120:4" --sheet s
   python -X utf8 scripts/run_queue.py web --lane <who> -- node scripts/render_fast.mjs <index.html> 0 10 out.mp4
+  python -X utf8 scripts/run_queue.py blender --lane relief -- blender -b --python scripts/blender/depth_relief.py -- ...
   python -X utf8 scripts/run_queue.py --status
 
 Options before `--`:
@@ -48,6 +49,7 @@ def _env_slots(name: str, default: int) -> int:
 
 KINDS = {
     "web": {"slots": _env_slots("CHIAKI_WEB_SLOTS", 1), "min_free_gb": 4.0},
+    "blender": {"slots": _env_slots("CHIAKI_BLENDER_SLOTS", 2), "min_free_gb": 4.0},
 }
 MAX_WORKERS = 2
 POLL, REMIND, MEM_POLL, MEM_REMIND = 2, 300, 5, 60

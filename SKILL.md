@@ -38,6 +38,7 @@ A deterministic 2D motion-graphics and fast-cut video studio built on an HTML/JS
 | `references/script-writing.md` | writing the pitch & storyboard: visual form, medium, shot table, cut motivation, transitions |
 | `references/style-grammar.md` | editing & 2D motion: beat grid, 7 Canvas PV transition families, genre curves (hype / product / literary MAD / AE-Bezier lyric PV), 2D layer staging (`her2d.js`), and stepped/`Posterize Time` cadence |
 | `references/motion-library.md` | **whoever makes anything move, first**: every approved `lib/motion` ID, setup order, motion sheet, segment header, and SVG curve-sheet workflow |
+| `references/relief-25d.md` | when turning a 2D illustration into a **2.5D Blender depth relief** (`depth.py --soften` → `depth_relief.py` → `T3.sequence` + `T3.relX`) or measuring parallax (`parallax.py`) |
 | `references/shot-recipes.md` | 124 named motion-design shot recipes (openings, cuts, type, rhythm, camera, effects, transitions, outros; from `video-shotcraft`, Apache-2.0) |
 | `references/mg-styles.md` | 15 motion-design visual forms with checkable signature techniques (from `mg-styles-15`, MIT) |
 | `references/graphic-design.md` | typography & layout: titles, per-glyph kinetic typography, bundled local font selection, colour arcs, 5-layer framing, tagline cards, code helpers |
@@ -71,7 +72,7 @@ Confirm topic, duration, target FPS (`24` or `30`), music track (or procedural `
 ### 4. Visual Assets, Fonts & Textures
 - **Fonts (offline-first, zero remote web fonts)**: search bundled 59 OFL/Apache families via `python -X utf8 <sk>/scripts/fonts.py search --local ...` (or fetch any Google Font via `fonts.py get ...`), then pack subset WOFF2 + Base64 into the project with `python -X utf8 <sk>/scripts/fonts.py use <project> "FamilyA" "FamilyB"`.
 - **2D Textures**: copy needed CC0 overlays from `<sk>/assets/textures/` (`grain/`, `dust/`, `paper/`, `washi/`) into `<project>/web/assets/tex/`.
-- **2D Character / Illustration Layers**: if the client supplies layered PNGs (or split foreground/midground/background plates), wire `T3.her.wave` + `T3.her.warp2` (`lib/meshwarp.js`), `T3.her.eyes`, `T3.multiplane`, or `T3.depth3d`.
+- **2D Character / Illustration Layers & 2.5D Relief**: if the client supplies layered PNGs, wire `T3.her.wave` + `T3.her.warp2` (`lib/meshwarp.js`), `T3.her.eyes`, `T3.multiplane`, or `T3.depth3d`. For rich optical camera orbit/crane/DOF on a single illustration, generate a softened 16-bit depth map (`scripts/vision/depth.py --soften`), render via Blender (`scripts/run_queue.py blender -- blender -b --python scripts/blender/depth_relief.py -- ...`), and play back with `lib/sequence.js` + `T3.relX` (`references/relief-25d.md`).
 
 ### 5. Build (`assets/workflows/build.js` or `build.py`)
 - **Scaffold**: copy `<sk>/assets/template/` into `<project>/web/`, set `window.T3_CONFIG = { fps, start, end, audio, bpm, beatOffset }`.

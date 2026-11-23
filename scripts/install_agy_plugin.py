@@ -75,7 +75,7 @@ def main() -> int:
     plugin_obj = {
         "name": SKILL_SLUG,
         "displayName": "Chiaki's-video-skill (2D Motion Video Studio)",
-        "version": "1.0.0",
+        "version": "1.1.0",
         "description": "Deterministic HTML/JS/Canvas 2D motion graphics, fast-cut PV/MV, and kinetic typography studio plugin.",
         "license": "MIT",
     }

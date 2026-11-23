@@ -30,6 +30,7 @@ TEMPERAMENT_RE = re.compile(r"性格[:：]")
 CRAFT_OR_BRIEF_RE = re.compile(r"(crafts\.md|house-style\.md|quality-bar\.md|motion-library\.md|brief|REVIEW_BRIEF|SCORE_BRIEF|pitch|storyboard)", re.I)
 BROWSER_CLI_RE = re.compile(r"\b(snap|snap_clean|render_fast|qa)\.mjs\b", re.I)
 LINT_CURVES_RE = re.compile(r"\bmotion_lint\.mjs\b.*--curves\b", re.I)
+BLENDER_CLI_RE = re.compile(r"(^|[\s\"'/\\])blender(\.exe)?[\s\"']+-b\b", re.I)
 QUEUE_RE = re.compile(r"\brun_queue\.py\b", re.I)
 
 
@@ -73,11 +74,11 @@ def evaluate(payload: dict) -> tuple[bool, str]:
         cmd = str(inp.get("CommandLine") or inp.get("command") or "")
         if not cmd:
             return True, ""
-        needs_queue = bool(BROWSER_CLI_RE.search(cmd) or LINT_CURVES_RE.search(cmd))
+        needs_queue = bool(BROWSER_CLI_RE.search(cmd) or LINT_CURVES_RE.search(cmd) or BLENDER_CLI_RE.search(cmd))
         if needs_queue and not QUEUE_RE.search(cmd):
             return False, (
-                "[chiaki_guard] Blocked: headless-Chrome CLI (`snap.mjs`, `snap_clean.mjs`, `render_fast.mjs`, "
-                "`qa.mjs`, or `motion_lint.mjs --curves`) MUST run through `scripts/run_queue.py web`."
+                "[chiaki_guard] Blocked: headless Chrome (`snap.mjs`, `snap_clean.mjs`, `render_fast.mjs`, "
+                "`qa.mjs`, `motion_lint.mjs --curves`) and headless Blender (`blender -b`) MUST run through `scripts/run_queue.py`."
             )
         return True, ""
 
@@ -99,6 +100,8 @@ def self_test() -> int:
         ("block unqueued curves", {"tool_name": "run_command", "tool_input": {"CommandLine": "node scripts/motion_lint.mjs web/index.html --curves"}}, False),
         ("allow static lint", {"tool_name": "run_command", "tool_input": {"CommandLine": "node scripts/motion_lint.mjs web/index.html"}}, True),
         ("allow queued snap", {"tool_name": "run_command", "tool_input": {"CommandLine": "python -X utf8 scripts/run_queue.py web --lane a -- node scripts/snap.mjs web/index.html out 0-10"}}, True),
+        ("block unqueued blender", {"tool_name": "run_command", "tool_input": {"CommandLine": "blender -b --python scripts/blender/depth_relief.py -- --image a.png"}}, False),
+        ("allow queued blender", {"tool_name": "run_command", "tool_input": {"CommandLine": "python -X utf8 scripts/run_queue.py blender --lane r -- blender -b --python scripts/blender/depth_relief.py -- --image a.png"}}, True),
     ]
     failed = 0
     for name, payload, want in cases:

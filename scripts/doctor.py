@@ -121,6 +121,31 @@ def check_ffmpeg():
     req_missing.append("ffmpeg (or `pip install imageio-ffmpeg`)")
 
 
+def check_blender():
+    env = os.environ.get("CHIAKI_BLENDER") or os.environ.get("BLENDER_PATH")
+    if env and os.path.exists(env):
+        ok("Blender (optional 2.5D)", env)
+        return
+    w = shutil.which("blender")
+    if w:
+        ok("Blender (optional 2.5D)", w)
+        return
+    cands = []
+    if sys.platform == "win32":
+        for base in [Path(r"C:\Program Files\Blender Foundation")]:
+            if base.exists():
+                cands += sorted(base.glob("Blender */blender.exe"), reverse=True)
+    elif sys.platform == "darwin":
+        cands.append(Path("/Applications/Blender.app/Contents/MacOS/Blender"))
+    else:
+        cands.append(Path("/usr/bin/blender"))
+    for p in cands:
+        if p.exists():
+            ok("Blender (optional 2.5D)", str(p))
+            return
+    warn("Blender (optional 2.5D)", "not found — only needed for scripts/blender/depth_relief.py (set CHIAKI_BLENDER or install Blender)")
+
+
 def check_py_pkgs():
     groups = [
         ("Fonts (fontTools/brotli/PIL)", ["fontTools", "brotli", "PIL"]),
@@ -139,6 +164,17 @@ def check_py_pkgs():
         else:
             warn(label, f"missing: {', '.join(miss)}")
             opt_missing.extend(miss)
+    # Optional Depth Anything V2 deps for vision/depth.py
+    dmiss = []
+    for m in ("torch", "transformers"):
+        try:
+            importlib.import_module(m)
+        except Exception:
+            dmiss.append(m)
+    if not dmiss:
+        ok("Depth AI (optional)", "torch + transformers installed (vision/depth.py ready)")
+    else:
+        warn("Depth AI (optional)", f"missing {', '.join(dmiss)} — optional, only for vision/depth.py (`pip install torch transformers`)")
 
 
 def check_bundled():
@@ -168,6 +204,7 @@ def main() -> int:
     check_node()
     check_chrome()
     check_ffmpeg()
+    check_blender()
     check_py_pkgs()
     check_bundled()
 

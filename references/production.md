@@ -77,6 +77,13 @@ python -X utf8 <sk>/scripts/run_queue.py --status
 - **Motion tracking / measurement**: `python -X utf8 <sk>/scripts/measure.py ...`
 - **Frame-to-frame diff / cut detection**: `python -X utf8 <sk>/scripts/framediff.py film.mp4`
 
+### 2.5D Depth Relief (`scripts/vision/depth.py`, `scripts/blender/depth_relief.py`, `scripts/vision/parallax.py`)
+- **Softened 16-bit depth map** (requires optional `pip install torch transformers`):
+  `python -X utf8 <sk>/scripts/vision/depth.py art.png work/art_depth.png --bits 16 --soften`
+- **Headless Blender relief sequence** (always through `run_queue.py blender`; see `references/relief-25d.md`):
+  `python -X utf8 <sk>/scripts/run_queue.py blender --lane relief -- blender -b --python <sk>/scripts/blender/depth_relief.py -- --image art.png --depth work/art_depth.png --out web/assets/rel/shot01 --frames 48 --fps 24 --orbit -8 --crane 4 --dof 0.28`
+- **Parallax check**: `python -X utf8 <sk>/scripts/vision/parallax.py f001.png f048.png --depth work/art_depth.png --out work/parallax.jpg`
+
 ### Audio (`mgaudio` & Freesound)
 ```python
 import sys

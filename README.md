@@ -14,10 +14,11 @@
 | **Bundled Open-Source Font Library** | `assets/fonts/` | **59 commercial-safe OFL-1.1 / Apache-2.0 families** (~99 MB, every file < 24 MB): 47 Latin/Display/Blackletter/Didone/Condensed/Tech/Mono/Pixel/Brush/Script/Stencil families + 12 essential CJK/JP families (`Noto Sans SC`, `Noto Serif SC`, `Smiley Sans`, `Zhuque Fangsong`, `Ma Shan Zheng`, `Zhi Mang Xing`, `ZCOOL XiaoWei`, `LXGW Marker Gothic`, `ZCOOL KuaiLe`, `Dela Gothic One`, `Rampart One`, `DotGothic16`, `Fusion Pixel`). Offline subsetting + Base64 packing via `scripts/fonts.py`, plus on-demand download of 1,900+ Google Fonts |
 | **Bundled Procedural Audio Engine (`mgaudio`)** | `assets/mgaudio/` | 48 kHz float-stereo synth, drums, procedural SFX (`whoosh`, `impact`, `riser`, `glitch`, `text_hit`, `paper`, `ui`...), beat-grid arrangement, and `-14 LUFS` true-peak mastering (MIT, pure Python) |
 | **Bundled CC0 2D Textures** | `assets/textures/` | 4K dust overlays (`dust_01..04`), 35mm & fine film grain (`2048px`), paper & washi textures (~11 MB, CC0) |
-| **Cross-Platform CLI Toolchain** | `scripts/` | `snap.mjs` (contact sheets), `render_fast.mjs` (parallel piped MP4 / 2K render), `qa.mjs` (every-frame error scan + black/freeze detect + beat grid + motion lint), `motion_lint.mjs` (static S1–S10 + runtime R1/R3 SVG curve sheets), `run_queue.py` (Windows/macOS/Linux render queue), `beats.py` / `onsets.py` / `cadence.py` / `motion.py` / `look.py` / `measure.py` / `framediff.py`, `fonts.py`, `freesound.py`, `skill_check.py`, `pack_skill.py` |
+| **2.5D Blender Depth Relief (Optional)** | `scripts/blender/depth_relief.py`, `scripts/vision/{depth,parallax}.py` | Turn any 2D illustration into a displaced 2.5D relief with real optical orbit/crane/DOF (`Depth Anything V2` `--soften` + headless Blender Eevee/Cycles) and play it back deterministically via `lib/sequence.js` + `T3.relX` (`references/relief-25d.md`) |
+| **Cross-Platform CLI Toolchain** | `scripts/` | `doctor.py` (one-command setup check), `install_agy_plugin.py`, `snap.mjs` (contact sheets), `render_fast.mjs` (parallel piped MP4 / 2K render), `qa.mjs`, `motion_lint.mjs`, `run_queue.py` (`web` + `blender` queue), `beats.py` / `onsets.py` / `cadence.py` / `motion.py` / `look.py` / `measure.py` / `framediff.py`, `fonts.py`, `freesound.py`, `skill_check.py`, `pack_skill.py` |
 | **2D Studio Craft & Multi-Agent Guardrails** | `references/`, `assets/workflows/`, `assets/workflows_agy/`, `rules/`, `hooks/`, `agents/` | 12 focused craft manuals (`house-style`, `style-grammar`, `graphic-design`, `motion-library`, `mg-styles`, `shot-recipes`, `script-writing`, `quality-bar`, `crafts`, `personas`, `build-brief`, `production`), pitch/build/review workflows, verbatim persona roster, and optional Antigravity guardrail hook (`hooks/chiaki_guard.py`) |
 
-> **Scope note**: This edition focuses purely on **2D motion graphics, fast-cut PV/MV, lyric typography, MAD, and study replicas**. Leaderboard/ranking dashboards, 3D Blender relief pipelines, and proprietary AI character-generation wrappers have been intentionally removed to keep the repository lean, portable, and dependency-light.
+> **Scope note**: This edition focuses on **2D motion graphics, fast-cut PV/MV, lyric typography, MAD, optional 2.5D Blender depth-relief for illustrations, and study replicas**. Leaderboard/ranking dashboards, full 3D set/rigging pipelines, and proprietary AI character-generation wrappers have been removed to keep the repository lean and portable.
 
 ---
 
@@ -125,9 +126,11 @@ Chiaki's-video-skill/
 |---|---|---|
 | `CHIAKI_CHROME` | Auto-detected Chrome/Chromium/Edge | Path to browser binary for headless CDP rendering |
 | `CHIAKI_FFMPEG` | `ffmpeg` on `PATH` or `imageio-ffmpeg` | Path to FFmpeg executable |
+| `CHIAKI_BLENDER` | Auto-detected Blender (optional) | Path to Blender executable for 2.5D depth relief (`scripts/blender/depth_relief.py`) |
 | `CHIAKI_FONTS` | `<repo>/assets/fonts` | Custom local font library directory |
 | `CHIAKI_QUEUE_DIR` | `<tempdir>/chiaki_video_queue` | Shared render queue lock folder |
 | `CHIAKI_WEB_SLOTS` | `1` | Max simultaneous headless-Chrome jobs |
+| `CHIAKI_BLENDER_SLOTS` | `2` | Max simultaneous headless-Blender jobs |
 | `CHIAKI_MAX_WORKERS` | `2` | Max Chrome render workers per job |
 | `FREESOUND_API_KEY` | `~/.config/chiaki-video/freesound_api_key.txt` | Optional Freesound API key for recorded real-world SFX |
 

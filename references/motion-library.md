@@ -117,6 +117,8 @@ Even a short preview sample follows the same workflow: template `lib/motion` loa
   Timing: → `style-grammar.md` §6c.
 - **`cam.insert-push`** · gentle S-curve push or pull on an insert · R · craft · edit · PROSE
   Timing: → `style-grammar.md` §6c.
+- **`cam.orbit-crane`** · Blender 2.5D depth-relief orbit or crane · H · craft · edit · PROSE
+  Timing: → `relief-25d.md` §2 (`scripts/blender/depth_relief.py` + `scripts/vision/depth.py --soften`).
 - **`cam.punch`** · crash-zoom punch at the cut · R · craft · edit · PROSE
   Timing: → «shot-recipes: crash-zoom-punch».
 - **`cam.multiplane`** · layered 2D planes at CSS-3D depths · H · craft · edit · EXISTING multiplane.js T3.multiplane
@@ -175,8 +177,8 @@ Even a short preview sample follows the same workflow: template `lib/motion` loa
 ### time
 - **`time.twos`** · stepped clock (`Posterize Time`) with optional landing re-anchors · A · craft · edit · LIB timing.js T3.twos
   When: deliberate stepped / `Posterize Time` passages or PV remakes (`n = T3.FPS / targetFps`, e.g. `2.5` for 12 fps on 30 fps) · Timing: → `style-grammar.md` §6e.
-- **`time.relief`** · sequence playback remapper undoing sine ease · B · craft · edit · LIB timing.js T3.relX
-  Look: maps progress `s` via `(n - 1) * acos(1 - 2s) / pi` so sine-eased pre-rendered image sequences play at even velocity through `T3.sequence`.
+- **`time.relief`** · relief sequence playback remapper undoing Blender's SINE ease · B · craft · edit · LIB timing.js T3.relX
+  Look: maps progress `s` via `(n - 1) * acos(1 - 2s) / pi` so Blender `depth_relief.py` sequences play on any `T3.EZ` curve through `T3.sequence({ frac: true })` · Timing: → `relief-25d.md` §3.
 
 ## Pending
 - **`trans.sheet`** · shared-plane rotation transition · P · signature · edit · PROSE

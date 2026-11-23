@@ -17,8 +17,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))).replace("\\",
 
 FILES = [
     "house-style", "style-grammar", "graphic-design", "motion-library",
-    "mg-styles", "shot-recipes", "script-writing", "quality-bar",
-    "crafts", "personas", "build-brief", "production",
+    "relief-25d", "mg-styles", "shot-recipes", "script-writing",
+    "quality-bar", "crafts", "personas", "build-brief", "production",
 ]
 
 PRIVATE_LEAK_RE = re.compile(
