@@ -89,7 +89,7 @@ python -X utf8 <sk>/scripts/run_queue.py --status
   `python -X utf8 <sk>/scripts/assets3d.py get polyhaven studio_small_09 --res 2k --project <proj>`
   `python -X utf8 <sk>/scripts/assets3d.py credits <proj>`
 - **Parallax check**: `python -X utf8 <sk>/scripts/vision/parallax.py f001.png f048.png --depth work/art_depth.png --out work/parallax.jpg`
-- **Live look-dev via Blender MCP** (`references/3d.md` §5d): use open Blender MCP (`http://127.0.0.1:9876/mcp` on Blender 5.1+, or `uvx blender-mcp` on Blender 4.2+) for interactive staging, lighting, and camera tweaks; always run final batch renders headless through `run_queue.py blender`.
+- **Live look-dev via Blender MCP** (`references/3d.md` §5d): use open Blender MCP (official Blender 5.1+ Lab add-on via `<sk>/scripts/blender/mcp_bridge.py`, or `uvx blender-mcp` on Blender 4.2+) for interactive staging, lighting, and camera tweaks; always run final batch renders headless through `run_queue.py blender`.
 
 ### Audio (`mgaudio` & Freesound)
 ```python

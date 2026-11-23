@@ -219,36 +219,45 @@ One single slash command (**`/chiaki`** on Antigravity / Claude Code, **`$chiaki
 
 按你的 Blender 版本**二选一**即可（⚠️ 不要两套同时开，避免抢 `9876` 端口）：
 
-#### 🟢 方案 A（推荐）：Blender 5.1+ 官方 Blender Lab MCP（原生 HTTP，零额外依赖）
+#### 🟢 方案 A（推荐）：Blender 5.1+ 官方 Blender Lab MCP（内置零依赖桥接，免装 `uv`/`uvx`）
+> 官方 Blender Lab `MCP` 插件在 `127.0.0.1:9876` 跑的是 `\0` 结尾的原生 TCP JSON 协议；本仓库已内置纯 Python 标准库桥接脚本 **`scripts/blender/mcp_bridge.py`**（零第三方依赖），让 Antigravity / Claude Code / Codex 直接免 `uvx` 接通！
+
 1. **在 Blender 里装官方扩展**：
-   - 打开 **Blender 5.1 或更新版本**。
-   - 浏览器打开官方页 **[https://www.blender.org/lab/mcp-server/](https://www.blender.org/lab/mcp-server/)**，把页面上的 **Drag and Drop into Blender** 按钮**往 Blender 窗口里拖两次**（第一次添加官方 Lab 扩展源，第二次安装插件）；或者在 Blender 顶部菜单点 `Edit → Preferences → Get Extensions`，搜索 `MCP` 点击 `Install`。
+   - 打开 **Blender 5.1 / 5.2 或更新版本**。
+   - 浏览器打开官方页 **[https://www.blender.org/lab/mcp-server/](https://www.blender.org/lab/mcp-server/)**，下载/拖入官方 `MCP` 扩展到 Blender（或在 `Edit → Preferences → Get Extensions` 里安装）。
 2. **启动本地 MCP 服务**：
    - 在 Blender 点 `Edit → Preferences → Add-ons` → 搜索 `MCP` → 勾选启用。
    - 展开插件设置，确认监听地址为 `127.0.0.1`、端口 `9876`，点击 **Start MCP Server**（建议勾选 **Auto Start** 下次自动开）。
-3. **填进你的 AI 客户端（选你用的那一个复制粘贴）**：
+3. **一行自测官方 Socket 是否已连通**：
+   ```bash
+   python -X utf8 scripts/blender/mcp_bridge.py --check
+   ```
+   看到 `"status": "ok"` 以及你当前 Blender 窗口里的场景物体列表，就说明桥接 100% 跑通！
+4. **填进你的 AI 客户端（把 `<你的技能绝对路径>` 换成你本机 `chiakis-video-skill` 目录即可）**：
 
-   - **Antigravity** — 打开 `~/.gemini/config/mcp_config.json`（Windows 在 `C:\Users\<你的用户名>\.gemini\config\mcp_config.json`），在 `mcpServers` 中加入：
+   - **Antigravity** — 打开 `~/.gemini/config/mcp_config.json`（Windows 在 `C:\Users\<用户名>\.gemini\config\mcp_config.json`），在 `mcpServers` 中加入：
      ```json
      {
        "mcpServers": {
          "blender": {
-           "url": "http://127.0.0.1:9876/mcp"
+           "command": "python",
+           "args": ["-X", "utf8", "<你的技能绝对路径>/scripts/blender/mcp_bridge.py"]
          }
        }
      }
      ```
-     保存后在 Antigravity 侧栏 `... → MCP Servers` 刷新即可看到 `blender` 工具组。
+     保存后在 Antigravity 侧栏 `... → MCP Servers` 刷新，即可看到 `blender_get_scene_info`、`blender_execute_python`、`blender_get_camera`、`blender_set_camera`、`blender_render_preview` 5 个工具。
 
    - **Claude Code** — 终端一行搞定：
      ```bash
-     claude mcp add --transport http blender http://127.0.0.1:9876/mcp
+     claude mcp add blender -- python -X utf8 "<你的技能绝对路径>/scripts/blender/mcp_bridge.py"
      ```
 
    - **Codex** — 在 `~/.codex/config.toml` 末尾追加：
      ```toml
      [mcp_servers.blender]
-     url = "http://127.0.0.1:9876/mcp"
+     command = "python"
+     args = ["-X", "utf8", "<你的技能绝对路径>/scripts/blender/mcp_bridge.py"]
      ```
 
 #### 🔵 方案 B：Blender 4.2 LTS / 4.x 社区开源 `blender-mcp`（基于 `uvx`）
