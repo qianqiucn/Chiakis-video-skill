@@ -1,61 +1,147 @@
-# Chiaki's-video-skill
+<div align="center">
 
-> **Deterministic HTML / JS / Canvas 2D Motion Graphics, Fast-Cut PV / MV, and Kinetic Typography Studio Skill for AI Coding Agents**  
-> 面向 AI 编码代理（Claude Code / Antigravity / Codex 等）的 **2D 动效与快剪视频工作室技能**：确定性帧级网页时间线引擎 + 2D 动效库 + GSAP 3.15.1 + 59 套开源商用字体库 + `mgaudio` 过程化音频引擎 + CC0 胶片纸张纹理 + 完整多工种审片工作流，开箱即用。
+<img src="docs/banner.png" alt="Chiaki's-video-skill — Deterministic 2D Motion Studio Skill" width="100%" />
+
+<br />
+
+[![Release](https://img.shields.io/github/v/release/qianqiucn/Chiakis-video-skill?style=for-the-badge&color=F59E0B&labelColor=0F172A)](https://github.com/qianqiucn/Chiakis-video-skill/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-38BDF8?style=for-the-badge&labelColor=0F172A)](LICENSE)
+[![Node >= 22](https://img.shields.io/badge/Node-%E2%89%A522-10B981?style=for-the-badge&logo=node.js&logoColor=white&labelColor=0F172A)](https://nodejs.org/)
+[![Python >= 3.10](https://img.shields.io/badge/Python-%E2%89%A53.10-3B82F6?style=for-the-badge&logo=python&logoColor=white&labelColor=0F172A)](requirements.txt)
+[![Fonts: 59 OFL/Apache](https://img.shields.io/badge/Bundled_Fonts-59_OFL%2FApache-A78BFA?style=for-the-badge&labelColor=0F172A)](assets/fonts/catalog.md)
+[![Unit Tests](https://img.shields.io/badge/Motion_Tests-174%2F174_Passing-34D399?style=for-the-badge&labelColor=0F172A)](assets/examples/motion/run_tests.mjs)
+
+<h3>
+  Deterministic HTML / JS / Canvas 2D Motion Graphics, Fast-Cut PV / MV &amp; Kinetic Typography Studio for AI Agents
+</h3>
+
+<p>
+  面向 <b>Claude Code · Antigravity · Codex</b> 的开源 <b>2D 动效与快剪视频工作室技能</b><br />
+  帧级确定性网页时间线引擎 · GSAP 3.15.1 + 动效曲线审计 · 59 套商用开源字库 · <code>mgaudio</code> 音效母带 · 可选 Blender 2.5D 深度浮雕
+</p>
+
+<p>
+  <a href="#-live-motion-preview--实机渲染动效预览">🎬 Live Demo</a> ·
+  <a href="#-motion-curves--typography--曲线审计与内置素材">📐 Curves &amp; Fonts</a> ·
+  <a href="#-studio-architecture--工作室多工种流水线">🏗️ Architecture</a> ·
+  <a href="#-quickstart--3-步快速上手">🚀 Quickstart</a> ·
+  <a href="#-install-for-ai-agents--安装到-ai-代理">🧩 Install</a> ·
+  <a href="#-expanding-the-font-library--按需扩展字体库">🔤 Fonts</a>
+</p>
+
+</div>
 
 ---
 
-## ✨ What Is Included / 开箱即用的核心内容
+## 🎬 Live Motion Preview / 实机渲染动效预览
 
-| Module | Path | Highlights |
-|---|---|---|
-| **Deterministic 2D Timeline Engine** | `assets/template/` | `engine.js` (`render(t)` pure in `t`), frame-exact seeking, zero clock drift, 1080p / 2K MP4 rendering via persistent headless Chrome (`_cdp.mjs`) |
-| **2D Motion Library + GSAP 3.15.1** | `assets/template/lib/motion/`, `lib/gsap/` | Named house curves (`T3.EZ`), deterministic GSAP bridge (`lib/gsap-bridge.js`), curve probes & SVG curve-sheet plotter (`T3.motionProbe`), arrivals/exits/settle/stagger/per-char type (`T3.mv`), 180°/360° sub-frame shutter & radial blur (`T3.blur`), stepped `Posterize Time` clock (`T3.twos`), 2D hair/veil travelling-wave & blink staging (`T3.her` + `meshwarp.js`), CSS-3D multi-plane (`multiplane.js`), depth push (`depth3d.js`), polygon accents & kinetic helpers (`accents.js`, `choreo.js`, `emblem3d.js`, `sequence.js`) |
-| **Bundled Open-Source Font Library** | `assets/fonts/` | **59 commercial-safe OFL-1.1 / Apache-2.0 families** (~99 MB, every file < 24 MB): 47 Latin/Display/Blackletter/Didone/Condensed/Tech/Mono/Pixel/Brush/Script/Stencil families + 12 essential CJK/JP families (`Noto Sans SC`, `Noto Serif SC`, `Smiley Sans`, `Zhuque Fangsong`, `Ma Shan Zheng`, `Zhi Mang Xing`, `ZCOOL XiaoWei`, `LXGW Marker Gothic`, `ZCOOL KuaiLe`, `Dela Gothic One`, `Rampart One`, `DotGothic16`, `Fusion Pixel`). Offline subsetting + Base64 packing via `scripts/fonts.py`, plus on-demand download of 1,900+ Google Fonts |
-| **Bundled Procedural Audio Engine (`mgaudio`)** | `assets/mgaudio/` | 48 kHz float-stereo synth, drums, procedural SFX (`whoosh`, `impact`, `riser`, `glitch`, `text_hit`, `paper`, `ui`...), beat-grid arrangement, and `-14 LUFS` true-peak mastering (MIT, pure Python) |
-| **Bundled CC0 2D Textures** | `assets/textures/` | 4K dust overlays (`dust_01..04`), 35mm & fine film grain (`2048px`), paper & washi textures (~11 MB, CC0) |
-| **2.5D Blender Depth Relief (Optional)** | `scripts/blender/depth_relief.py`, `scripts/vision/{depth,parallax}.py` | Turn any 2D illustration into a displaced 2.5D relief with real optical orbit/crane/DOF (`Depth Anything V2` `--soften` + headless Blender Eevee/Cycles) and play it back deterministically via `lib/sequence.js` + `T3.relX` (`references/relief-25d.md`) |
-| **Cross-Platform CLI Toolchain** | `scripts/` | `doctor.py` (one-command setup check), `install_agy_plugin.py`, `snap.mjs` (contact sheets), `render_fast.mjs` (parallel piped MP4 / 2K render), `qa.mjs`, `motion_lint.mjs`, `run_queue.py` (`web` + `blender` queue), `beats.py` / `onsets.py` / `cadence.py` / `motion.py` / `look.py` / `measure.py` / `framediff.py`, `fonts.py`, `freesound.py`, `skill_check.py`, `pack_skill.py` |
-| **2D Studio Craft & Multi-Agent Guardrails** | `references/`, `assets/workflows/`, `assets/workflows_agy/`, `rules/`, `hooks/`, `agents/` | 13 focused craft manuals (`house-style`, `style-grammar`, `graphic-design`, `motion-library`, `relief-25d`, `mg-styles`, `shot-recipes`, `script-writing`, `quality-bar`, `crafts`, `personas`, `build-brief`, `production`), pitch/build/review workflows, verbatim persona roster, and optional Antigravity guardrail hook (`hooks/chiaki_guard.py`) |
-
-> **Scope note**: This edition focuses on **2D motion graphics, fast-cut PV/MV, lyric typography, MAD, optional 2.5D Blender depth-relief for illustrations, and study replicas**. Leaderboard/ranking dashboards, full 3D set/rigging pipelines, and proprietary AI character-generation wrappers have been removed to keep the repository lean and portable.
+<div align="center">
+  <img src="docs/demo.gif" alt="Live 24fps 2D Motion Showcase rendered directly by Chiaki's-video-skill" width="88%" />
+  <br />
+  <sub>
+    <b>100% rendered directly by this repo's engine</b> (<code>engine.js</code> + <code>GSAP 3.15.1</code> + <code>lib/motion/*</code> + bundled fonts &amp; washi texture, 24 fps):<br />
+    <b>01</b> Per-glyph kinetic slam (<code>T3.EZ.snap</code> + RGB split + 180° 5-tap <code>T3.blur.shutter</code>) →
+    <b>02</b> Cushioned <b>AE Soft Bezier</b> editorial reversal (<code>Q1 = 69%</code> + <code>T3.mv.stagger</code>) →
+    <b>03</b> Zero-leak <b>12 fps <code>Posterize Time</code></b> viewfinder (<code>T3.twos</code> + <code>T3.shake</code>)
+  </sub>
+</div>
 
 ---
 
-## 🚀 Quickstart / 快速上手
+## ✨ Why Chiaki's-video-skill? / 核心特性一览
 
-### 1. Prerequisites / 环境依赖
-- **Node.js ≥ 22** (built-in `fetch` + `WebSocket` for DevTools protocol; zero `npm install` needed!)
-- **Google Chrome / Chromium / Edge** (auto-detected on Windows, macOS, Linux, or set `CHIAKI_CHROME`)
-- **Python ≥ 3.10** + packages for font subsetting, audio/cadence analysis, `mgaudio`, and bundled `imageio-ffmpeg`:
-  ```bash
-  # Recommended: create an isolated venv (or run `pip install -r requirements.txt` directly)
-  python -m venv .venv
-  # Windows PowerShell: .venv\Scripts\Activate.ps1   |   macOS / Linux: source .venv/bin/activate
-  pip install -r requirements.txt
-  ```
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>⚡ Frame-Exact 2D Timeline Engine</h3>
+      Pure <code>render(t)</code> HTML/JS/Canvas 2D architecture — seek backward, render in parallel Chrome workers via <code>scripts/render_fast.mjs</code>, and pipe straight to <b>1080p / 2K BT.709 MP4</b> with zero clock drift and zero <code>npm install</code>.
+    </td>
+    <td width="50%" valign="top">
+      <h3>📈 Curve-Verified Motion Library + GSAP 3.15</h3>
+      Built-in <code>lib/motion/*</code> (<code>T3.EZ</code>, <code>T3.mv</code>, <code>T3.blur</code>, <code>T3.twos</code>, <code>T3.her</code>) + UMD <b>GSAP 3.15.1</b>. Every segment registers <code>T3.motionProbe</code> curves plotted and linted by <code>motion_lint.mjs --curves</code> so stiff eases never slip through.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>🔤 59 Bundled Commercial-Safe Fonts + CC0 Textures</h3>
+      Zero remote web-font failures: <b>59 OFL-1.1 / Apache-2.0 fonts</b> (47 Latin/Display/Mono/Pixel + 12 CJK/JP) and <b>9 CC0 4K dust/grain/paper/washi overlays</b> ship offline-ready, with WOFF2 subsetting &amp; 1,900+ Google Fonts on demand via <code>scripts/fonts.py</code>.
+    </td>
+    <td width="50%" valign="top">
+      <h3>🎧 Procedural 48 kHz Audio + Optional 2.5D Relief</h3>
+      Includes <b><code>mgaudio</code> (MIT)</b> for beat-locked SFX, synths, and <b>−14 LUFS / −1.1 dBTP</b> mastering with pure-synth fallback, plus optional headless <b>Blender 2.5D depth relief</b> (<code>depth.py --soften</code> → <code>depth_relief.py</code> → <code>T3.relX</code>).
+    </td>
+  </tr>
+</table>
 
-### 2. One-Command Health Check & Self-Test / 一键体检与本地自检
-```bash
-# 0. Check Node >= 22, Chrome/Edge, FFmpeg, Python deps, and bundled assets
-python -X utf8 scripts/doctor.py
+> **Scope / 定位说明**：专注 **2D 动效、快剪 PV/MV、动态歌词排版、MAD、可选 2.5D 插画浮雕与复刻学习**；已彻底剥离排行榜/榜单模板、重型全 3D 建模与私有绘图链路，保持仓库轻量、纯净、跨平台开箱即用。
 
-# 1. Verify skill cross-references, motion library index, workflows, and hygiene
-python -X utf8 scripts/skill_check.py
+---
 
-# 2. Run all 2D motion library unit tests (Node >= 22, 174 assertions)
-node assets/examples/motion/run_tests.mjs
+## 📐 Motion Curves & Typography / 曲线审计与内置素材
 
-# 3. Lint the starter 2D template
-node scripts/motion_lint.mjs assets/template/index.html
+### 1. Automated Velocity & Settle Verification (`scripts/motion_lint.mjs --curves`)
+Static screenshots hide stiff motion. Our linter runs static rule checks (`S1–S10`) and plots every registered `T3.motionProbe` at quarter-frame resolution to verify front-loaded / AE-Bezier arrivals, accelerating exits, and living post-landing settle:
 
-# 4. Search the 59 bundled offline fonts
-python -X utf8 scripts/fonts.py search --local "Smiley"
+<div align="center">
+  <img src="docs/curves_preview.png" alt="Real SVG motion curve sheet generated by scripts/motion_lint.mjs --curves" width="96%" />
+</div>
+
+### 2. 59 Bundled Open-Source Fonts & CC0 2D Textures (`assets/fonts/`, `assets/textures/`)
+Every bundled font is verified against its internal OpenType license table (`OFL-1.1` / `Apache-2.0`) and ships with its verbatim license file and automatic end-credit generation (`scripts/fonts.py credits`):
+
+<div align="center">
+  <img src="docs/fonts_showcase.png" alt="Showcase of 59 bundled OFL/Apache open-source fonts and CC0 2D textures" width="96%" />
+</div>
+
+---
+
+## 🏗️ Studio Architecture / 工作室多工种流水线
+
+Instead of letting one agent improvise everything in a single pass, `Chiaki's-video-skill` enforces studio division of labor with verbatim personas (`references/personas.md`), strict file ownership (`references/crafts.md`), and physically read-only review:
+
+```mermaid
+flowchart LR
+    A["1. Brief & Audio<br/>beats.py · onsets.py"] --> B["2. Pitch Meeting<br/>媒介 · 演出 · 摄影 → 创意总监"]
+    B --> C{"3. Parallel 2D Studio Build"}
+    C --> C1["剪辑合成师 (z=10/60)<br/>lib/motion · GSAP · shutter"]
+    C --> C2["平面设计师 (z=20)<br/>fonts.py · per-glyph lyrics"]
+    C --> C3["可选 2.5D 浮雕<br/>depth.py → depth_relief.py"]
+    C1 & C2 & C3 --> D["4. Sound Master<br/>mgaudio −14 LUFS"]
+    D --> E["5. Mechanical QA & Curves<br/>qa.mjs · motion_lint --curves"]
+    E --> F["6. Read-Only 3-Lens Review<br/>规矩 · 技术 · 剪辑感 + 独立打分"]
+    F --> G["7. 1080p / 2K FLAC Delivery<br/>render_fast.mjs --2k"]
 ```
 
-### 3. Render the Included 5-Second Demo / 渲染内置 5 秒 2D 动效样片
+---
+
+## 🚀 Quickstart / 3 步快速上手
+
+### 1. Prerequisites / 环境准备
+- **Node.js ≥ 22**（内置 `fetch` + `WebSocket`，无需 `npm install`）
+- **Chrome / Chromium / Edge**（Windows / macOS / Linux 自动探测，也可用 `CHIAKI_CHROME` 指定）
+- **Python ≥ 3.10** + 依赖（含 `imageio-ffmpeg`，无需单独配置 FFmpeg）：
+
 ```bash
-# Contact sheet (fast review)
+git clone https://github.com/qianqiucn/Chiakis-video-skill.git
+cd Chiakis-video-skill
+
+# Recommended: isolated virtual environment
+python -m venv .venv
+# Windows PowerShell: .venv\Scripts\Activate.ps1   |   macOS / Linux: source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+### 2. One-Command Doctor & Self-Test / 一键体检与自测
+```bash
+python -X utf8 scripts/doctor.py                          # Check Node >=22, Chrome, FFmpeg, Blender, deps & fonts
+python -X utf8 scripts/skill_check.py                     # Verify 13 manuals, 56 motion IDs, workflows & hygiene
+node assets/examples/motion/run_tests.mjs                 # Run all 8 motion unit test suites (174 assertions)
+node scripts/motion_lint.mjs assets/template/index.html   # Lint the starter 2D template
+```
+
+### 3. Render the Included 5-Second Demo / 渲染内置 5 秒样片
+```bash
+# Contact sheet preview (fast)
 python -X utf8 scripts/run_queue.py web --lane demo -- node scripts/snap.mjs assets/template/index.html out/snaps "0-119:10" --sheet preview
 
 # Full 1080p + 720p MP4 render
@@ -65,8 +151,23 @@ python -X utf8 scripts/run_queue.py web --lane demo -- node scripts/render_fast.
 python -X utf8 scripts/run_queue.py web --lane demo -- node scripts/motion_lint.mjs assets/template/index.html --curves
 ```
 
-### 4. Expanding the Font Library / 按需扩展字体库
-To keep `git clone` fast and stay well within GitHub's size limits, the repository bundles **59 high-frequency OFL-1.1 / Apache-2.0 families (~99 MB)** rather than the full ~2.2 GB Google Fonts mirror (~1,960 families). All remaining commercial-safe fonts can be fetched on demand via `scripts/fonts.py` (with automatic OpenType license verification):
+---
+
+## 🧩 Install for AI Agents / 安装到 AI 代理
+
+| Platform | How to Install | Notes |
+|---|---|---|
+| **Claude Code** | `cp -r Chiakis-video-skill ~/.claude/skills/chiakis-video-skill` | Root `SKILL.md` discovered automatically |
+| **Codex** | `cp -r Chiakis-video-skill ~/.codex/skills/chiakis-video-skill` | Root `SKILL.md` discovered automatically |
+| **Antigravity (Plugin)** | `python -X utf8 scripts/install_agy_plugin.py` | Stages `skills/chiakis-video-skill/SKILL.md`, `rules/AGENTS.md`, `agents/`, and resolved `hooks.json` guardrail (`--dry-run` supported) |
+| **claude.ai / `.skill` zip** | Download from [GitHub Releases](https://github.com/qianqiucn/Chiakis-video-skill/releases) or run `python -X utf8 scripts/pack_skill.py --lite` | `--lite` produces a `≤ 200`-file archive (`~0.6 MB`); fetch fonts on demand via `scripts/fonts.py` |
+
+---
+
+## 🔤 Expanding the Font Library / 按需扩展字体库
+
+To keep `git clone` fast and stay comfortably within GitHub limits, the repository bundles **59 high-frequency OFL-1.1 / Apache-2.0 families (~99 MB)** rather than the full ~2.2 GB Google Fonts mirror (~1,960 families). Fetch any additional commercial-safe font on demand with automatic OpenType license verification:
+
 ```bash
 # Search the bundled offline library (59 families, instant)
 python -X utf8 scripts/fonts.py search --local --group cjk-serif
@@ -74,94 +175,96 @@ python -X utf8 scripts/fonts.py search --local --group cjk-serif
 # Search online across 1,900+ Google Fonts + Fontsource + curated GitHub CJK fonts
 python -X utf8 scripts/fonts.py search "WenKai"
 
-# Download any specific family (e.g. LXGW WenKai, Shippori Mincho B1) into assets/fonts/
+# Download specific families (e.g. LXGW WenKai, Shippori Mincho B1) into assets/fonts/
 python -X utf8 scripts/fonts.py get "LXGW WenKai" "Shippori Mincho B1"
 
-# Download all remaining families from the 68-family starter shelf (+~128 MB)
+# Download all remaining families from the 68-family curated starter shelf (+~128 MB)
 python -X utf8 scripts/fonts.py get starter
 
-# Optional: build a full offline Google Fonts mirror (~2.2 GB; preview size first with --estimate)
+# Optional: mirror all ~1,960 Google Fonts locally (~2.2 GB; preview size first with --estimate)
 python -X utf8 scripts/fonts.py get --all-google --estimate
 python -X utf8 scripts/fonts.py get --all-google --jobs 4
 
-# Pack subset WOFF2 + Base64 fonts into a video project (offline, zero web fonts)
-python -X utf8 scripts/fonts.py use <project_dir> "Smiley Sans" "Syne" "JetBrains Mono"
+# Pack subset WOFF2 + Base64 fonts into a video project (100% offline, zero remote web fonts)
+python -X utf8 scripts/fonts.py use <project_dir> "Smiley Sans" "Bodoni Moda" "JetBrains Mono"
 ```
-> Tip: set `CHIAKI_FONTS=/path/to/your/fonts` if you want to store a large shared font mirror outside the repository.
+
+> Tip: set `CHIAKI_FONTS=/path/to/your/fonts` to keep a large shared font library outside the repo.
 
 ---
 
-## 🧩 Installing as an AI Agent Skill / 安装到 AI 代理
+## 📚 Documentation & Configuration / 完整目录与环境变量
 
-### Claude Code / Codex
-Clone and copy (or symlink) into your skills directory:
-```bash
-git clone https://github.com/qianqiucn/Chiakis-video-skill.git
+<details>
+<summary><b>📖 13 Studio Craft Manuals (<code>references/</code>)</b> — click to expand</summary>
 
-# Claude Code
-cp -r Chiakis-video-skill ~/.claude/skills/chiakis-video-skill
+| File | Focus |
+|---|---|
+| [`house-style.md`](references/house-style.md) | Creative brief, fixed goals vs breakable defaults, studio hierarchy |
+| [`style-grammar.md`](references/style-grammar.md) | Beat grids, 7 Canvas PV transition families, hype / MAD / AE soft Bezier curves, 2D hair/veil staging, exact `Posterize Time` stepping |
+| [`motion-library.md`](references/motion-library.md) | 56 indexed motion IDs (`LIB` / `EXISTING` / `PROSE`), motion sheets & SVG curve-sheet workflow |
+| [`graphic-design.md`](references/graphic-design.md) | Title builds, per-glyph kinetic lyrics, local font selection, 5-layer framing, tagline cards |
+| [`relief-25d.md`](references/relief-25d.md) | Optional Blender 2.5D depth relief (`depth.py --soften` → `depth_relief.py` → `T3.relX` + `parallax.py`) |
+| [`mg-styles.md`](references/mg-styles.md) | 14 pure 2D / 2.5D motion-design visual forms with checkable signature techniques |
+| [`shot-recipes.md`](references/shot-recipes.md) | 124 named motion-design shot recipes (`video-shotcraft`, Apache-2.0) |
+| [`script-writing.md`](references/script-writing.md) | Pitch meeting format, genre matching, shot table & cut motivation |
+| [`quality-bar.md`](references/quality-bar.md) | Gate A / B1 / B2, independent 7-dimension scorecard, 2D troubleshooting table |
+| [`crafts.md`](references/crafts.md) | Strict craft ownership boundaries (`Edit`, `Design`, `Sound`, `Review`) |
+| [`personas.md`](references/personas.md) | Verbatim studio personas for multi-agent prompt injection |
+| [`build-brief.md`](references/build-brief.md) | Ready-to-fill builder brief template |
+| [`production.md`](references/production.md) | Cross-platform CLI toolkit, render queue, 2K FLAC delivery, Canvas 2D pitfalls |
 
-# Codex
-cp -r Chiakis-video-skill ~/.codex/skills/chiakis-video-skill
-```
-Or package a `.skill` zip archive (use `--lite` for platforms with a 200-file upload limit such as claude.ai):
-```bash
-python -X utf8 scripts/pack_skill.py           # full .skill (includes bundled fonts & textures)
-python -X utf8 scripts/pack_skill.py --lite    # <=200 files (fetches fonts on demand via fonts.py)
-```
+</details>
 
-### Antigravity (Plugin Mode with Studio Guardrails)
-Run the included installer script to stage the exact Antigravity plugin layout (`skills/chiakis-video-skill/SKILL.md`, `rules/AGENTS.md`, `agents/chiaki-*.md`, and resolved `hooks.json`):
-```bash
-python -X utf8 scripts/install_agy_plugin.py           # installs to ~/.gemini/config/plugins/chiakis-video-skill
-python -X utf8 scripts/install_agy_plugin.py --dry-run # preview first without writing files
-```
-
----
-
-## 📂 Repository Structure / 目录结构
+<details>
+<summary><b>📂 Repository Structure / 仓库目录结构</b> — click to expand</summary>
 
 ```text
-Chiaki's-video-skill/
+Chiakis-video-skill/
 ├── SKILL.md                    # Agent entrypoint & 7-step 2D video studio pipeline
 ├── README.md                   # This guide
 ├── LICENSE                     # MIT License
 ├── THIRD_PARTY_NOTICES.md      # GSAP, mg-styles-15, video-shotcraft, OFL/Apache fonts
-├── package.json                # Convenience npm scripts (zero node_modules required)
-├── requirements.txt            # Python deps (fonttools, numpy, cv2, mgaudio)
-├── references/                 # 13 studio craft manuals (2D motion, 2.5D relief, typography, cadence, QA, personas)
-├── scripts/                    # Cross-platform render, QA, lint, audio/video analysis, font & queue CLIs
+├── docs/                       # Visual banner, live 24fps demo.gif, curve sheet & font specimen
+├── references/                 # 13 studio craft manuals
+├── scripts/                    # Cross-platform render, QA, lint, audio/video analysis, fonts, doctor, queue
+│   ├── blender/                # Optional headless Blender 2.5D depth_relief.py
+│   └── vision/                 # Optional Depth Anything V2 (depth.py) & parallax.py
 ├── assets/
 │   ├── template/               # engine.js, index.html, GSAP 3.15.1, lib/motion/*, 2D/2.5D helpers
-│   ├── examples/               # motion unit tests & demos (motion/, layers/, demo3d/)
+│   ├── examples/               # 8 motion unit test suites (174 assertions) & demos
 │   ├── fonts/                  # 59 bundled OFL-1.1/Apache-2.0 fonts + catalog.json + catalog.md
 │   ├── mgaudio/                # MIT 48 kHz procedural SFX, synth & -14 LUFS mastering engine
-│   ├── textures/               # CC0 film grain, dust, paper, washi 2D overlays
+│   ├── textures/               # CC0 4K dust, film grain, paper, washi 2D overlays
 │   ├── workflows/              # JS studio workflows (pitch, build, review_fix, briefs)
 │   └── workflows_agy/          # Antigravity Python run_workflow scripts
 ├── rules/                      # Always-on studio division-of-labor rule (AGENTS.md)
-├── hooks/                      # Optional pre-tool guardrail (chiaki_guard.py)
+├── hooks/                      # Optional PreToolUse guardrail (chiaki_guard.py)
 └── agents/                     # Scoped subagent definitions (writer, builder, reviewer)
 ```
 
----
+</details>
 
-## 🔧 Environment Variables (All Optional) / 可选环境变量
+<details>
+<summary><b>🔧 Optional Environment Variables (<code>CHIAKI_*</code>)</b> — click to expand</summary>
 
 | Variable | Default | Purpose |
 |---|---|---|
-| `CHIAKI_CHROME` | Auto-detected Chrome/Chromium/Edge | Path to browser binary for headless CDP rendering |
-| `CHIAKI_FFMPEG` | `ffmpeg` on `PATH` or `imageio-ffmpeg` | Path to FFmpeg executable |
-| `CHIAKI_BLENDER` | Auto-detected Blender (optional) | Path to Blender executable for 2.5D depth relief (`scripts/blender/depth_relief.py`) |
+| `CHIAKI_CHROME` | Auto-detected Chrome / Chromium / Edge | Browser binary for headless CDP rendering |
+| `CHIAKI_FFMPEG` | `ffmpeg` on `PATH` or `imageio-ffmpeg` | FFmpeg executable path |
+| `CHIAKI_BLENDER` | Auto-detected Blender (optional) | Blender binary for `scripts/blender/depth_relief.py` |
 | `CHIAKI_FONTS` | `<repo>/assets/fonts` | Custom local font library directory |
-| `CHIAKI_QUEUE_DIR` | `<tempdir>/chiaki_video_queue` | Shared render queue lock folder |
+| `CHIAKI_QUEUE_DIR` | `<tempdir>/chiaki_video_queue` | Shared render queue lock directory |
 | `CHIAKI_WEB_SLOTS` | `1` | Max simultaneous headless-Chrome jobs |
 | `CHIAKI_BLENDER_SLOTS` | `2` | Max simultaneous headless-Blender jobs |
 | `CHIAKI_MAX_WORKERS` | `2` | Max Chrome render workers per job |
 | `FREESOUND_API_KEY` | `~/.config/chiaki-video/freesound_api_key.txt` | Optional Freesound API key for recorded real-world SFX |
 
+</details>
+
 ---
 
-## 📜 License & Credits / 协议与致谢
+## 📜 License & Credits / 开源协议与致谢
 
-Original skill docs, scripts, and templates are licensed under **MIT** (`LICENSE`). Third-party bundled components retain their original open/standard licenses — see [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
+Original skill docs, templates, workflows, and scripts are released under the **[MIT License](LICENSE)**.  
+Bundled third-party components (`GSAP 3.15.1`, `mg-styles-15` MIT, `video-shotcraft` Apache-2.0, 59 `OFL-1.1` / `Apache-2.0` fonts, and CC0 textures) retain their original licenses — see **[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)**.

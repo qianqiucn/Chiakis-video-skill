@@ -36,6 +36,8 @@ def should_include(rel: str, lite: bool) -> bool:
             return False
         if rel.startswith("assets/mgaudio/tools/"):
             return False
+        if rel.startswith("docs/"):
+            return False
     return True
 
 
