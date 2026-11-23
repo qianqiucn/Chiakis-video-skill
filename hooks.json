@@ -1,0 +1,15 @@
+{
+  "chiaki-video-guard": {
+    "PreToolUse": [
+      {
+        "matcher": "invoke_subagent|run_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python -X utf8 hooks/chiaki_guard.py"
+          }
+        ]
+      }
+    ]
+  }
+}

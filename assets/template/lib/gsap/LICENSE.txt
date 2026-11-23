@@ -1,0 +1,4 @@
+GSAP 3.15.1 (npm package gsap@3.15.1, downloaded 2026-11-05 from registry.npmjs.org).
+Licence: GSAP Standard 'no charge' licence — https://gsap.com/standard-license (all plugins free, incl. commercial use).
+Files: classic UMD builds from package/dist (work as plain <script> on file://).
+Not vendored on purpose: ScrambleTextPlugin (uses Math.random -> frames not repeatable; use T3.rand-based scrambles).

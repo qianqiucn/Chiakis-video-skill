@@ -1,0 +1,5522 @@
+{
+ "version": 1,
+ "library": "e:\\AGY\\Chiaki's-video-skill\\assets\\fonts",
+ "updated": "2026-11-23T19:09:55",
+ "families": {
+  "Chomsky": {
+   "family": "Chomsky",
+   "slug": "chomsky",
+   "group": "blackletter",
+   "fits": "库里最接近原片 Gemini / Argon / Flash / Carbon 那种哥特字的一款：Old English Text 式 Textura（G 字里那道竖笔也和原片一样），类似《纽约时报》报头的老报头体。复刻原片的哥特标题先用它；也适合新闻、编年史、授勋式标题",
+   "category": "",
+   "tags": [],
+   "source": "GitHub Releases：ctrlcctrlv/chomsky",
+   "source_url": "https://github.com/ctrlcctrlv/chomsky",
+   "designers": [
+    "Fredrick R. Brennan"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "chomsky/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright (c) 2019-2021, Fredrick Brennan <copypaste @ kittens . ph>\nSee AUTHORS for all contributors.",
+   "faces": [
+    {
+     "file": "chomsky/Chomsky.otf",
+     "bytes": 130940,
+     "name": "Chomsky",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 394,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright (c) 2019-2021, Fredrick Brennan <copypaste @ kittens . ph>\nSee AUTHORS for all contributors.",
+     "designer": "",
+     "version": "Version 2.3",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1.\nThis license is copied below, and is also available with a FAQ at:\nhttp://scripts.s",
+     "license_url": "http://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 130940,
+   "credit_zh": "字体 Chomsky：Fredrick R. Brennan（SIL Open Font License 1.1）",
+   "credit_en": "Font: Chomsky by Fredrick R. Brennan — SIL Open Font License 1.1"
+  },
+  "Grenze Gotisch": {
+   "family": "Grenze Gotisch",
+   "slug": "grenze-gotisch",
+   "group": "blackletter",
+   "fits": "字重 100–900 可变的现代哥特体：同一个词从细到粗做字重动画，适合重金属或赛博哥特风片头",
+   "category": "Display",
+   "tags": [
+    "/Expressive/Artistic",
+    "/Expressive/Loud",
+    "/Expressive/Rugged",
+    "/Expressive/Stiff",
+    "/Expressive/Vintage",
+    "/Seasonal/Christmas",
+    "/Seasonal/Halloween",
+    "/Theme/Blackletter"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Grenze+Gotisch",
+   "designers": [
+    "Omnibus-Type"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "grenze-gotisch/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2020 The Grenze Gotisch Project Authors (https://github.com/Omnibus-Type/Grenze-Gotisch)",
+   "faces": [
+    {
+     "file": "grenze-gotisch/GrenzeGotisch-VariableFont_wght.ttf",
+     "bytes": 190524,
+     "name": "Grenze Gotisch",
+     "weight": "100 900",
+     "style": "normal",
+     "stretch": null,
+     "axes": [
+      {
+       "tag": "wght",
+       "min": 100.0,
+       "def": 400.0,
+       "max": 900.0
+      }
+     ],
+     "glyphs": 1096,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2020 The Grenze Gotisch Project Authors (https://github.com/Omnibus-Type/Grenze-Gotisch)",
+     "designer": "Renata Polastri",
+     "version": "Version 1.002",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "100–900 可变",
+   "styles": [
+    "normal"
+   ],
+   "axes": {
+    "wght": [
+     100.0,
+     400.0,
+     900.0
+    ]
+   },
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 190524,
+   "credit_zh": "字体 Grenze Gotisch：Omnibus-Type（SIL Open Font License 1.1）",
+   "credit_en": "Font: Grenze Gotisch by Omnibus-Type — SIL Open Font License 1.1"
+  },
+  "Pirata One": {
+   "family": "Pirata One",
+   "slug": "pirata-one",
+   "group": "blackletter",
+   "fits": "窄身哥特体，可读性最好：小标签、榜单角标、徽章文字，在 HUD 里做标签也不会糊",
+   "category": "Display",
+   "tags": [
+    "/Expressive/Artistic",
+    "/Expressive/Vintage",
+    "/Theme/Blackletter"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Pirata+One",
+   "designers": [
+    "Rodrigo Fuenzalida",
+    "Nicolas Massi"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "pirata-one/OFL.txt",
+   "rfn": [
+    "Pirata"
+   ],
+   "copyright": "Copyright (c) 2012, Rodrigo Fuenzalida, Nicolas Massi (www.taip.com.ar / abc.taip.com.ar), with Reserved Font Name 'Pirata'",
+   "faces": [
+    {
+     "file": "pirata-one/PirataOne-Regular.ttf",
+     "bytes": 54276,
+     "name": "Pirata One",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 385,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright (c) 2012, Rodrigo Fuenzalida, Nicolas Massi (www.taip.com.ar / abc.taip.com.ar), with Reserved Font Name 'Pirata'",
+     "designer": "Rodrigo Fuenzalida, Nicolas Massi",
+     "version": "Version 1.001",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 54276,
+   "credit_zh": "字体 Pirata One：Rodrigo Fuenzalida、Nicolas Massi（SIL Open Font License 1.1）",
+   "credit_en": "Font: Pirata One by Rodrigo Fuenzalida, Nicolas Massi — SIL Open Font License 1.1"
+  },
+  "UnifrakturCook": {
+   "family": "UnifrakturCook",
+   "slug": "unifrakturcook",
+   "group": "blackletter",
+   "fits": "粗重的德式 Fraktur（只有 700 一个字重，比 Maguntia 黑得多）：海报式大字、印章感标题，可配做旧纸纹或烫金",
+   "category": "Display",
+   "tags": [
+    "/Expressive/Artistic",
+    "/Expressive/Rugged",
+    "/Expressive/Vintage",
+    "/Theme/Blackletter"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/UnifrakturCook",
+   "designers": [
+    "j. 'mach' wust",
+    "Peter Wiegel"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "unifrakturcook/OFL.txt",
+   "rfn": [
+    "UnifrakturCook"
+   ],
+   "copyright": "Copyright (c) 2010 j. 'mach' wust with Reserved Font Name UnifrakturCook.\nCopyright (c) 2009 Peter Wiegel.\n\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.",
+   "faces": [
+    {
+     "file": "unifrakturcook/UnifrakturCook-Bold.ttf",
+     "bytes": 36884,
+     "name": "UnifrakturCook",
+     "weight": "700",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 249,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright (c) 2010 j. 'mach' wust with Reserved Font Name UnifrakturCook.\nCopyright (c) 2009 Peter Wiegel.\n\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.",
+     "designer": "j. 'mach' wust",
+     "version": "Version 2011-09-01",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "700",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 36884,
+   "credit_zh": "字体 UnifrakturCook：j. 'mach' wust、Peter Wiegel（SIL Open Font License 1.1）",
+   "credit_en": "Font: UnifrakturCook by j. 'mach' wust, Peter Wiegel — SIL Open Font License 1.1"
+  },
+  "UnifrakturMaguntia": {
+   "family": "UnifrakturMaguntia",
+   "slug": "unifrakturmaguntia",
+   "group": "blackletter",
+   "fits": "德式 Fraktur（断笔加圆弧，带花式大写）：德国或中欧历史、童话古籍、老报刊和证书、啤酒节或老酒标风的标题，也能做史诗或暗黑风短标题，可配金属渐变或火焰辉光。只排短词，别整词全大写（花式大写连排难认）。它不是原片那种 Old English 式 Textura，要原片的味道用 Chomsky",
+   "category": "Display",
+   "tags": [
+    "/Expressive/Artistic",
+    "/Expressive/Rugged",
+    "/Expressive/Sincere",
+    "/Expressive/Vintage",
+    "/Theme/Blackletter"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/UnifrakturMaguntia",
+   "designers": [
+    "j. 'mach' wust",
+    "Peter Wiegel"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "unifrakturmaguntia/OFL.txt",
+   "rfn": [
+    "UnifrakturMaguntia"
+   ],
+   "copyright": "Copyright (c) 2010 j. 'mach' wust with Reserved Font Name UnifrakturMaguntia.\nCopyright (c) 2009 Peter Wiegel.\n\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.",
+   "faces": [
+    {
+     "file": "unifrakturmaguntia/UnifrakturMaguntia-Regular.ttf",
+     "bytes": 82576,
+     "name": "UnifrakturMaguntia",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 270,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright (c) 2010 j. 'mach' wust with Reserved Font Name UnifrakturMaguntia.\nCopyright (c) 2009 Peter Wiegel.\n\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.",
+     "designer": "j. 'mach' wust, based on a font by Peter Wiegel, original typeface by Carl Albert Fahrenwaldt 1901",
+     "version": "Version 2010-11-24",
+     "license_desc": "Copyright (c) 2010, j. 'mach' wust, with Reserved Font Name UnifrakturMaguntia.\nCopyright (c) 2009, Peter Wiegel.\n\nThis Font Software is licensed under the SIL ",
+     "license_url": "http://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 82576,
+   "credit_zh": "字体 UnifrakturMaguntia：j. 'mach' wust、Peter Wiegel（SIL Open Font License 1.1）",
+   "credit_en": "Font: UnifrakturMaguntia by j. 'mach' wust, Peter Wiegel — SIL Open Font License 1.1"
+  },
+  "Abril Fatface": {
+   "family": "Abril Fatface",
+   "slug": "abril-fatface",
+   "group": "didone",
+   "fits": "胖脸 Didone：海报式冲击标题、排名大数字「No.1」。原片标签「GEMINI」那种粗体大写衬线与它最接近",
+   "category": "Display",
+   "tags": [
+    "/Expressive/Loud",
+    "/Expressive/Rugged",
+    "/Expressive/Vintage",
+    "/Serif/Fat Face",
+    "/Serif/Modern"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Abril+Fatface",
+   "designers": [
+    "TypeTogether"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "abril-fatface/OFL.txt",
+   "rfn": [
+    "Abril",
+    "Abril Fatface"
+   ],
+   "copyright": "Copyright (c) 2011, Copyright (c) 2011, TypeTogether (www.type-together.com), with Reserved Font Names \"Abril\" and \"Abril Fatface\"",
+   "faces": [
+    {
+     "file": "abril-fatface/AbrilFatface-Regular.ttf",
+     "bytes": 58448,
+     "name": "Abril Fatface",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 407,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright (c) 2011, Copyright (c) 2011, TypeTogether (www.type-together.com), with Reserved Font Names \"Abril\" and \"Abril Fatface\"",
+     "designer": "Veronika Burian, Jos Scaglione",
+     "version": "Version 1.001",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 58448,
+   "credit_zh": "字体 Abril Fatface：TypeTogether（SIL Open Font License 1.1）",
+   "credit_en": "Font: Abril Fatface by TypeTogether — SIL Open Font License 1.1"
+  },
+  "Bodoni Moda": {
+   "family": "Bodoni Moda",
+   "slug": "bodoni-moda",
+   "group": "didone",
+   "fits": "真正的 Didone，带光学尺寸轴：时尚或奢华感的大标题、大号数字",
+   "category": "Serif",
+   "tags": [
+    "/Expressive/Business",
+    "/Expressive/Fancy",
+    "/Expressive/Sincere",
+    "/Expressive/Vintage",
+    "/Serif/Didone",
+    "/Serif/Modern"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Bodoni+Moda",
+   "designers": [
+    "Owen Earl"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "bodoni-moda/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2020 The Bodoni Moda Project Authors (https://github.com/indestructible-type/Bodoni)",
+   "faces": [
+    {
+     "file": "bodoni-moda/BodoniModa-VariableFont_opsz-wght.ttf",
+     "bytes": 161424,
+     "name": "Bodoni Moda",
+     "weight": "400 900",
+     "style": "normal",
+     "stretch": null,
+     "axes": [
+      {
+       "tag": "wght",
+       "min": 400.0,
+       "def": 400.0,
+       "max": 900.0
+      },
+      {
+       "tag": "opsz",
+       "min": 6.0,
+       "def": 11.0,
+       "max": 96.0
+      }
+     ],
+     "glyphs": 562,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2020 The Bodoni Moda Project Authors (https://github.com/indestructible-type/Bodoni)",
+     "designer": "Owen Earl",
+     "version": "Version 2.005",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL",
+     "license_url": "https://scripts.sil.org/OFL"
+    },
+    {
+     "file": "bodoni-moda/BodoniModa-Italic-VariableFont_opsz-wght.ttf",
+     "bytes": 175504,
+     "name": "Bodoni Moda",
+     "weight": "400 900",
+     "style": "italic",
+     "stretch": null,
+     "axes": [
+      {
+       "tag": "wght",
+       "min": 400.0,
+       "def": 400.0,
+       "max": 900.0
+      },
+      {
+       "tag": "opsz",
+       "min": 6.0,
+       "def": 11.0,
+       "max": 96.0
+      }
+     ],
+     "glyphs": 562,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2020 The Bodoni Moda Project Authors (https://github.com/indestructible-type/Bodoni)",
+     "designer": "Owen Earl",
+     "version": "Version 2.005",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL",
+     "license_url": "https://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400–900 可变 · 带斜体",
+   "styles": [
+    "italic",
+    "normal"
+   ],
+   "axes": {
+    "wght": [
+     400.0,
+     400.0,
+     900.0
+    ],
+    "opsz": [
+     6.0,
+     11.0,
+     96.0
+    ]
+   },
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 336928,
+   "credit_zh": "字体 Bodoni Moda：Owen Earl（SIL Open Font License 1.1）",
+   "credit_en": "Font: Bodoni Moda by Owen Earl — SIL Open Font License 1.1"
+  },
+  "Cinzel": {
+   "family": "Cinzel",
+   "slug": "cinzel",
+   "group": "didone",
+   "fits": "罗马碑刻式大写：电影预告式史诗标题、加冕或宣言镜头",
+   "category": "Serif",
+   "tags": [
+    "/Expressive/Competent",
+    "/Expressive/Fancy",
+    "/Expressive/Loud",
+    "/Expressive/Vintage",
+    "/Seasonal/Christmas",
+    "/Serif/Old Style Garalde"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Cinzel",
+   "designers": [
+    "Natanael Gama"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "cinzel/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2020 The Cinzel Project Authors (https://github.com/NDISCOVER/Cinzel)",
+   "faces": [
+    {
+     "file": "cinzel/Cinzel-VariableFont_wght.ttf",
+     "bytes": 126348,
+     "name": "Cinzel",
+     "weight": "400 900",
+     "style": "normal",
+     "stretch": null,
+     "axes": [
+      {
+       "tag": "wght",
+       "min": 400.0,
+       "def": 400.0,
+       "max": 900.0
+      }
+     ],
+     "glyphs": 547,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2020 The Cinzel Project Authors (https://github.com/NDISCOVER/Cinzel)",
+     "designer": "Natanael Gama",
+     "version": "Version 2.000",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL",
+     "license_url": "https://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400–900 可变",
+   "styles": [
+    "normal"
+   ],
+   "axes": {
+    "wght": [
+     400.0,
+     400.0,
+     900.0
+    ]
+   },
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 126348,
+   "credit_zh": "字体 Cinzel：Natanael Gama（SIL Open Font License 1.1）",
+   "credit_en": "Font: Cinzel by Natanael Gama — SIL Open Font License 1.1"
+  },
+  "Cormorant Garamond": {
+   "family": "Cormorant Garamond",
+   "slug": "cormorant-garamond",
+   "group": "didone",
+   "fits": "古典 Garamond，带斜体：文学、历史、手稿感的字幕和小标题",
+   "category": "Serif",
+   "tags": [
+    "/Expressive/Business",
+    "/Expressive/Competent",
+    "/Expressive/Fancy",
+    "/Expressive/Sincere",
+    "/Expressive/Vintage",
+    "/Serif/Old Style Garalde"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Cormorant+Garamond",
+   "designers": [
+    "Christian Thalmann"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "cormorant-garamond/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2015 The Cormorant Project Authors (github.com/CatharsisFonts/Cormorant)",
+   "faces": [
+    {
+     "file": "cormorant-garamond/CormorantGaramond-VariableFont_wght.ttf",
+     "bytes": 1023468,
+     "name": "Cormorant Garamond",
+     "weight": "300 700",
+     "style": "normal",
+     "stretch": null,
+     "axes": [
+      {
+       "tag": "wght",
+       "min": 300.0,
+       "def": 300.0,
+       "max": 700.0
+      }
+     ],
+     "glyphs": 2831,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2015 The Cormorant Project Authors (github.com/CatharsisFonts/Cormorant)",
+     "designer": "Christian Thalmann (Catharsis Fonts)",
+     "version": "Version 4.001",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://openfontlicense.org",
+     "license_url": "https://openfontlicense.org"
+    },
+    {
+     "file": "cormorant-garamond/CormorantGaramond-Italic-VariableFont_wght.ttf",
+     "bytes": 640236,
+     "name": "Cormorant Garamond",
+     "weight": "300 700",
+     "style": "italic",
+     "stretch": null,
+     "axes": [
+      {
+       "tag": "wght",
+       "min": 300.0,
+       "def": 300.0,
+       "max": 700.0
+      }
+     ],
+     "glyphs": 1710,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2015 The Cormorant Project Authors (github.com/CatharsisFonts/Cormorant)",
+     "designer": "Christian Thalmann (Catharsis Fonts)",
+     "version": "Version 4.001",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://openfontlicense.org",
+     "license_url": "https://openfontlicense.org"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "300–700 可变 · 带斜体",
+   "styles": [
+    "italic",
+    "normal"
+   ],
+   "axes": {
+    "wght": [
+     300.0,
+     300.0,
+     700.0
+    ]
+   },
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 1663704,
+   "credit_zh": "字体 Cormorant Garamond：Christian Thalmann（SIL Open Font License 1.1）",
+   "credit_en": "Font: Cormorant Garamond by Christian Thalmann — SIL Open Font License 1.1"
+  },
+  "Instrument Serif": {
+   "family": "Instrument Serif",
+   "slug": "instrument-serif",
+   "group": "didone",
+   "fits": "现代窄衬线，带斜体：极简高级感、科技发布会式引言，可作哥特体的「优雅版」替代",
+   "category": "Serif",
+   "tags": [
+    "/Expressive/Sincere",
+    "/Expressive/Vintage",
+    "/Serif/Modern",
+    "/Serif/Scotch"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Instrument+Serif",
+   "designers": [
+    "Rodrigo Fuenzalida",
+    "Jordan Egstad"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "instrument-serif/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2022 The Instrument Serif Project Authors (https://github.com/Instrument/instrument-serif)",
+   "faces": [
+    {
+     "file": "instrument-serif/InstrumentSerif-Regular.ttf",
+     "bytes": 69312,
+     "name": "Instrument Serif",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 377,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2022 The Instrument Serif Project Authors (https://github.com/Instrument/instrument-serif)",
+     "designer": "Rodrigo Fuenzalida",
+     "version": "Version 1.000; ttfautohint (v1.8.4.7-5d5b);gftools[0.9.27]",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL",
+     "license_url": "https://scripts.sil.org/OFL"
+    },
+    {
+     "file": "instrument-serif/InstrumentSerif-Italic.ttf",
+     "bytes": 70868,
+     "name": "Instrument Serif",
+     "weight": "400",
+     "style": "italic",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 377,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2022 The Instrument Serif Project Authors (https://github.com/Instrument/instrument-serif)",
+     "designer": "Rodrigo Fuenzalida",
+     "version": "Version 1.000; ttfautohint (v1.8.4.7-5d5b);gftools[0.9.27]",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL",
+     "license_url": "https://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400 · 带斜体",
+   "styles": [
+    "italic",
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 140180,
+   "credit_zh": "字体 Instrument Serif：Rodrigo Fuenzalida、Jordan Egstad（SIL Open Font License 1.1）",
+   "credit_en": "Font: Instrument Serif by Rodrigo Fuenzalida, Jordan Egstad — SIL Open Font License 1.1"
+  },
+  "Playfair Display": {
+   "family": "Playfair Display",
+   "slug": "playfair-display",
+   "group": "didone",
+   "fits": "高反差衬线，带斜体：优雅型角色（如 Claude）的名字、引言、杂志封面式排版。原片面板「GPT-6」那种窄 Didone：Black 字重横向压到约 78%（CSS scaleX）最接近",
+   "category": "Serif",
+   "tags": [
+    "/Expressive/Business",
+    "/Expressive/Calm",
+    "/Expressive/Competent",
+    "/Expressive/Fancy",
+    "/Expressive/Loud",
+    "/Expressive/Sincere",
+    "/Serif/Didone"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Playfair+Display",
+   "designers": [
+    "Claus Eggers Sørensen"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "playfair-display/OFL.txt",
+   "rfn": [
+    "Playfair Display"
+   ],
+   "copyright": "Copyright 2017 The Playfair Display Project Authors (https://github.com/clauseggers/Playfair-Display), with Reserved Font Name \"Playfair Display\".",
+   "faces": [
+    {
+     "file": "playfair-display/PlayfairDisplay-VariableFont_wght.ttf",
+     "bytes": 301576,
+     "name": "Playfair Display",
+     "weight": "400 900",
+     "style": "normal",
+     "stretch": null,
+     "axes": [
+      {
+       "tag": "wght",
+       "min": 400.0,
+       "def": 400.0,
+       "max": 900.0
+      }
+     ],
+     "glyphs": 1101,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2017 The Playfair Display Project Authors (https://github.com/clauseggers/Playfair-Display), with Reserved Font Name \"Playfair Display\".",
+     "designer": "Claus Eggers Sørensen",
+     "version": "Version 1.203",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "playfair-display/PlayfairDisplay-Italic-VariableFont_wght.ttf",
+     "bytes": 280660,
+     "name": "Playfair Display",
+     "weight": "400 900",
+     "style": "italic",
+     "stretch": null,
+     "axes": [
+      {
+       "tag": "wght",
+       "min": 400.0,
+       "def": 400.0,
+       "max": 900.0
+      }
+     ],
+     "glyphs": 1099,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2017 The Playfair Display Project Authors (https://github.com/clauseggers/Playfair-Display), with Reserved Font Name \"Playfair Display\".",
+     "designer": "Claus Eggers Sørensen",
+     "version": "Version 1.203",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400–900 可变 · 带斜体",
+   "styles": [
+    "italic",
+    "normal"
+   ],
+   "axes": {
+    "wght": [
+     400.0,
+     400.0,
+     900.0
+    ]
+   },
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 582236,
+   "credit_zh": "字体 Playfair Display：Claus Eggers Sørensen（SIL Open Font License 1.1）",
+   "credit_en": "Font: Playfair Display by Claus Eggers Sørensen — SIL Open Font License 1.1"
+  },
+  "Anton": {
+   "family": "Anton",
+   "slug": "anton",
+   "group": "condensed",
+   "fits": "窄体粗黑（Impact 的开源替代）：标题砸入、卡点大字、排名数字",
+   "category": "Sans Serif",
+   "tags": [
+    "/Expressive/Loud",
+    "/Expressive/Rugged",
+    "/Sans/Neo Grotesque"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Anton",
+   "designers": [
+    "Vernon Adams"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "anton/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2020 The Anton Project Authors (https://github.com/googlefonts/AntonFont.git)",
+   "faces": [
+    {
+     "file": "anton/Anton-Regular.ttf",
+     "bytes": 161588,
+     "name": "Anton",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 1326,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2020 The Anton Project Authors (https://github.com/googlefonts/AntonFont.git)",
+     "designer": "Vernon Adams",
+     "version": "Version 2.116; ttfautohint (v1.8.3)",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL",
+     "license_url": "https://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 161588,
+   "credit_zh": "字体 Anton：Vernon Adams（SIL Open Font License 1.1）",
+   "credit_en": "Font: Anton by Vernon Adams — SIL Open Font License 1.1"
+  },
+  "Bebas Neue": {
+   "family": "Bebas Neue",
+   "slug": "bebas-neue",
+   "group": "condensed",
+   "fits": "全大写窄黑：快切字卡、副标题条、体育或竞技感",
+   "category": "Sans Serif",
+   "tags": [
+    "/Expressive/Rugged",
+    "/Sans/Neo Grotesque"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Bebas+Neue",
+   "designers": [
+    "Ryoichi Tsunekawa"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "bebas-neue/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2019 The Bebas Neue Project Authors (https://github.com/dharmatype/Bebas-Neue)",
+   "faces": [
+    {
+     "file": "bebas-neue/BebasNeue-Regular.ttf",
+     "bytes": 57676,
+     "name": "Bebas Neue",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 497,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2019 The Bebas Neue Project Authors (https://github.com/dharmatype/Bebas-Neue)",
+     "designer": "Ryoichi Tsunekawa",
+     "version": "Version 2.000",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 57676,
+   "credit_zh": "字体 Bebas Neue：Ryoichi Tsunekawa（SIL Open Font License 1.1）",
+   "credit_en": "Font: Bebas Neue by Ryoichi Tsunekawa — SIL Open Font License 1.1"
+  },
+  "Big Shoulders": {
+   "family": "Big Shoulders",
+   "slug": "big-shoulders",
+   "group": "condensed",
+   "fits": "芝加哥招牌风窄黑，字重和光学尺寸都可变：工业或城市感大字、倒计时",
+   "category": "Display",
+   "tags": [
+    "/Expressive/Calm",
+    "/Expressive/Loud",
+    "/Expressive/Rugged",
+    "/Expressive/Stiff"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Big+Shoulders",
+   "designers": [
+    "Patric King"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "big-shoulders/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2019 The Big Shoulders Project Authors (https://github.com/xotypeco/big_shoulders)",
+   "faces": [
+    {
+     "file": "big-shoulders/BigShoulders-VariableFont_opsz-wght.ttf",
+     "bytes": 318776,
+     "name": "Big Shoulders",
+     "weight": "100 900",
+     "style": "normal",
+     "stretch": null,
+     "axes": [
+      {
+       "tag": "wght",
+       "min": 100.0,
+       "def": 100.0,
+       "max": 900.0
+      },
+      {
+       "tag": "opsz",
+       "min": 10.0,
+       "def": 72.0,
+       "max": 72.0
+      }
+     ],
+     "glyphs": 1065,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2019 The Big Shoulders Project Authors (https://github.com/xotypeco/big_shoulders)",
+     "designer": "Patric King",
+     "version": "Version 2.002",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://openfontlicense.org",
+     "license_url": "https://openfontlicense.org"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "100–900 可变",
+   "styles": [
+    "normal"
+   ],
+   "axes": {
+    "wght": [
+     100.0,
+     100.0,
+     900.0
+    ],
+    "opsz": [
+     10.0,
+     72.0,
+     72.0
+    ]
+   },
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 318776,
+   "credit_zh": "字体 Big Shoulders：Patric King（SIL Open Font License 1.1）",
+   "credit_en": "Font: Big Shoulders by Patric King — SIL Open Font License 1.1"
+  },
+  "League Gothic": {
+   "family": "League Gothic",
+   "slug": "league-gothic",
+   "group": "condensed",
+   "fits": "复古窄黑，宽度可变：老海报或报纸标题、字宽挤压动画",
+   "category": "Sans Serif",
+   "tags": [
+    "/Expressive/Rugged",
+    "/Sans/Grotesque",
+    "/Sans/Superellipse"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/League+Gothic",
+   "designers": [
+    "Tyler Finck",
+    "Caroline Hadilaksono",
+    "Micah Rich"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "league-gothic/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2020 The League Gothic Project Authors (https://github.com/theleagueof/league-gothic)",
+   "faces": [
+    {
+     "file": "league-gothic/LeagueGothic-Regular-VariableFont_wdth.ttf",
+     "bytes": 65496,
+     "name": "League Gothic",
+     "weight": "400",
+     "style": "normal",
+     "stretch": "75% 100%",
+     "axes": [
+      {
+       "tag": "wdth",
+       "min": 75.0,
+       "def": 100.0,
+       "max": 100.0
+      }
+     ],
+     "glyphs": 512,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2020 The League Gothic Project Authors (https://github.com/theleagueof/league-gothic)",
+     "designer": "The League of Moveable Type",
+     "version": "Version 2.001",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL",
+     "license_url": "https://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {
+    "wdth": [
+     75.0,
+     100.0,
+     100.0
+    ]
+   },
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 65496,
+   "credit_zh": "字体 League Gothic：Tyler Finck、Caroline Hadilaksono、Micah Rich（SIL Open Font License 1.1）",
+   "credit_en": "Font: League Gothic by Tyler Finck, Caroline Hadilaksono, Micah Rich — SIL Open Font License 1.1"
+  },
+  "Oswald": {
+   "family": "Oswald",
+   "slug": "oswald",
+   "group": "condensed",
+   "fits": "字重可变的窄黑：数据面板标题，或长英文标题需要多种字重时",
+   "category": "Sans Serif",
+   "tags": [
+    "/Expressive/Business",
+    "/Expressive/Competent",
+    "/Expressive/Rugged",
+    "/Expressive/Stiff",
+    "/Sans/Grotesque"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Oswald",
+   "designers": [
+    "Vernon Adams",
+    "Kalapi Gajjar",
+    "Cyreal"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "oswald/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2016 The Oswald Project Authors (https://github.com/googlefonts/OswaldFont)",
+   "faces": [
+    {
+     "file": "oswald/Oswald-VariableFont_wght.ttf",
+     "bytes": 169108,
+     "name": "Oswald",
+     "weight": "200 700",
+     "style": "normal",
+     "stretch": null,
+     "axes": [
+      {
+       "tag": "wght",
+       "min": 200.0,
+       "def": 400.0,
+       "max": 700.0
+      }
+     ],
+     "glyphs": 869,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2016 The Oswald Project Authors (https://github.com/googlefonts/OswaldFont)",
+     "designer": "Vernon Adams",
+     "version": "Version 4.103;gftools[0.9.33.dev8+g029e19f]",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL",
+     "license_url": "https://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "200–700 可变",
+   "styles": [
+    "normal"
+   ],
+   "axes": {
+    "wght": [
+     200.0,
+     400.0,
+     700.0
+    ]
+   },
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 169108,
+   "credit_zh": "字体 Oswald：Vernon Adams、Kalapi Gajjar、Cyreal（SIL Open Font License 1.1）",
+   "credit_en": "Font: Oswald by Vernon Adams, Kalapi Gajjar, Cyreal — SIL Open Font License 1.1"
+  },
+  "Chakra Petch": {
+   "family": "Chakra Petch",
+   "slug": "chakra-petch",
+   "group": "tech",
+   "fits": "切角科技体，带斜体：游戏 UI、战斗力数值、警告框",
+   "category": "Sans Serif",
+   "tags": [
+    "/Expressive/Futuristic",
+    "/Expressive/Stiff",
+    "/Expressive/Vintage",
+    "/Theme/Techno"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Chakra+Petch",
+   "designers": [
+    "Cadson Demak"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "chakra-petch/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2018 The Chakra Petch Project Authors (https://github.com/m4rc1e/Chakra-Petch.git)",
+   "faces": [
+    {
+     "file": "chakra-petch/ChakraPetch-Light.ttf",
+     "bytes": 71912,
+     "name": "Chakra Petch",
+     "weight": "300",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 773,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2018 The Chakra Petch Project Authors (https://github.com/m4rc1e/Chakra-Petch.git)",
+     "designer": "Katatrad Aksorn Co.,Ltd.",
+     "version": "Version 1.000; ttfautohint (v1.6)",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "chakra-petch/ChakraPetch-Regular.ttf",
+     "bytes": 71556,
+     "name": "Chakra Petch",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 773,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2018 The Chakra Petch Project Authors (https://github.com/m4rc1e/Chakra-Petch.git)",
+     "designer": "Katatrad Aksorn Co.,Ltd.",
+     "version": "Version 1.000; ttfautohint (v1.6)",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "chakra-petch/ChakraPetch-Medium.ttf",
+     "bytes": 71608,
+     "name": "Chakra Petch",
+     "weight": "500",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 773,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2018 The Chakra Petch Project Authors (https://github.com/m4rc1e/Chakra-Petch.git)",
+     "designer": "Katatrad Aksorn Co.,Ltd.",
+     "version": "Version 1.000; ttfautohint (v1.6)",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "chakra-petch/ChakraPetch-SemiBold.ttf",
+     "bytes": 71600,
+     "name": "Chakra Petch",
+     "weight": "600",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 773,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2018 The Chakra Petch Project Authors (https://github.com/m4rc1e/Chakra-Petch.git)",
+     "designer": "Katatrad Aksorn Co.,Ltd.",
+     "version": "Version 1.000; ttfautohint (v1.6)",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "chakra-petch/ChakraPetch-Bold.ttf",
+     "bytes": 71436,
+     "name": "Chakra Petch",
+     "weight": "700",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 773,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2018 The Chakra Petch Project Authors (https://github.com/m4rc1e/Chakra-Petch.git)",
+     "designer": "Katatrad Aksorn Co.,Ltd.",
+     "version": "Version 1.000; ttfautohint (v1.6)",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "chakra-petch/ChakraPetch-LightItalic.ttf",
+     "bytes": 74192,
+     "name": "Chakra Petch",
+     "weight": "300",
+     "style": "italic",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 773,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2018 The Chakra Petch Project Authors (https://github.com/m4rc1e/Chakra-Petch.git)",
+     "designer": "Katatrad Aksorn Co.,Ltd.",
+     "version": "Version 1.000; ttfautohint (v1.6)",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "chakra-petch/ChakraPetch-Italic.ttf",
+     "bytes": 73808,
+     "name": "Chakra Petch",
+     "weight": "400",
+     "style": "italic",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 773,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2018 The Chakra Petch Project Authors (https://github.com/m4rc1e/Chakra-Petch.git)",
+     "designer": "Katatrad Aksorn Co.,Ltd.",
+     "version": "Version 1.000; ttfautohint (v1.6)",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "chakra-petch/ChakraPetch-MediumItalic.ttf",
+     "bytes": 73972,
+     "name": "Chakra Petch",
+     "weight": "500",
+     "style": "italic",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 773,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2018 The Chakra Petch Project Authors (https://github.com/m4rc1e/Chakra-Petch.git)",
+     "designer": "Katatrad Aksorn Co.,Ltd.",
+     "version": "Version 1.000; ttfautohint (v1.6)",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "chakra-petch/ChakraPetch-SemiBoldItalic.ttf",
+     "bytes": 73980,
+     "name": "Chakra Petch",
+     "weight": "600",
+     "style": "italic",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 773,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2018 The Chakra Petch Project Authors (https://github.com/m4rc1e/Chakra-Petch.git)",
+     "designer": "Katatrad Aksorn Co.,Ltd.",
+     "version": "Version 1.000; ttfautohint (v1.6)",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "chakra-petch/ChakraPetch-BoldItalic.ttf",
+     "bytes": 73772,
+     "name": "Chakra Petch",
+     "weight": "700",
+     "style": "italic",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 773,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2018 The Chakra Petch Project Authors (https://github.com/m4rc1e/Chakra-Petch.git)",
+     "designer": "Katatrad Aksorn Co.,Ltd.",
+     "version": "Version 1.000; ttfautohint (v1.6)",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "300, 400, 500, 600, 700 · 带斜体",
+   "styles": [
+    "italic",
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 727836,
+   "credit_zh": "字体 Chakra Petch：Cadson Demak（SIL Open Font License 1.1）",
+   "credit_en": "Font: Chakra Petch by Cadson Demak — SIL Open Font License 1.1"
+  },
+  "Michroma": {
+   "family": "Michroma",
+   "slug": "michroma",
+   "group": "tech",
+   "fits": "超宽科技体：发布会式型号名、宽幅字幕条、汽车或硬件感",
+   "category": "Sans Serif",
+   "tags": [
+    "/Expressive/Futuristic",
+    "/Expressive/Rugged",
+    "/Expressive/Stiff",
+    "/Sans/Superellipse",
+    "/Theme/Techno"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Michroma",
+   "designers": [
+    "Vernon Adams"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "michroma/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2011 The Michroma Project Authors (https://github.com/googlefonts/Michroma-font)",
+   "faces": [
+    {
+     "file": "michroma/Michroma-Regular.ttf",
+     "bytes": 62968,
+     "name": "Michroma",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 498,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2011 The Michroma Project Authors (https://github.com/googlefonts/Michroma-font)",
+     "designer": "Vernon Adams",
+     "version": "Version 1.100; ttfautohint (v1.8.4.7-5d5b);gftools[0.9.29]",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL",
+     "license_url": "https://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 62968,
+   "credit_zh": "字体 Michroma：Vernon Adams（SIL Open Font License 1.1）",
+   "credit_en": "Font: Michroma by Vernon Adams — SIL Open Font License 1.1"
+  },
+  "Orbitron": {
+   "family": "Orbitron",
+   "slug": "orbitron",
+   "group": "tech",
+   "fits": "几何科幻体：机甲、太空、AI 型号名，HUD 主标题",
+   "category": "Sans Serif",
+   "tags": [
+    "/Expressive/Futuristic",
+    "/Expressive/Loud",
+    "/Expressive/Rugged",
+    "/Expressive/Stiff",
+    "/Expressive/Vintage",
+    "/Theme/Techno"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Orbitron",
+   "designers": [
+    "Matt McInerney"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "orbitron/OFL.txt",
+   "rfn": [
+    "Orbitron"
+   ],
+   "copyright": "Copyright 2018 The Orbitron Project Authors (https://github.com/theleagueof/orbitron), with Reserved Font Name: \"Orbitron\".",
+   "faces": [
+    {
+     "file": "orbitron/Orbitron-VariableFont_wght.ttf",
+     "bytes": 38548,
+     "name": "Orbitron",
+     "weight": "400 900",
+     "style": "normal",
+     "stretch": null,
+     "axes": [
+      {
+       "tag": "wght",
+       "min": 400.0,
+       "def": 400.0,
+       "max": 900.0
+      }
+     ],
+     "glyphs": 266,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2018 The Orbitron Project Authors (https://github.com/theleagueof/orbitron), with Reserved Font Name: \"Orbitron\".",
+     "designer": "Matt McInerney",
+     "version": "Version 2.001",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400–900 可变",
+   "styles": [
+    "normal"
+   ],
+   "axes": {
+    "wght": [
+     400.0,
+     400.0,
+     900.0
+    ]
+   },
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 38548,
+   "credit_zh": "字体 Orbitron：Matt McInerney（SIL Open Font License 1.1）",
+   "credit_en": "Font: Orbitron by Matt McInerney — SIL Open Font License 1.1"
+  },
+  "Oxanium": {
+   "family": "Oxanium",
+   "slug": "oxanium",
+   "group": "tech",
+   "fits": "方形科幻体，字重可变：赛博朋克 HUD、数据流、加载条文字",
+   "category": "Display",
+   "tags": [
+    "/Expressive/Futuristic",
+    "/Expressive/Stiff",
+    "/Sans/Superellipse",
+    "/Theme/Techno"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Oxanium",
+   "designers": [
+    "Severin Meyer"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "oxanium/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2019 The Oxanium Project Authors (https://github.com/sevmeyer/oxanium)",
+   "faces": [
+    {
+     "file": "oxanium/Oxanium-VariableFont_wght.ttf",
+     "bytes": 43108,
+     "name": "Oxanium",
+     "weight": "200 800",
+     "style": "normal",
+     "stretch": null,
+     "axes": [
+      {
+       "tag": "wght",
+       "min": 200.0,
+       "def": 200.0,
+       "max": 800.0
+      }
+     ],
+     "glyphs": 375,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2019 The Oxanium Project Authors (https://github.com/sevmeyer/oxanium)",
+     "designer": "Severin Meyer",
+     "version": "Version 2.000",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL",
+     "license_url": "https://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "200–800 可变",
+   "styles": [
+    "normal"
+   ],
+   "axes": {
+    "wght": [
+     200.0,
+     200.0,
+     800.0
+    ]
+   },
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 43108,
+   "credit_zh": "字体 Oxanium：Severin Meyer（SIL Open Font License 1.1）",
+   "credit_en": "Font: Oxanium by Severin Meyer — SIL Open Font License 1.1"
+  },
+  "Rajdhani": {
+   "family": "Rajdhani",
+   "slug": "rajdhani",
+   "group": "tech",
+   "fits": "方正窄科技体：HUD 数据标签、参数表、雷达图刻度",
+   "category": "Sans Serif",
+   "tags": [
+    "/Expressive/Calm",
+    "/Expressive/Futuristic",
+    "/Expressive/Stiff",
+    "/Sans/Superellipse"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Rajdhani",
+   "designers": [
+    "Indian Type Foundry"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "rajdhani/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright (c) 2014 Indian Type Foundry (info@indiantypefoundry.com)",
+   "faces": [
+    {
+     "file": "rajdhani/Rajdhani-Light.ttf",
+     "bytes": 357516,
+     "name": "Rajdhani",
+     "weight": "300",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 1043,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright (c) 2014 Indian Type Foundry (info@indiantypefoundry.com)",
+     "designer": "Satya Rajpurohit, Jyotish Sonowal",
+     "version": "Version 1.201;PS 1.0;hotconv 1.0.78;makeotf.lib2.5.61930; ttfautohint (v1.1) -l 7 -r 28 -G 50 -x 13 -D latn -f deva -w G",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "rajdhani/Rajdhani-Regular.ttf",
+     "bytes": 352088,
+     "name": "Rajdhani",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 1043,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright (c) 2014 Indian Type Foundry (info@indiantypefoundry.com)",
+     "designer": "Satya Rajpurohit, Jyotish Sonowal",
+     "version": "Version 1.201;PS 1.0;hotconv 1.0.78;makeotf.lib2.5.61930; ttfautohint (v1.1) -l 7 -r 28 -G 50 -x 13 -D latn -f deva -w G",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "rajdhani/Rajdhani-Medium.ttf",
+     "bytes": 357884,
+     "name": "Rajdhani",
+     "weight": "500",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 1043,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright (c) 2014 Indian Type Foundry (info@indiantypefoundry.com)",
+     "designer": "Satya Rajpurohit, Jyotish Sonowal",
+     "version": "Version 1.201;PS 1.0;hotconv 1.0.78;makeotf.lib2.5.61930; ttfautohint (v1.1) -l 7 -r 28 -G 50 -x 13 -D latn -f deva -w G",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "rajdhani/Rajdhani-SemiBold.ttf",
+     "bytes": 363500,
+     "name": "Rajdhani",
+     "weight": "600",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 1043,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright (c) 2014 Indian Type Foundry (info@indiantypefoundry.com)",
+     "designer": "Satya Rajpurohit, Jyotish Sonowal",
+     "version": "Version 1.201;PS 1.0;hotconv 1.0.78;makeotf.lib2.5.61930; ttfautohint (v1.1) -l 7 -r 28 -G 50 -x 13 -D latn -f deva -w G",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "rajdhani/Rajdhani-Bold.ttf",
+     "bytes": 373192,
+     "name": "Rajdhani",
+     "weight": "700",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 1043,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright (c) 2014 Indian Type Foundry (info@indiantypefoundry.com)",
+     "designer": "Satya Rajpurohit, Jyotish Sonowal",
+     "version": "Version 1.201;PS 1.0;hotconv 1.0.78;makeotf.lib2.5.61930; ttfautohint (v1.1) -l 7 -r 28 -G 50 -x 13 -D latn -f deva -w G",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "300, 400, 500, 600, 700",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 1804180,
+   "credit_zh": "字体 Rajdhani：Indian Type Foundry（SIL Open Font License 1.1）",
+   "credit_en": "Font: Rajdhani by Indian Type Foundry — SIL Open Font License 1.1"
+  },
+  "Doto": {
+   "family": "Doto",
+   "slug": "doto",
+   "group": "pixel",
+   "fits": "LED 点阵，圆点形状（ROND 轴）和字重都可调：原片同款点阵屏、跑马灯、记分牌",
+   "category": "Sans Serif",
+   "tags": [
+    "/Expressive/Playful",
+    "/Monospace/Monospace",
+    "/Theme/Pixel"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Doto",
+   "designers": [
+    "Óliver Lalan"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "doto/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2024-2024 The Doto Project Authors (https://github.com/oliverlalan/Doto)",
+   "faces": [
+    {
+     "file": "doto/Doto-VariableFont_ROND-wght.ttf",
+     "bytes": 456720,
+     "name": "Doto",
+     "weight": "100 900",
+     "style": "normal",
+     "stretch": null,
+     "axes": [
+      {
+       "tag": "ROND",
+       "min": 0.0,
+       "def": 0.0,
+       "max": 100.0
+      },
+      {
+       "tag": "wght",
+       "min": 100.0,
+       "def": 900.0,
+       "max": 900.0
+      }
+     ],
+     "glyphs": 320,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2024-2024 The Doto Project Authors (https://github.com/oliverlalan/Doto)",
+     "designer": "",
+     "version": "Version 1.000",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://openfontlicense.org",
+     "license_url": "https://openfontlicense.org"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "100–900 可变",
+   "styles": [
+    "normal"
+   ],
+   "axes": {
+    "ROND": [
+     0.0,
+     0.0,
+     100.0
+    ],
+    "wght": [
+     100.0,
+     900.0,
+     900.0
+    ]
+   },
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 456720,
+   "credit_zh": "字体 Doto：Óliver Lalan（SIL Open Font License 1.1）",
+   "credit_en": "Font: Doto by Óliver Lalan — SIL Open Font License 1.1"
+  },
+  "DSEG7 Classic": {
+   "family": "DSEG7 Classic",
+   "slug": "dseg7-classic",
+   "group": "pixel",
+   "fits": "七段数码管：计分板、倒计时、跑分数字、仪表读数。只有数字和少量字母",
+   "category": "other",
+   "tags": [],
+   "source": "Fontsource（jsDelivr）",
+   "source_url": "https://github.com/keshikan/DSEG",
+   "designers": [
+    "keshikan"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "dseg7-classic/OFL.txt",
+   "rfn": [
+    "DSEG"
+   ],
+   "copyright": "Created by Keshikan\nwith FontForge 2.0 (http://fontforge.sf.net)",
+   "faces": [
+    {
+     "file": "dseg7-classic/dseg7-classic-300-normal.ttf",
+     "bytes": 23088,
+     "name": "DSEG7 Classic",
+     "weight": "300",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 72,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Created by Keshikan\nwith FontForge 2.0 (http://fontforge.sf.net)",
+     "designer": "Keshikan(Twitter:@keshinomi_88pro)",
+     "version": "Version 0.46",
+     "license_desc": "Copyright (c) 2018, keshikan (http://www.keshikan.net),\nwith Reserved Font Name \"DSEG\".\n\nThis Font Software is licensed under the SIL Open Font License, Version",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "dseg7-classic/dseg7-classic-400-normal.ttf",
+     "bytes": 23272,
+     "name": "DSEG7 Classic",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 72,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Created by Keshikan\nwith FontForge 2.0 (http://fontforge.sf.net)",
+     "designer": "Keshikan(Twitter:@keshinomi_88pro)",
+     "version": "Version 0.46",
+     "license_desc": "Copyright (c) 2018, keshikan (http://www.keshikan.net),\nwith Reserved Font Name \"DSEG\".\n\nThis Font Software is licensed under the SIL Open Font License, Version",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "dseg7-classic/dseg7-classic-700-normal.ttf",
+     "bytes": 23040,
+     "name": "DSEG7 Classic",
+     "weight": "700",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 72,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Created by Keshikan\nwith FontForge 2.0 (http://fontforge.sf.net)",
+     "designer": "Keshikan(Twitter:@keshinomi_88pro)",
+     "version": "Version 0.46",
+     "license_desc": "Copyright (c) 2018, keshikan (http://www.keshikan.net),\nwith Reserved Font Name \"DSEG\".\n\nThis Font Software is licensed under the SIL Open Font License, Version",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "dseg7-classic/dseg7-classic-300-italic.ttf",
+     "bytes": 23500,
+     "name": "DSEG7 Classic",
+     "weight": "300",
+     "style": "italic",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 72,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Created by Keshikan\nwith FontForge 2.0 (http://fontforge.sf.net)",
+     "designer": "Keshikan(Twitter:@keshinomi_88pro)",
+     "version": "Version 0.46",
+     "license_desc": "Copyright (c) 2018, keshikan (http://www.keshikan.net),\nwith Reserved Font Name \"DSEG\".\n\nThis Font Software is licensed under the SIL Open Font License, Version",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "dseg7-classic/dseg7-classic-400-italic.ttf",
+     "bytes": 23604,
+     "name": "DSEG7 Classic",
+     "weight": "400",
+     "style": "italic",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 72,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Created by Keshikan\nwith FontForge 2.0 (http://fontforge.sf.net)",
+     "designer": "Keshikan(Twitter:@keshinomi_88pro)",
+     "version": "Version 0.46",
+     "license_desc": "Copyright (c) 2018, keshikan (http://www.keshikan.net),\nwith Reserved Font Name \"DSEG\".\n\nThis Font Software is licensed under the SIL Open Font License, Version",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "dseg7-classic/dseg7-classic-700-italic.ttf",
+     "bytes": 23464,
+     "name": "DSEG7 Classic",
+     "weight": "700",
+     "style": "italic",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 72,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Created by Keshikan\nwith FontForge 2.0 (http://fontforge.sf.net)",
+     "designer": "Keshikan(Twitter:@keshinomi_88pro)",
+     "version": "Version 0.46",
+     "license_desc": "Copyright (c) 2018, keshikan (http://www.keshikan.net),\nwith Reserved Font Name \"DSEG\".\n\nThis Font Software is licensed under the SIL Open Font License, Version",
+     "license_url": "http://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "300, 400, 700 · 带斜体",
+   "styles": [
+    "italic",
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 139968,
+   "credit_zh": "字体 DSEG7 Classic：keshikan（SIL Open Font License 1.1）",
+   "credit_en": "Font: DSEG7 Classic by keshikan — SIL Open Font License 1.1"
+  },
+  "Fusion Pixel 12px Proportional SC": {
+   "family": "Fusion Pixel 12px Proportional SC",
+   "slug": "fusion-pixel-12px-proportional-sc",
+   "group": "pixel",
+   "fits": "中文像素字（缝合像素）：中文点阵屏、像素游戏对话框、LED 中文字幕。按 12px 的整数倍放大才锐利",
+   "category": "sans-serif",
+   "tags": [],
+   "source": "Fontsource（jsDelivr）",
+   "source_url": "https://github.com/TakWolf/fusion-pixel-font",
+   "designers": [
+    "TakWolf"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "fusion-pixel-12px-proportional-sc/OFL.txt",
+   "rfn": [
+    "Fusion Pixel"
+   ],
+   "copyright": "Copyright (c) 2022, TakWolf (https://takwolf.com), with Reserved Font Name 'Fusion Pixel'.",
+   "faces": [
+    {
+     "file": "fusion-pixel-12px-proportional-sc/fusion-pixel-12px-proportional-sc-400-normal.ttf",
+     "bytes": 4132396,
+     "name": "Fusion Pixel 12px Proportional zh_hans",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 31346,
+     "color": null,
+     "hanzi": 17626,
+     "cov": {
+      "latin": 62,
+      "gb1": 3755,
+      "gb2": 2681,
+      "big5": 5401,
+      "jis1": 2965,
+      "digits": 10,
+      "kana": 184,
+      "hangul": 11172
+     },
+     "copyright": "Copyright (c) 2022, TakWolf (https://takwolf.com), with Reserved Font Name 'Fusion Pixel'.",
+     "designer": "TakWolf",
+     "version": "2024.05.12",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1.",
+     "license_url": "https://openfontlicense.org"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 17626,
+   "scripts": [
+    "拉丁",
+    "简中（常用一级字全）",
+    "繁中",
+    "日文",
+    "韩文"
+   ],
+   "bytes": 4132396,
+   "credit_zh": "字体 Fusion Pixel 12px Proportional SC：TakWolf（SIL Open Font License 1.1）",
+   "credit_en": "Font: Fusion Pixel 12px Proportional SC by TakWolf — SIL Open Font License 1.1"
+  },
+  "Jacquard 24": {
+   "family": "Jacquard 24",
+   "slug": "jacquard-24",
+   "group": "pixel",
+   "fits": "像素化哥特体（织锦图案风格）：把哥特风和像素/LED 风结合，适合游戏化的史诗标签",
+   "category": "Display",
+   "tags": [
+    "/Expressive/Awkward",
+    "/Expressive/Vintage",
+    "/Theme/Medieval",
+    "/Theme/Pixel"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Jacquard+24",
+   "designers": [
+    "Sarah Cadigan-Fried"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "jacquard-24/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2023 The Soft Type Project Authors (https://github.com/scfried/soft-type-jacquard)",
+   "faces": [
+    {
+     "file": "jacquard-24/Jacquard24-Regular.ttf",
+     "bytes": 307708,
+     "name": "Jacquard 24",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 348,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2023 The Soft Type Project Authors (https://github.com/scfried/soft-type-jacquard)",
+     "designer": "Sarah Cadigan-Fried",
+     "version": "Version 1.002; ttfautohint (v1.8.4.7-5d5b)",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://openfontlicense.org",
+     "license_url": "https://openfontlicense.org"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 307708,
+   "credit_zh": "字体 Jacquard 24：Sarah Cadigan-Fried（SIL Open Font License 1.1）",
+   "credit_en": "Font: Jacquard 24 by Sarah Cadigan-Fried — SIL Open Font License 1.1"
+  },
+  "Press Start 2P": {
+   "family": "Press Start 2P",
+   "slug": "press-start-2p",
+   "group": "pixel",
+   "fits": "8-bit 街机像素体：复古游戏关卡字幕、「GAME OVER」「1UP」式提示",
+   "category": "Display",
+   "tags": [
+    "/Expressive/Awkward",
+    "/Expressive/Vintage",
+    "/Theme/Pixel",
+    "/Theme/Techno"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Press+Start+2P",
+   "designers": [
+    "CodeMan38"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "press-start-2p/OFL.txt",
+   "rfn": [
+    "Press Start 2P"
+   ],
+   "copyright": "Copyright 2012 The Press Start 2P Project Authors (cody@zone38.net), with Reserved Font Name \"Press Start 2P\"",
+   "faces": [
+    {
+     "file": "press-start-2p/PressStart2P-Regular.ttf",
+     "bytes": 116008,
+     "name": "Press Start 2P",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 657,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2012 The Press Start 2P Project Authors (cody@zone38.net), with Reserved Font Name \"Press Start 2P\"",
+     "designer": "CodeMan38",
+     "version": "Version 3.000",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 116008,
+   "credit_zh": "字体 Press Start 2P：CodeMan38（SIL Open Font License 1.1）",
+   "credit_en": "Font: Press Start 2P by CodeMan38 — SIL Open Font License 1.1"
+  },
+  "Silkscreen": {
+   "family": "Silkscreen",
+   "slug": "silkscreen",
+   "group": "pixel",
+   "fits": "小号像素体：屏幕边角小标签、像素 UI、贴纸角标",
+   "category": "Display",
+   "tags": [
+    "/Expressive/Awkward",
+    "/Expressive/Futuristic",
+    "/Expressive/Rugged",
+    "/Expressive/Vintage",
+    "/Theme/Pixel",
+    "/Theme/Techno"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Silkscreen",
+   "designers": [
+    "Jason Kottke"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "silkscreen/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2001 The Silkscreen Project Authors (https://github.com/googlefonts/silkscreen)",
+   "faces": [
+    {
+     "file": "silkscreen/Silkscreen-Regular.ttf",
+     "bytes": 31960,
+     "name": "Silkscreen",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 227,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2001 The Silkscreen Project Authors (https://github.com/googlefonts/silkscreen)",
+     "designer": "Jason Kottke",
+     "version": "Version 1.001; ttfautohint (v1.8.4.7-5d5b)",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL",
+     "license_url": "https://scripts.sil.org/OFL"
+    },
+    {
+     "file": "silkscreen/Silkscreen-Bold.ttf",
+     "bytes": 30384,
+     "name": "Silkscreen",
+     "weight": "700",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 227,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2001 The Silkscreen Project Authors (https://github.com/googlefonts/silkscreen)",
+     "designer": "Jason Kottke",
+     "version": "Version 1.001; ttfautohint (v1.8.4.7-5d5b)",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL",
+     "license_url": "https://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400, 700",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 62344,
+   "credit_zh": "字体 Silkscreen：Jason Kottke（SIL Open Font License 1.1）",
+   "credit_en": "Font: Silkscreen by Jason Kottke — SIL Open Font License 1.1"
+  },
+  "Sixtyfour": {
+   "family": "Sixtyfour",
+   "slug": "sixtyfour",
+   "group": "pixel",
+   "fits": "80 年代电脑字，带扫描线（SCAN）和渗色（BLED）两个轴：CRT 故障、开机画面、复古科技",
+   "category": "Monospace",
+   "tags": [
+    "/Expressive/Awkward",
+    "/Expressive/Futuristic",
+    "/Expressive/Rugged",
+    "/Expressive/Vintage",
+    "/Monospace/Monospace",
+    "/Theme/Pixel"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Sixtyfour",
+   "designers": [
+    "Jens Kutílek"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "sixtyfour/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2021 The Sixtyfour Project Authors (https://github.com/jenskutilek/homecomputer-fonts)",
+   "faces": [
+    {
+     "file": "sixtyfour/Sixtyfour-Regular-VariableFont_BLED-SCAN.ttf",
+     "bytes": 70988,
+     "name": "Sixtyfour",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [
+      {
+       "tag": "SCAN",
+       "min": -53.0,
+       "def": 0.0,
+       "max": 100.0
+      },
+      {
+       "tag": "BLED",
+       "min": 0.0,
+       "def": 0.0,
+       "max": 100.0
+      }
+     ],
+     "glyphs": 489,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2021 The Sixtyfour Project Authors (https://github.com/jenskutilek/homecomputer-fonts)",
+     "designer": "Jens Kutilek",
+     "version": "Version 2.001",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL",
+     "license_url": "https://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {
+    "SCAN": [
+     -53.0,
+     0.0,
+     100.0
+    ],
+    "BLED": [
+     0.0,
+     0.0,
+     100.0
+    ]
+   },
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 70988,
+   "credit_zh": "字体 Sixtyfour：Jens Kutílek（SIL Open Font License 1.1）",
+   "credit_en": "Font: Sixtyfour by Jens Kutílek — SIL Open Font License 1.1"
+  },
+  "VT323": {
+   "family": "VT323",
+   "slug": "vt323",
+   "group": "pixel",
+   "fits": "老终端点阵：命令行、黑客、系统日志、CRT 显示器画面",
+   "category": "Monospace",
+   "tags": [
+    "/Expressive/Vintage",
+    "/Monospace/Monospace",
+    "/Theme/Pixel",
+    "/Theme/Techno"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/VT323",
+   "designers": [
+    "Peter Hull"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "vt323/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2011, The VT323 Project Authors (peter.hull@oikoi.com)",
+   "faces": [
+    {
+     "file": "vt323/VT323-Regular.ttf",
+     "bytes": 149688,
+     "name": "VT323",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 584,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2011, The VT323 Project Authors (peter.hull@oikoi.com)",
+     "designer": "Peter Hull",
+     "version": "Version 2.000",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 149688,
+   "credit_zh": "字体 VT323：Peter Hull（SIL Open Font License 1.1）",
+   "credit_en": "Font: VT323 by Peter Hull — SIL Open Font License 1.1"
+  },
+  "IBM Plex Mono": {
+   "family": "IBM Plex Mono",
+   "slug": "ibm-plex-mono",
+   "group": "mono",
+   "fits": "企业感等宽，带斜体：技术报告式字幕、参数表、日志",
+   "category": "Monospace",
+   "tags": [
+    "/Expressive/Calm",
+    "/Monospace/Monospace",
+    "/Sans/Neo Grotesque"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/IBM+Plex+Mono",
+   "designers": [
+    "Mike Abbink",
+    "Bold Monday"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "ibm-plex-mono/OFL.txt",
+   "rfn": [
+    "Plex"
+   ],
+   "copyright": "Copyright 2017 IBM Corp. All rights reserved.",
+   "faces": [
+    {
+     "file": "ibm-plex-mono/IBMPlexMono-Thin.ttf",
+     "bytes": 136152,
+     "name": "IBM Plex Mono",
+     "weight": "100",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 1028,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2017 IBM Corp. All rights reserved.",
+     "designer": "Mike Abbink, Paul van der Laan, Pieter van Rosmalen",
+     "version": "Version 2.3",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "ibm-plex-mono/IBMPlexMono-ExtraLight.ttf",
+     "bytes": 134236,
+     "name": "IBM Plex Mono",
+     "weight": "200",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 1028,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2017 IBM Corp. All rights reserved.",
+     "designer": "Mike Abbink, Paul van der Laan, Pieter van Rosmalen",
+     "version": "Version 2.3",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "ibm-plex-mono/IBMPlexMono-Light.ttf",
+     "bytes": 133468,
+     "name": "IBM Plex Mono",
+     "weight": "300",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 1028,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2017 IBM Corp. All rights reserved.",
+     "designer": "Mike Abbink, Paul van der Laan, Pieter van Rosmalen",
+     "version": "Version 2.3",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "ibm-plex-mono/IBMPlexMono-Regular.ttf",
+     "bytes": 133796,
+     "name": "IBM Plex Mono",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 1028,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2017 IBM Corp. All rights reserved.",
+     "designer": "Mike Abbink, Paul van der Laan, Pieter van Rosmalen",
+     "version": "Version 2.3",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "ibm-plex-mono/IBMPlexMono-Medium.ttf",
+     "bytes": 134956,
+     "name": "IBM Plex Mono",
+     "weight": "500",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 1028,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2017 IBM Corp. All rights reserved.",
+     "designer": "Mike Abbink, Paul van der Laan, Pieter van Rosmalen",
+     "version": "Version 2.3",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "ibm-plex-mono/IBMPlexMono-SemiBold.ttf",
+     "bytes": 138448,
+     "name": "IBM Plex Mono",
+     "weight": "600",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 1028,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2017 IBM Corp. All rights reserved.",
+     "designer": "Mike Abbink, Paul van der Laan, Pieter van Rosmalen",
+     "version": "Version 2.3",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "ibm-plex-mono/IBMPlexMono-Bold.ttf",
+     "bytes": 136008,
+     "name": "IBM Plex Mono",
+     "weight": "700",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 1028,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2017 IBM Corp. All rights reserved.",
+     "designer": "Mike Abbink, Paul van der Laan, Pieter van Rosmalen",
+     "version": "Version 2.3",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "ibm-plex-mono/IBMPlexMono-ThinItalic.ttf",
+     "bytes": 144316,
+     "name": "IBM Plex Mono",
+     "weight": "100",
+     "style": "italic",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 1028,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2017 IBM Corp. All rights reserved.",
+     "designer": "Mike Abbink, Paul van der Laan, Pieter van Rosmalen",
+     "version": "Version 2.3",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "ibm-plex-mono/IBMPlexMono-ExtraLightItalic.ttf",
+     "bytes": 142856,
+     "name": "IBM Plex Mono",
+     "weight": "200",
+     "style": "italic",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 1028,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2017 IBM Corp. All rights reserved.",
+     "designer": "Mike Abbink, Paul van der Laan, Pieter van Rosmalen",
+     "version": "Version 2.3",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "ibm-plex-mono/IBMPlexMono-LightItalic.ttf",
+     "bytes": 141596,
+     "name": "IBM Plex Mono",
+     "weight": "300",
+     "style": "italic",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 1028,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2017 IBM Corp. All rights reserved.",
+     "designer": "Mike Abbink, Paul van der Laan, Pieter van Rosmalen",
+     "version": "Version 2.3",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "ibm-plex-mono/IBMPlexMono-Italic.ttf",
+     "bytes": 142108,
+     "name": "IBM Plex Mono",
+     "weight": "400",
+     "style": "italic",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 1028,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2017 IBM Corp. All rights reserved.",
+     "designer": "Mike Abbink, Paul van der Laan, Pieter van Rosmalen",
+     "version": "Version 2.3",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "ibm-plex-mono/IBMPlexMono-MediumItalic.ttf",
+     "bytes": 142204,
+     "name": "IBM Plex Mono",
+     "weight": "500",
+     "style": "italic",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 1028,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2017 IBM Corp. All rights reserved.",
+     "designer": "Mike Abbink, Paul van der Laan, Pieter van Rosmalen",
+     "version": "Version 2.3",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "ibm-plex-mono/IBMPlexMono-SemiBoldItalic.ttf",
+     "bytes": 145528,
+     "name": "IBM Plex Mono",
+     "weight": "600",
+     "style": "italic",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 1028,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2017 IBM Corp. All rights reserved.",
+     "designer": "Mike Abbink, Paul van der Laan, Pieter van Rosmalen",
+     "version": "Version 2.3",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    },
+    {
+     "file": "ibm-plex-mono/IBMPlexMono-BoldItalic.ttf",
+     "bytes": 142712,
+     "name": "IBM Plex Mono",
+     "weight": "700",
+     "style": "italic",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 1028,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2017 IBM Corp. All rights reserved.",
+     "designer": "Mike Abbink, Paul van der Laan, Pieter van Rosmalen",
+     "version": "Version 2.3",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "100, 200, 300, 400, 500, 600, 700 · 带斜体",
+   "styles": [
+    "italic",
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 1948384,
+   "credit_zh": "字体 IBM Plex Mono：Mike Abbink、Bold Monday（SIL Open Font License 1.1）",
+   "credit_en": "Font: IBM Plex Mono by Mike Abbink, Bold Monday — SIL Open Font License 1.1"
+  },
+  "JetBrains Mono": {
+   "family": "JetBrains Mono",
+   "slug": "jetbrains-mono",
+   "group": "mono",
+   "fits": "代码等宽：Claude Code 终端界面、代码雨、命令行打字机效果",
+   "category": "Monospace",
+   "tags": [
+    "/Expressive/Competent",
+    "/Expressive/Stiff",
+    "/Monospace/Monospace",
+    "/Sans/Geometric"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/JetBrains+Mono",
+   "designers": [
+    "JetBrains",
+    "Philipp Nurullin",
+    "Konstantin Bulenkov"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "jetbrains-mono/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono)",
+   "faces": [
+    {
+     "file": "jetbrains-mono/JetBrainsMono-VariableFont_wght.ttf",
+     "bytes": 189028,
+     "name": "JetBrains Mono",
+     "weight": "100 800",
+     "style": "normal",
+     "stretch": null,
+     "axes": [
+      {
+       "tag": "wght",
+       "min": 100.0,
+       "def": 400.0,
+       "max": 800.0
+      }
+     ],
+     "glyphs": 1168,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono)",
+     "designer": "Philipp Nurullin, Konstantin Bulenkov",
+     "version": "Version 2.211",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL",
+     "license_url": "https://scripts.sil.org/OFL"
+    },
+    {
+     "file": "jetbrains-mono/JetBrainsMono-Italic-VariableFont_wght.ttf",
+     "bytes": 193160,
+     "name": "JetBrains Mono",
+     "weight": "100 800",
+     "style": "italic",
+     "stretch": null,
+     "axes": [
+      {
+       "tag": "wght",
+       "min": 100.0,
+       "def": 400.0,
+       "max": 800.0
+      }
+     ],
+     "glyphs": 1168,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono)",
+     "designer": "Philipp Nurullin, Konstantin Bulenkov",
+     "version": "Version 2.211",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL",
+     "license_url": "https://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "100–800 可变 · 带斜体",
+   "styles": [
+    "italic",
+    "normal"
+   ],
+   "axes": {
+    "wght": [
+     100.0,
+     400.0,
+     800.0
+    ]
+   },
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 382188,
+   "credit_zh": "字体 JetBrains Mono：JetBrains、Philipp Nurullin、Konstantin Bulenkov（SIL Open Font License 1.1）",
+   "credit_en": "Font: JetBrains Mono by JetBrains, Philipp Nurullin, Konstantin Bulenkov — SIL Open Font License 1.1"
+  },
+  "Share Tech Mono": {
+   "family": "Share Tech Mono",
+   "slug": "share-tech-mono",
+   "group": "mono",
+   "fits": "科幻等宽：HUD 读数、坐标、时间码",
+   "category": "Monospace",
+   "tags": [
+    "/Expressive/Calm",
+    "/Expressive/Futuristic",
+    "/Monospace/Monospace",
+    "/Sans/Neo Grotesque",
+    "/Sans/Superellipse"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Share+Tech+Mono",
+   "designers": [
+    "Carrois Apostrophe"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "share-tech-mono/OFL.txt",
+   "rfn": [
+    "Share"
+   ],
+   "copyright": "Copyright (c) 2012, Carrois Type Design, Ralph du Carrois (post@carrois.com www.carrois.com), with Reserved Font Name 'Share'",
+   "faces": [
+    {
+     "file": "share-tech-mono/ShareTechMono-Regular.ttf",
+     "bytes": 42756,
+     "name": "Share Tech Mono",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 268,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright (c) 2012, Carrois Type Design, Ralph du Carrois (post@carrois.com www.carrois.com), with Reserved Font Name 'Share'",
+     "designer": "Ralph Oliver du Carrois",
+     "version": "Version 1.003",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 42756,
+   "credit_zh": "字体 Share Tech Mono：Carrois Apostrophe（SIL Open Font License 1.1）",
+   "credit_en": "Font: Share Tech Mono by Carrois Apostrophe — SIL Open Font License 1.1"
+  },
+  "Space Mono": {
+   "family": "Space Mono",
+   "slug": "space-mono",
+   "group": "mono",
+   "fits": "复古未来等宽：太空或 NASA 风标签、编号、数据卡片",
+   "category": "Monospace",
+   "tags": [
+    "/Expressive/Calm",
+    "/Expressive/Futuristic",
+    "/Monospace/Monospace",
+    "/Sans/Grotesque",
+    "/Sans/Neo Grotesque",
+    "/Theme/Techno"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Space+Mono",
+   "designers": [
+    "Colophon Foundry"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "space-mono/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2016 The Space Mono Project Authors (https://github.com/googlefonts/spacemono)",
+   "faces": [
+    {
+     "file": "space-mono/SpaceMono-Regular.ttf",
+     "bytes": 98320,
+     "name": "Space Mono",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 760,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2016 The Space Mono Project Authors (https://github.com/googlefonts/spacemono)",
+     "designer": "Colophon Foundry + Benjamin Critton",
+     "version": "Version 1.003; ttfautohint (v1.8.4.7-5d5b)",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://openfontlicense.org",
+     "license_url": "https://openfontlicense.org"
+    },
+    {
+     "file": "space-mono/SpaceMono-Bold.ttf",
+     "bytes": 97256,
+     "name": "Space Mono",
+     "weight": "700",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 760,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2016 The Space Mono Project Authors (https://github.com/googlefonts/spacemono)",
+     "designer": "Colophon Foundry + Benjamin Critton",
+     "version": "Version 1.003; ttfautohint (v1.8.4.7-5d5b)",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://openfontlicense.org",
+     "license_url": "https://openfontlicense.org"
+    },
+    {
+     "file": "space-mono/SpaceMono-Italic.ttf",
+     "bytes": 112912,
+     "name": "Space Mono",
+     "weight": "400",
+     "style": "italic",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 724,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2016 The Space Mono Project Authors (https://github.com/googlefonts/spacemono)",
+     "designer": "Colophon Foundry + Benjamin Critton",
+     "version": "Version 1.003; ttfautohint (v1.8.4.7-5d5b)",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://openfontlicense.org",
+     "license_url": "https://openfontlicense.org"
+    },
+    {
+     "file": "space-mono/SpaceMono-BoldItalic.ttf",
+     "bytes": 103288,
+     "name": "Space Mono",
+     "weight": "700",
+     "style": "italic",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 724,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2016 The Space Mono Project Authors (https://github.com/googlefonts/spacemono)",
+     "designer": "Colophon Foundry + Benjamin Critton",
+     "version": "Version 1.003; ttfautohint (v1.8.4.7-5d5b)",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://openfontlicense.org",
+     "license_url": "https://openfontlicense.org"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400, 700 · 带斜体",
+   "styles": [
+    "italic",
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 411776,
+   "credit_zh": "字体 Space Mono：Colophon Foundry（SIL Open Font License 1.1）",
+   "credit_en": "Font: Space Mono by Colophon Foundry — SIL Open Font License 1.1"
+  },
+  "Kaushan Script": {
+   "family": "Kaushan Script",
+   "slug": "kaushan-script",
+   "group": "brush",
+   "fits": "粗毛刷连写：运动或热血标题、街头海报",
+   "category": "Handwriting",
+   "tags": [
+    "/Expressive/Active",
+    "/Expressive/Artistic",
+    "/Expressive/Happy",
+    "/Expressive/Vintage",
+    "/Seasonal/Hanukkah"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Kaushan+Script",
+   "designers": [
+    "Impallari Type"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "kaushan-script/OFL.txt",
+   "rfn": [
+    "Kaushan Script"
+   ],
+   "copyright": "Copyright (c) 2011, Pablo Impallari (www.impallari.com|impallari@gmail.com),\rCopyright (c) 2011, Igino Marini. (www.ikern.com|mail@iginomarini.com),\rwith Reserved Font Name Kaushan Script.",
+   "faces": [
+    {
+     "file": "kaushan-script/KaushanScript-Regular.ttf",
+     "bytes": 183972,
+     "name": "Kaushan Script",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 402,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright (c) 2011, Pablo Impallari (www.impallari.com|impallari@gmail.com),\rCopyright (c) 2011, Igino Marini. (www.ikern.com|mail@iginomarini.com),\rwith Reserved Font Name Kaushan Script.",
+     "designer": "Pablo Impallari",
+     "version": "Version 1.002",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 183972,
+   "credit_zh": "字体 Kaushan Script：Impallari Type（SIL Open Font License 1.1）",
+   "credit_en": "Font: Kaushan Script by Impallari Type — SIL Open Font License 1.1"
+  },
+  "Permanent Marker": {
+   "family": "Permanent Marker",
+   "slug": "permanent-marker",
+   "group": "brush",
+   "fits": "马克笔手写：吐槽批注、圈画标注、草稿感",
+   "category": "Handwriting",
+   "tags": [
+    "/Expressive/Active",
+    "/Expressive/Artistic",
+    "/Expressive/Awkward",
+    "/Expressive/Excited",
+    "/Expressive/Rugged",
+    "/Expressive/Sincere",
+    "/Script/Handwritten",
+    "/Script/Informal",
+    "/Seasonal/Christmas",
+    "/Seasonal/Holi",
+    "/Theme/Brush"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Permanent+Marker",
+   "designers": [
+    "Font Diner"
+   ],
+   "license": "Apache-2.0",
+   "license_file": "permanent-marker/LICENSE.txt",
+   "rfn": [],
+   "copyright": "Copyright (c) 2010 by Font Diner, Inc. All rights reserved.",
+   "faces": [
+    {
+     "file": "permanent-marker/PermanentMarker-Regular.ttf",
+     "bytes": 73620,
+     "name": "Permanent Marker",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 230,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright (c) 2010 by Font Diner, Inc. All rights reserved.",
+     "designer": "Font Diner, Inc",
+     "version": "Version 1.001",
+     "license_desc": "Licensed under the Apache License, Version 2.0",
+     "license_url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 73620,
+   "credit_zh": "字体 Permanent Marker：Font Diner（Apache License 2.0）",
+   "credit_en": "Font: Permanent Marker by Font Diner — Apache License 2.0"
+  },
+  "Sedgwick Ave Display": {
+   "family": "Sedgwick Ave Display",
+   "slug": "sedgwick-ave-display",
+   "group": "brush",
+   "fits": "涂鸦字：街头或嘻哈风、墙面喷漆标题",
+   "category": "Handwriting",
+   "tags": [
+    "/Expressive/Active",
+    "/Expressive/Awkward",
+    "/Expressive/Playful",
+    "/Expressive/Rugged",
+    "/Expressive/Vintage",
+    "/Script/Handwritten"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Sedgwick+Ave+Display",
+   "designers": [
+    "Pedro Vergani",
+    "Kevin Burke"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "sedgwick-ave-display/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2017 The Sedgwick Ave Project Authors (https://github.com/googlefonts/sedgwickave)",
+   "faces": [
+    {
+     "file": "sedgwick-ave-display/SedgwickAveDisplay-Regular.ttf",
+     "bytes": 135996,
+     "name": "Sedgwick Ave Display",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 612,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2017 The Sedgwick Ave Project Authors (https://github.com/googlefonts/sedgwickave)",
+     "designer": "Kevin Burke, Pedro Vergani",
+     "version": "Version 1.000",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 135996,
+   "credit_zh": "字体 Sedgwick Ave Display：Pedro Vergani、Kevin Burke（SIL Open Font License 1.1）",
+   "credit_en": "Font: Sedgwick Ave Display by Pedro Vergani, Kevin Burke — SIL Open Font License 1.1"
+  },
+  "Great Vibes": {
+   "family": "Great Vibes",
+   "slug": "great-vibes",
+   "group": "script",
+   "fits": "优雅花体：颁奖、致敬感场面、片尾签名",
+   "category": "Handwriting",
+   "tags": [
+    "/Expressive/Artistic",
+    "/Expressive/Fancy",
+    "/Expressive/Sophisticated",
+    "/Expressive/Vintage",
+    "/Script/Formal",
+    "/Seasonal/Christmas",
+    "/Seasonal/Diwali",
+    "/Seasonal/Hanukkah",
+    "/Seasonal/Holi",
+    "/Seasonal/Lunar New Year",
+    "/Seasonal/Valentine's Day"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Great+Vibes",
+   "designers": [
+    "Robert Leuschke"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "great-vibes/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2010 The Great Vibes Pro Project Authors (https://github.com/googlefonts/great-vibes)",
+   "faces": [
+    {
+     "file": "great-vibes/GreatVibes-Regular.ttf",
+     "bytes": 445300,
+     "name": "Great Vibes",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 1973,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2010 The Great Vibes Pro Project Authors (https://github.com/googlefonts/great-vibes)",
+     "designer": "Robert E. Leuschke, Viktoriya Grabowska, Viviana Monsalve, Eben Sorkin",
+     "version": "Version 1.103; ttfautohint (v1.8.4.7-5d5b)",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://openfontlicense.org",
+     "license_url": "https://openfontlicense.org"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 445300,
+   "credit_zh": "字体 Great Vibes：Robert Leuschke（SIL Open Font License 1.1）",
+   "credit_en": "Font: Great Vibes by Robert Leuschke — SIL Open Font License 1.1"
+  },
+  "Yellowtail": {
+   "family": "Yellowtail",
+   "slug": "yellowtail",
+   "group": "script",
+   "fits": "复古霓虹手写：80 年代霓虹灯招牌、Vaporwave 风片头",
+   "category": "Handwriting",
+   "tags": [
+    "/Expressive/Vintage",
+    "/Script/Handwritten"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Yellowtail",
+   "designers": [
+    "Astigmatic"
+   ],
+   "license": "Apache-2.0",
+   "license_file": "yellowtail/LICENSE.txt",
+   "rfn": [],
+   "copyright": "Copyright (c) 2011 by Brian J. Bonislawsky DBA Astigmatic (AOETI). All rights reserved. Available under the Apache 2.0 licence.\nhttp://www.apache.org/licenses/LICENSE-2.0.html",
+   "faces": [
+    {
+     "file": "yellowtail/Yellowtail-Regular.ttf",
+     "bytes": 60864,
+     "name": "Yellowtail",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 371,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright (c) 2011 by Brian J. Bonislawsky DBA Astigmatic (AOETI). All rights reserved. Available under the Apache 2.0 licence.\nhttp://www.apache.org/licenses/LICENSE-2.0.html",
+     "designer": "",
+     "version": "Version 001.002",
+     "license_desc": "",
+     "license_url": ""
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 60864,
+   "credit_zh": "字体 Yellowtail：Astigmatic（Apache License 2.0）",
+   "credit_en": "Font: Yellowtail by Astigmatic — Apache License 2.0"
+  },
+  "Big Shoulders Stencil": {
+   "family": "Big Shoulders Stencil",
+   "slug": "big-shoulders-stencil",
+   "group": "stencil",
+   "fits": "窄体模板字：集装箱或工厂编号、硬核工业标题",
+   "category": "Display",
+   "tags": [
+    "/Expressive/Futuristic",
+    "/Expressive/Loud",
+    "/Expressive/Rugged",
+    "/Expressive/Stiff"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Big+Shoulders+Stencil",
+   "designers": [
+    "Patric King"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "big-shoulders-stencil/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2019 The Big Shoulders Project Authors (https://github.com/xotypeco/big_shoulders)",
+   "faces": [
+    {
+     "file": "big-shoulders-stencil/BigShouldersStencil-VariableFont_opsz-wght.ttf",
+     "bytes": 327828,
+     "name": "Big Shoulders Stencil",
+     "weight": "100 900",
+     "style": "normal",
+     "stretch": null,
+     "axes": [
+      {
+       "tag": "wght",
+       "min": 100.0,
+       "def": 100.0,
+       "max": 900.0
+      },
+      {
+       "tag": "opsz",
+       "min": 10.0,
+       "def": 72.0,
+       "max": 72.0
+      }
+     ],
+     "glyphs": 1065,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2019 The Big Shoulders Project Authors (https://github.com/xotypeco/big_shoulders)",
+     "designer": "Patric King",
+     "version": "Version 2.001",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://openfontlicense.org",
+     "license_url": "https://openfontlicense.org"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "100–900 可变",
+   "styles": [
+    "normal"
+   ],
+   "axes": {
+    "wght": [
+     100.0,
+     100.0,
+     900.0
+    ],
+    "opsz": [
+     10.0,
+     72.0,
+     72.0
+    ]
+   },
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 327828,
+   "credit_zh": "字体 Big Shoulders Stencil：Patric King（SIL Open Font License 1.1）",
+   "credit_en": "Font: Big Shoulders Stencil by Patric King — SIL Open Font License 1.1"
+  },
+  "Black Ops One": {
+   "family": "Black Ops One",
+   "slug": "black-ops-one",
+   "group": "stencil",
+   "fits": "军事模板字：作战档案、机密文件、警告标签",
+   "category": "Display",
+   "tags": [
+    "/Expressive/Loud",
+    "/Expressive/Rugged",
+    "/Expressive/Stiff"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Black+Ops+One",
+   "designers": [
+    "James Grieshaber",
+    "Eben Sorkin"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "black-ops-one/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2022 The PinyonScript Project Authors (https://github.com/SorkinType/Black-Ops)",
+   "faces": [
+    {
+     "file": "black-ops-one/BlackOpsOne-Regular.ttf",
+     "bytes": 163904,
+     "name": "Black Ops One",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 749,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2022 The PinyonScript Project Authors (https://github.com/SorkinType/Black-Ops)",
+     "designer": "James Grieshaber, Eben Sorkin",
+     "version": "Version 1.004; ttfautohint (v1.8.4.7-5d5b)",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL",
+     "license_url": "https://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 163904,
+   "credit_zh": "字体 Black Ops One：James Grieshaber、Eben Sorkin（SIL Open Font License 1.1）",
+   "credit_en": "Font: Black Ops One by James Grieshaber, Eben Sorkin — SIL Open Font License 1.1"
+  },
+  "Saira Stencil": {
+   "family": "Saira Stencil",
+   "slug": "saira-stencil",
+   "group": "stencil",
+   "fits": "宽度和字重都可变的模板字：科技工业风、机身喷涂编号",
+   "category": "Display",
+   "tags": [
+    "/Expressive/Artistic",
+    "/Expressive/Loud",
+    "/Expressive/Rugged",
+    "/Expressive/Stiff"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Saira+Stencil",
+   "designers": [
+    "Hector Gatti",
+    "Omnibus-Type"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "saira-stencil/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2020 The Saira Project Authors (https://github.com/Omnibus-Type/Saira)",
+   "faces": [
+    {
+     "file": "saira-stencil/SairaStencil-VariableFont_wdth-wght.ttf",
+     "bytes": 490260,
+     "name": "Saira Stencil",
+     "weight": "100 900",
+     "style": "normal",
+     "stretch": "50% 125%",
+     "axes": [
+      {
+       "tag": "wght",
+       "min": 100.0,
+       "def": 100.0,
+       "max": 900.0
+      },
+      {
+       "tag": "wdth",
+       "min": 50.0,
+       "def": 100.0,
+       "max": 125.0
+      }
+     ],
+     "glyphs": 887,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2020 The Saira Project Authors (https://github.com/Omnibus-Type/Saira)",
+     "designer": "Hector Gatti with collaboration of the Omnibus-Type team",
+     "version": "Version 1.101",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://openfontlicense.org",
+     "license_url": "https://openfontlicense.org"
+    },
+    {
+     "file": "saira-stencil/SairaStencil-Italic-VariableFont_wdth-wght.ttf",
+     "bytes": 401732,
+     "name": "Saira Stencil",
+     "weight": "100 900",
+     "style": "italic",
+     "stretch": "50% 125%",
+     "axes": [
+      {
+       "tag": "wght",
+       "min": 100.0,
+       "def": 100.0,
+       "max": 900.0
+      },
+      {
+       "tag": "wdth",
+       "min": 50.0,
+       "def": 100.0,
+       "max": 125.0
+      }
+     ],
+     "glyphs": 888,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2020 The Saira Project Authors (https://github.com/Omnibus-Type/Saira)",
+     "designer": "Hector Gatti with collaboration of the Omnibus-Type team",
+     "version": "Version 1.101",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://openfontlicense.org",
+     "license_url": "https://openfontlicense.org"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "100–900 可变 · 带斜体",
+   "styles": [
+    "italic",
+    "normal"
+   ],
+   "axes": {
+    "wght": [
+     100.0,
+     100.0,
+     900.0
+    ],
+    "wdth": [
+     50.0,
+     100.0,
+     125.0
+    ]
+   },
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 891992,
+   "credit_zh": "字体 Saira Stencil：Hector Gatti、Omnibus-Type（SIL Open Font License 1.1）",
+   "credit_en": "Font: Saira Stencil by Hector Gatti, Omnibus-Type — SIL Open Font License 1.1"
+  },
+  "Bungee Shade": {
+   "family": "Bungee Shade",
+   "slug": "bungee-shade",
+   "group": "decorative",
+   "fits": "自带立体阴影的招牌字：街头招牌、立体大标题。同家族还有 Outline、Inline、Spice 可另取",
+   "category": "Display",
+   "tags": [
+    "/Expressive/Innovative",
+    "/Expressive/Rugged",
+    "/Expressive/Stiff",
+    "/Sans/Geometric",
+    "/Sans/Rounded"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Bungee+Shade",
+   "designers": [
+    "David Jonathan Ross"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "bungee-shade/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2023 The Bungee Project Authors (https://github.com/djrrb/Bungee)",
+   "faces": [
+    {
+     "file": "bungee-shade/BungeeShade-Regular.ttf",
+     "bytes": 300764,
+     "name": "Bungee Shade",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 1049,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2023 The Bungee Project Authors (https://github.com/djrrb/Bungee)",
+     "designer": "David Jonathan Ross",
+     "version": "Version 2.000",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://openfontlicense.org",
+     "license_url": "https://openfontlicense.org"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 300764,
+   "credit_zh": "字体 Bungee Shade：David Jonathan Ross（SIL Open Font License 1.1）",
+   "credit_en": "Font: Bungee Shade by David Jonathan Ross — SIL Open Font License 1.1"
+  },
+  "Faster One": {
+   "family": "Faster One",
+   "slug": "faster-one",
+   "group": "decorative",
+   "fits": "速度线字：竞速、冲刺、「最快」类排名，快闪转场",
+   "category": "Display",
+   "tags": [
+    "/Expressive/Active",
+    "/Expressive/Awkward",
+    "/Expressive/Playful",
+    "/Expressive/Rugged",
+    "/Expressive/Vintage"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Faster+One",
+   "designers": [
+    "Eduardo Tunni"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "faster-one/OFL.txt",
+   "rfn": [
+    "Faster"
+   ],
+   "copyright": "Copyright 2012 The Faster Project Authors (https://github.com/etunni/faster), with Reserved Font Name 'Faster'",
+   "faces": [
+    {
+     "file": "faster-one/FasterOne-Regular.ttf",
+     "bytes": 91788,
+     "name": "Faster One",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 428,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2012 The Faster Project Authors (https://github.com/etunni/faster), with Reserved Font Name 'Faster'",
+     "designer": "Eduardo Rodriguez Tunni",
+     "version": "Version 1.003; ttfautohint (v1.8.4.7-5d5b);gftools[0.9.23]",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL",
+     "license_url": "https://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 91788,
+   "credit_zh": "字体 Faster One：Eduardo Tunni（SIL Open Font License 1.1）",
+   "credit_en": "Font: Faster One by Eduardo Tunni — SIL Open Font License 1.1"
+  },
+  "Monoton": {
+   "family": "Monoton",
+   "slug": "monoton",
+   "group": "decorative",
+   "fits": "多线霓虹描边：迪斯科或复古霓虹灯、开场 Logo 点亮动画（字体文件内的版权行是旧文字，以随包 OFL.txt 为准）",
+   "category": "Display",
+   "tags": [
+    "/Expressive/Artistic",
+    "/Expressive/Awkward",
+    "/Expressive/Excited",
+    "/Expressive/Rugged",
+    "/Expressive/Vintage",
+    "/Sans/Geometric",
+    "/Seasonal/Kwanzaa",
+    "/Theme/Art Deco",
+    "/Theme/Inline"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Monoton",
+   "designers": [
+    "Vernon Adams"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "monoton/OFL.txt",
+   "rfn": [
+    "Monoton"
+   ],
+   "copyright": "Copyright (c) 2011 by vernon adams. All rights reserved.",
+   "faces": [
+    {
+     "file": "monoton/Monoton-Regular.ttf",
+     "bytes": 49908,
+     "name": "Monoton",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 371,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright (c) 2011 by vernon adams. All rights reserved.",
+     "designer": "",
+     "version": "Version 1.000",
+     "license_desc": "",
+     "license_url": ""
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 49908,
+   "credit_zh": "字体 Monoton：Vernon Adams（SIL Open Font License 1.1）",
+   "credit_en": "Font: Monoton by Vernon Adams — SIL Open Font License 1.1"
+  },
+  "Nabla": {
+   "family": "Nabla",
+   "slug": "nabla",
+   "group": "decorative",
+   "fits": "彩色 3D 等距字（COLRv1，Chrome 能渲染），挤出深度可调（EDPT 轴）：游戏感立体标题、奖杯字",
+   "category": "Display",
+   "tags": [
+    "/Expressive/Awkward",
+    "/Expressive/Futuristic",
+    "/Expressive/Innovative",
+    "/Expressive/Loud",
+    "/Expressive/Playful",
+    "/Expressive/Stiff",
+    "/Theme/Shaded"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Nabla",
+   "designers": [
+    "Arthur Reinders Folmer",
+    "Just van Rossum"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "nabla/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2022 The Nabla Project Authors (https://github.com/justvanrossum/nabla)",
+   "faces": [
+    {
+     "file": "nabla/Nabla-Regular-VariableFont_EDPT-EHLT.ttf",
+     "bytes": 1643364,
+     "name": "Nabla",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [
+      {
+       "tag": "EDPT",
+       "min": 0.0,
+       "def": 100.0,
+       "max": 200.0
+      },
+      {
+       "tag": "EHLT",
+       "min": 0.0,
+       "def": 12.0,
+       "max": 24.0
+      }
+     ],
+     "glyphs": 3655,
+     "color": "COLRv1",
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2022 The Nabla Project Authors (https://github.com/justvanrossum/nabla)",
+     "designer": "Arthur Reinders Folmer",
+     "version": "Version 1.003",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL",
+     "license_url": "https://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {
+    "EDPT": [
+     0.0,
+     100.0,
+     200.0
+    ],
+    "EHLT": [
+     0.0,
+     12.0,
+     24.0
+    ]
+   },
+   "color": "COLRv1",
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 1643364,
+   "credit_zh": "字体 Nabla：Arthur Reinders Folmer、Just van Rossum（SIL Open Font License 1.1）",
+   "credit_en": "Font: Nabla by Arthur Reinders Folmer, Just van Rossum — SIL Open Font License 1.1"
+  },
+  "Rubik Glitch": {
+   "family": "Rubik Glitch",
+   "slug": "rubik-glitch",
+   "group": "decorative",
+   "fits": "自带故障切片的字：故障转场、信号干扰、系统报错提示",
+   "category": "Display",
+   "tags": [
+    "/Expressive/Awkward",
+    "/Expressive/Playful",
+    "/Expressive/Rugged",
+    "/Theme/Distressed"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Rubik+Glitch",
+   "designers": [
+    "NaN",
+    "Luke Prowse"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "rubik-glitch/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2020 The Rubik Filtered Project Authors (https://github.com/NaN-xyz/Rubik-Filtered)",
+   "faces": [
+    {
+     "file": "rubik-glitch/RubikGlitch-Regular.ttf",
+     "bytes": 407176,
+     "name": "Rubik Glitch",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 774,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2020 The Rubik Filtered Project Authors (https://github.com/NaN-xyz/Rubik-Filtered)",
+     "designer": "Hubert and Fischer, NaN",
+     "version": "Version 2.200",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL",
+     "license_url": "https://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 407176,
+   "credit_zh": "字体 Rubik Glitch：NaN、Luke Prowse（SIL Open Font License 1.1）",
+   "credit_en": "Font: Rubik Glitch by NaN, Luke Prowse — SIL Open Font License 1.1"
+  },
+  "Tilt Prism": {
+   "family": "Tilt Prism",
+   "slug": "tilt-prism",
+   "group": "decorative",
+   "fits": "棱镜描边字，可做 3D 倾斜（XROT/YROT 轴）：标题翻转、伪 3D 转动动画",
+   "category": "Display",
+   "tags": [
+    "/Expressive/Artistic",
+    "/Expressive/Rugged",
+    "/Expressive/Vintage",
+    "/Seasonal/Kwanzaa"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Tilt+Prism",
+   "designers": [
+    "Andy Clymer"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "tilt-prism/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2019 The Tilt Project Authors (https://github.com/googlefonts/Tilt-Fonts)",
+   "faces": [
+    {
+     "file": "tilt-prism/TiltPrism-Regular-VariableFont_XROT-YROT.ttf",
+     "bytes": 1048404,
+     "name": "Tilt Prism",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [
+      {
+       "tag": "XROT",
+       "min": -45.0,
+       "def": 0.0,
+       "max": 45.0
+      },
+      {
+       "tag": "YROT",
+       "min": -45.0,
+       "def": 0.0,
+       "max": 45.0
+      }
+     ],
+     "glyphs": 652,
+     "color": null,
+     "hanzi": 0,
+     "cov": {
+      "latin": 62,
+      "gb1": 0,
+      "gb2": 0,
+      "big5": 0,
+      "jis1": 0,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2019 The Tilt Project Authors (https://github.com/googlefonts/Tilt-Fonts)",
+     "designer": "Andy Clymer",
+     "version": "Version 1.000",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {
+    "XROT": [
+     -45.0,
+     0.0,
+     45.0
+    ],
+    "YROT": [
+     -45.0,
+     0.0,
+     45.0
+    ]
+   },
+   "color": null,
+   "hanzi": 0,
+   "scripts": [
+    "拉丁"
+   ],
+   "bytes": 1048404,
+   "credit_zh": "字体 Tilt Prism：Andy Clymer（SIL Open Font License 1.1）",
+   "credit_en": "Font: Tilt Prism by Andy Clymer — SIL Open Font License 1.1"
+  },
+  "Noto Sans SC": {
+   "family": "Noto Sans SC",
+   "slug": "noto-sans-sc",
+   "group": "cjk-sans",
+   "fits": "思源黑体（同一设计），字重 100–900 可变：数据面板、字幕、正文的默认中文字体。Win11 自带同名字体，QA 看 T3.fonts.report()",
+   "category": "Sans Serif",
+   "tags": [
+    "/Expressive/Business",
+    "/Expressive/Calm",
+    "/Expressive/Competent",
+    "/Expressive/Loud",
+    "/Sans/Humanist"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Noto+Sans+SC",
+   "designers": [
+    "Adobe（西塚涼子 Ryoko Nishizuka、Paul D. Hunt、Sandoll）",
+    "Google"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "noto-sans-sc/OFL.txt",
+   "rfn": [
+    "Source"
+   ],
+   "copyright": "(c) 2014-2021 Adobe (http://www.adobe.com/), with Reserved Font Name 'Source'.",
+   "faces": [
+    {
+     "file": "noto-sans-sc/NotoSansSC-VariableFont_wght.ttf",
+     "bytes": 17711448,
+     "name": "Noto Sans SC",
+     "weight": "100 900",
+     "style": "normal",
+     "stretch": null,
+     "axes": [
+      {
+       "tag": "wght",
+       "min": 100.0,
+       "def": 100.0,
+       "max": 900.0
+      }
+     ],
+     "glyphs": 30898,
+     "color": null,
+     "hanzi": 27558,
+     "cov": {
+      "latin": 62,
+      "gb1": 3755,
+      "gb2": 3008,
+      "big5": 5401,
+      "jis1": 2965,
+      "digits": 10,
+      "kana": 184,
+      "hangul": 0
+     },
+     "copyright": "(c) 2014-2021 Adobe (http://www.adobe.com/), with Reserved Font Name 'Source'.",
+     "designer": "Ryoko NISHIZUKA 西塚涼子 (kana, bopomofo & ideographs); Paul D. Hunt (Latin, Greek & Cyrillic); Sandoll Communications 산돌커뮤니케이션, Soo-young JANG 장수영 & Joo-yeon KANG 강주연 (hangul elements, letters & syllables)",
+     "version": "Version 2.004-H2;hotconv 1.0.118;makeotfexe 2.5.65603",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "100–900 可变",
+   "styles": [
+    "normal"
+   ],
+   "axes": {
+    "wght": [
+     100.0,
+     100.0,
+     900.0
+    ]
+   },
+   "color": null,
+   "hanzi": 27558,
+   "scripts": [
+    "拉丁",
+    "简中（GB2312 全）",
+    "繁中",
+    "日文"
+   ],
+   "bytes": 17711448,
+   "credit_zh": "字体 Noto Sans SC：Adobe（西塚涼子 Ryoko Nishizuka、Paul D. Hunt、Sandoll）、Google（SIL Open Font License 1.1）",
+   "credit_en": "Font: Noto Sans SC by Adobe (Ryoko Nishizuka, Paul D. Hunt, Sandoll), Google — SIL Open Font License 1.1",
+   "designers_en": [
+    "Adobe (Ryoko Nishizuka, Paul D. Hunt, Sandoll)",
+    "Google"
+   ]
+  },
+  "Smiley Sans": {
+   "family": "Smiley Sans",
+   "slug": "smiley-sans",
+   "group": "cjk-sans",
+   "fits": "得意黑：自带斜度的窄长黑体，B 站科技区最常见的标题字。中文快切字卡和排名标题的首选（只有一个字重，别写 bold）",
+   "category": "",
+   "tags": [],
+   "source": "GitHub Releases：atelier-anchor/smiley-sans",
+   "source_url": "https://github.com/atelier-anchor/smiley-sans",
+   "designers": [
+    "atelierAnchor（oooooohmygosh、Nagisa Chen、Janine Sui、Heda Shi、Jian Li）"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "smiley-sans/OFL.txt",
+   "rfn": [
+    "Smiley",
+    "得意黑"
+   ],
+   "copyright": "Copyright © 2022–2024 atelierAnchor. All rights reserved.",
+   "faces": [
+    {
+     "file": "smiley-sans/SmileySans-Oblique.ttf",
+     "bytes": 2629764,
+     "name": "Smiley Sans",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 9497,
+     "color": null,
+     "hanzi": 8136,
+     "cov": {
+      "latin": 62,
+      "gb1": 3755,
+      "gb2": 3008,
+      "big5": 3404,
+      "jis1": 1940,
+      "digits": 10,
+      "kana": 174,
+      "hangul": 0
+     },
+     "copyright": "Copyright © 2022–2024 atelierAnchor. All rights reserved.",
+     "designer": "oooooohmygosh, Nagisa Chen, Janine Sui, Heda Shi, Jian Li",
+     "version": "Version 2.0.1",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This Font Software is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDIT",
+     "license_url": "https://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 8136,
+   "scripts": [
+    "拉丁",
+    "简中（GB2312 全）",
+    "繁中缺字（3404/5401）",
+    "日文（第一水准汉字 1940/2965）"
+   ],
+   "bytes": 2629764,
+   "credit_zh": "字体 Smiley Sans：atelierAnchor（oooooohmygosh、Nagisa Chen、Janine Sui、Heda Shi、Jian Li）（SIL Open Font License 1.1）",
+   "credit_en": "Font: Smiley Sans by atelierAnchor (oooooohmygosh, Nagisa Chen, Janine Sui, Heda Shi, Jian Li) — SIL Open Font License 1.1",
+   "designers_en": [
+    "atelierAnchor (oooooohmygosh, Nagisa Chen, Janine Sui, Heda Shi, Jian Li)"
+   ]
+  },
+  "Noto Serif SC": {
+   "family": "Noto Serif SC",
+   "slug": "noto-serif-sc",
+   "group": "cjk-serif",
+   "fits": "思源宋体（同一设计），字重 200–900 可变：中文大标题的宋体版、纪录片或文学感字幕，Black 字重可做冲击感宋体。Win11 自带同名字体，QA 看 T3.fonts.report()",
+   "category": "Serif",
+   "tags": [
+    "/Expressive/Business",
+    "/Expressive/Calm",
+    "/Expressive/Competent",
+    "/Expressive/Loud",
+    "/Expressive/Sincere",
+    "/Seasonal/Lunar New Year",
+    "/Serif/Transitional"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Noto+Serif+SC",
+   "designers": [
+    "Adobe（西塚涼子 Ryoko Nishizuka、Frank Grießhammer、张文龙 Wenlong Zhang、Sandoll）",
+    "Google"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "noto-serif-sc/OFL.txt",
+   "rfn": [],
+   "copyright": "(c) 2017-2024 Adobe (http://www.adobe.com/).",
+   "faces": [
+    {
+     "file": "noto-serif-sc/NotoSerifSC-VariableFont_wght.ttf",
+     "bytes": 25053412,
+     "name": "Noto Serif SC",
+     "weight": "200 900",
+     "style": "normal",
+     "stretch": null,
+     "axes": [
+      {
+       "tag": "wght",
+       "min": 200.0,
+       "def": 200.0,
+       "max": 900.0
+      }
+     ],
+     "glyphs": 30920,
+     "color": null,
+     "hanzi": 27584,
+     "cov": {
+      "latin": 62,
+      "gb1": 3755,
+      "gb2": 3008,
+      "big5": 5401,
+      "jis1": 2965,
+      "digits": 10,
+      "kana": 184,
+      "hangul": 0
+     },
+     "copyright": "(c) 2017-2024 Adobe (http://www.adobe.com/).",
+     "designer": "Ryoko NISHIZUKA 西塚涼子 (kana & ideographs); Frank Grießhammer (Latin, Greek & Cyrillic); Wenlong ZHANG 张文龙 (bopomofo); Sandoll Communications 산돌커뮤니케이션, Soohyun PARK 박수현, Yejin WE 위예진 & Donghoon HAN 한동훈 (hangul elements, letters & syllables)",
+     "version": "Version 2.003-H1;hotconv 1.1.1;makeotfexe 2.6.0",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://openfontlicense.org",
+     "license_url": "https://openfontlicense.org"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "200–900 可变",
+   "styles": [
+    "normal"
+   ],
+   "axes": {
+    "wght": [
+     200.0,
+     200.0,
+     900.0
+    ]
+   },
+   "color": null,
+   "hanzi": 27584,
+   "scripts": [
+    "拉丁",
+    "简中（GB2312 全）",
+    "繁中",
+    "日文"
+   ],
+   "bytes": 25053412,
+   "credit_zh": "字体 Noto Serif SC：Adobe（西塚涼子 Ryoko Nishizuka、Frank Grießhammer、张文龙 Wenlong Zhang、Sandoll）、Google（SIL Open Font License 1.1）",
+   "credit_en": "Font: Noto Serif SC by Adobe (Ryoko Nishizuka, Frank Grießhammer, Wenlong Zhang, Sandoll), Google — SIL Open Font License 1.1",
+   "designers_en": [
+    "Adobe (Ryoko Nishizuka, Frank Grießhammer, Wenlong Zhang, Sandoll)",
+    "Google"
+   ]
+  },
+  "Zhuque Fangsong": {
+   "family": "Zhuque Fangsong",
+   "slug": "zhuque-fangsong",
+   "group": "cjk-serif",
+   "fits": "朱雀仿宋：古籍、公文、历史感的旁白字幕和引文，比宋体清秀。仍是技术预览版",
+   "category": "",
+   "tags": [],
+   "source": "GitHub Releases：TrionesType/zhuque",
+   "source_url": "https://github.com/TrionesType/zhuque",
+   "designers": [
+    "Junyi Yu",
+    "Yeong-sy Han",
+    "Yehang Yin",
+    "Jianqiao Li (TrionesType / JadeFoci)"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "zhuque-fangsong/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2023 JadeFoci",
+   "faces": [
+    {
+     "file": "zhuque-fangsong/ZhuqueFangsong-Regular.ttf",
+     "bytes": 8824084,
+     "name": "Zhuque Fangsong (technical preview)",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 13805,
+     "color": null,
+     "hanzi": 11088,
+     "cov": {
+      "latin": 62,
+      "gb1": 3755,
+      "gb2": 3008,
+      "big5": 5287,
+      "jis1": 2965,
+      "digits": 10,
+      "kana": 178,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2023 JadeFoci",
+     "designer": "Junyi Yu, Yeong-sy Han, Yehang Yin, Jianqiao Li",
+     "version": "Version 0.212",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 11088,
+   "scripts": [
+    "拉丁",
+    "简中（GB2312 全）",
+    "繁中缺字（5287/5401）",
+    "日文"
+   ],
+   "bytes": 8824084,
+   "credit_zh": "字体 Zhuque Fangsong：Junyi Yu、Yeong-sy Han、Yehang Yin、Jianqiao Li (TrionesType / JadeFoci)（SIL Open Font License 1.1）",
+   "credit_en": "Font: Zhuque Fangsong by Junyi Yu, Yeong-sy Han, Yehang Yin, Jianqiao Li (TrionesType / JadeFoci) — SIL Open Font License 1.1"
+  },
+  "Ma Shan Zheng": {
+   "family": "Ma Shan Zheng",
+   "slug": "ma-shan-zheng",
+   "group": "cjk-calligraphy",
+   "fits": "马善政楷书毛笔：武侠、国风、书法题字、角色称号。覆盖 GB2312，生僻字会缺",
+   "category": "Handwriting",
+   "tags": [
+    "/Expressive/Active",
+    "/Expressive/Artistic",
+    "/Expressive/Excited",
+    "/Expressive/Vintage",
+    "/Script/Handwritten",
+    "/Seasonal/Lunar New Year",
+    "/Theme/Brush"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Ma+Shan+Zheng",
+   "designers": [
+    "Ma ShanZheng"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "ma-shan-zheng/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2018 The MaShanZheng Project Authors (https://github.com/googlefonts/mashanzheng)",
+   "faces": [
+    {
+     "file": "ma-shan-zheng/MaShanZheng-Regular.ttf",
+     "bytes": 5857936,
+     "name": "Ma Shan Zheng",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 7017,
+     "color": null,
+     "hanzi": 6763,
+     "cov": {
+      "latin": 62,
+      "gb1": 3755,
+      "gb2": 3008,
+      "big5": 3328,
+      "jis1": 1880,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2018 The MaShanZheng Project Authors (https://github.com/googlefonts/mashanzheng)",
+     "designer": "ZhongQi",
+     "version": "Version 2.003",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://openfontlicense.org",
+     "license_url": "https://openfontlicense.org"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 6763,
+   "scripts": [
+    "拉丁",
+    "简中（GB2312 全）",
+    "繁中缺字（3328/5401）"
+   ],
+   "bytes": 5857936,
+   "credit_zh": "字体 Ma Shan Zheng：Ma ShanZheng（SIL Open Font License 1.1）",
+   "credit_en": "Font: Ma Shan Zheng by Ma ShanZheng — SIL Open Font License 1.1"
+  },
+  "Zhi Mang Xing": {
+   "family": "Zhi Mang Xing",
+   "slug": "zhi-mang-xing",
+   "group": "cjk-calligraphy",
+   "fits": "志莽行书：潇洒的行书题字、国风片头、印章旁的落款",
+   "category": "Handwriting",
+   "tags": [
+    "/Expressive/Active",
+    "/Expressive/Artistic",
+    "/Expressive/Vintage",
+    "/Script/Handwritten",
+    "/Seasonal/Lunar New Year"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Zhi+Mang+Xing",
+   "designers": [
+    "Wei Zhimang"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "zhi-mang-xing/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2018 The ZhiMangXing Project Authors (https://github.com/googlefonts/zhimangxing)",
+   "faces": [
+    {
+     "file": "zhi-mang-xing/ZhiMangXing-Regular.ttf",
+     "bytes": 4052388,
+     "name": "Zhi Mang Xing",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 7016,
+     "color": null,
+     "hanzi": 6763,
+     "cov": {
+      "latin": 62,
+      "gb1": 3755,
+      "gb2": 3008,
+      "big5": 3328,
+      "jis1": 1880,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2018 The ZhiMangXing Project Authors (https://github.com/googlefonts/zhimangxing)",
+     "designer": "ZhongQi",
+     "version": "Version 2.001",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 6763,
+   "scripts": [
+    "拉丁",
+    "简中（GB2312 全）",
+    "繁中缺字（3328/5401）"
+   ],
+   "bytes": 4052388,
+   "credit_zh": "字体 Zhi Mang Xing：Wei Zhimang（SIL Open Font License 1.1）",
+   "credit_en": "Font: Zhi Mang Xing by Wei Zhimang — SIL Open Font License 1.1"
+  },
+  "LXGW Marker Gothic": {
+   "family": "LXGW Marker Gothic",
+   "slug": "lxgw-marker-gothic",
+   "group": "cjk-display",
+   "fits": "霞鹜漫黑：马克笔黑体，适合手绘批注、漫画对白框、吐槽字幕（在线目录只标了繁体，实际含简体）",
+   "category": "Sans Serif",
+   "tags": [
+    "/Expressive/Artistic",
+    "/Sans/Geometric",
+    "/Seasonal/Lunar New Year",
+    "/Theme/Brush"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/LXGW+Marker+Gothic",
+   "designers": [
+    "LXGW"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "lxgw-marker-gothic/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2024 The LXGW Marker Gothic Project Authors (https://github.com/lxgw/LxgwMarkerGothic)",
+   "faces": [
+    {
+     "file": "lxgw-marker-gothic/LXGWMarkerGothic-Regular.ttf",
+     "bytes": 3187064,
+     "name": "LXGW Marker Gothic",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 15569,
+     "color": null,
+     "hanzi": 12904,
+     "cov": {
+      "latin": 62,
+      "gb1": 3755,
+      "gb2": 3008,
+      "big5": 5401,
+      "jis1": 2965,
+      "digits": 10,
+      "kana": 183,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2024 The LXGW Marker Gothic Project Authors (https://github.com/lxgw/LxgwMarkerGothic)",
+     "designer": "",
+     "version": "Version 1.001",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://openfontlicense.org",
+     "license_url": "https://openfontlicense.org"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 12904,
+   "scripts": [
+    "拉丁",
+    "简中（GB2312 全）",
+    "繁中",
+    "日文"
+   ],
+   "bytes": 3187064,
+   "credit_zh": "字体 LXGW Marker Gothic：LXGW（SIL Open Font License 1.1）",
+   "credit_en": "Font: LXGW Marker Gothic by LXGW — SIL Open Font License 1.1"
+  },
+  "ZCOOL KuaiLe": {
+   "family": "ZCOOL KuaiLe",
+   "slug": "zcool-kuaile",
+   "group": "cjk-display",
+   "fits": "站酷快乐体：卡通活泼字，用于轻松向花字、弹幕式字卡",
+   "category": "Sans Serif",
+   "tags": [
+    "/Expressive/Playful",
+    "/Expressive/Rugged"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/ZCOOL+KuaiLe",
+   "designers": [
+    "Liu Bingke",
+    "Yang Kang",
+    "Wu Shaojie"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "zcool-kuaile/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2018 The ZCOOL KuaiLe Project Authors (https://github.com/googlefonts/zcool-kuaile)",
+   "faces": [
+    {
+     "file": "zcool-kuaile/ZCOOLKuaiLe-Regular.ttf",
+     "bytes": 1514968,
+     "name": "ZCOOL KuaiLe",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 7055,
+     "color": null,
+     "hanzi": 6766,
+     "cov": {
+      "latin": 62,
+      "gb1": 3755,
+      "gb2": 3008,
+      "big5": 3329,
+      "jis1": 1881,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2018 The ZCOOL KuaiLe Project Authors (https://github.com/googlefonts/zcool-kuaile)",
+     "designer": "Lui Bingke",
+     "version": "Version 2.001",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://openfontlicense.org",
+     "license_url": "https://openfontlicense.org"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 6766,
+   "scripts": [
+    "拉丁",
+    "简中（GB2312 全）",
+    "繁中缺字（3329/5401）"
+   ],
+   "bytes": 1514968,
+   "credit_zh": "字体 ZCOOL KuaiLe：Liu Bingke、Yang Kang、Wu Shaojie（SIL Open Font License 1.1）",
+   "credit_en": "Font: ZCOOL KuaiLe by Liu Bingke, Yang Kang, Wu Shaojie — SIL Open Font License 1.1"
+  },
+  "ZCOOL XiaoWei": {
+   "family": "ZCOOL XiaoWei",
+   "slug": "zcool-xiaowei",
+   "group": "cjk-display",
+   "fits": "站酷小薇 LOGO 体：带衬线味的标题字，适合文艺或品牌感标题",
+   "category": "Sans Serif",
+   "tags": [
+    "/Expressive/Calm",
+    "/Seasonal/Lunar New Year"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/ZCOOL+XiaoWei",
+   "designers": [
+    "Li Dawei"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "zcool-xiaowei/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2018 The ZCOOL XiaoWei Project Authors (https://www.github.com/googlefonts/xiaowei)",
+   "faces": [
+    {
+     "file": "zcool-xiaowei/ZCOOLXiaoWei-Regular.ttf",
+     "bytes": 6302244,
+     "name": "ZCOOL XiaoWei",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 7019,
+     "color": null,
+     "hanzi": 6763,
+     "cov": {
+      "latin": 62,
+      "gb1": 3755,
+      "gb2": 3008,
+      "big5": 3328,
+      "jis1": 1880,
+      "digits": 10,
+      "kana": 0,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2018 The ZCOOL XiaoWei Project Authors (https://www.github.com/googlefonts/xiaowei)",
+     "designer": "David Lee",
+     "version": "Version 1.000",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL",
+     "license_url": "http://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 6763,
+   "scripts": [
+    "拉丁",
+    "简中（GB2312 全）",
+    "繁中缺字（3328/5401）"
+   ],
+   "bytes": 6302244,
+   "credit_zh": "字体 ZCOOL XiaoWei：Li Dawei（SIL Open Font License 1.1）",
+   "credit_en": "Font: ZCOOL XiaoWei by Li Dawei — SIL Open Font License 1.1"
+  },
+  "Dela Gothic One": {
+   "family": "Dela Gothic One",
+   "slug": "dela-gothic-one",
+   "group": "jp-display",
+   "fits": "超粗日文黑体：日系动漫或游戏片头大字。缺不少简体字，排中文前先查缺字",
+   "category": "Display",
+   "tags": [
+    "/Expressive/Rugged",
+    "/Sans/Grotesque"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Dela+Gothic+One",
+   "designers": [
+    "artakana"
+   ],
+   "license": "OFL-1.1",
+   "license_file": "dela-gothic-one/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2020 The Dela Gothic Project Authors (https://github.com/syakuzen/DelaGothic)",
+   "faces": [
+    {
+     "file": "dela-gothic-one/DelaGothicOne-Regular.ttf",
+     "bytes": 2487960,
+     "name": "Dela Gothic One",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 9168,
+     "color": null,
+     "hanzi": 7673,
+     "cov": {
+      "latin": 62,
+      "gb1": 2471,
+      "gb2": 1257,
+      "big5": 4757,
+      "jis1": 2965,
+      "digits": 10,
+      "kana": 179,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2020 The Dela Gothic Project Authors (https://github.com/syakuzen/DelaGothic)",
+     "designer": "artakana",
+     "version": "Version 1.005",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL",
+     "license_url": "https://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 7673,
+   "scripts": [
+    "拉丁",
+    "简中缺字（一级字 2471/3755）",
+    "繁中缺字（4757/5401）",
+    "日文"
+   ],
+   "bytes": 2487960,
+   "credit_zh": "字体 Dela Gothic One：artakana（SIL Open Font License 1.1）",
+   "credit_en": "Font: Dela Gothic One by artakana — SIL Open Font License 1.1"
+  },
+  "DotGothic16": {
+   "family": "DotGothic16",
+   "slug": "dotgothic16",
+   "group": "jp-display",
+   "fits": "日文点阵像素：日式 RPG 对话框、街机日文提示。中文像素字用 Fusion Pixel",
+   "category": "Sans Serif",
+   "tags": [
+    "/Expressive/Vintage",
+    "/Sans/Glyphic",
+    "/Theme/Pixel",
+    "/Theme/Techno"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/DotGothic16",
+   "designers": [
+    "Fontworks Inc."
+   ],
+   "license": "OFL-1.1",
+   "license_file": "dotgothic16/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2020 The DotGothic16 Project Authors (https://github.com/fontworks-fonts/DotGothic16/)",
+   "faces": [
+    {
+     "file": "dotgothic16/DotGothic16-Regular.ttf",
+     "bytes": 2027048,
+     "name": "DotGothic16",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 9174,
+     "color": null,
+     "hanzi": 6715,
+     "cov": {
+      "latin": 62,
+      "gb1": 2389,
+      "gb2": 996,
+      "big5": 4496,
+      "jis1": 2965,
+      "digits": 10,
+      "kana": 180,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2020 The DotGothic16 Project Authors (https://github.com/fontworks-fonts/DotGothic16/)",
+     "designer": "Fontworks Inc.",
+     "version": "Version 1.100",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL",
+     "license_url": "https://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 6715,
+   "scripts": [
+    "拉丁",
+    "简中缺字（一级字 2389/3755）",
+    "繁中缺字（4496/5401）",
+    "日文"
+   ],
+   "bytes": 2027048,
+   "credit_zh": "字体 DotGothic16：Fontworks Inc.（SIL Open Font License 1.1）",
+   "credit_en": "Font: DotGothic16 by Fontworks Inc. — SIL Open Font License 1.1"
+  },
+  "Rampart One": {
+   "family": "Rampart One",
+   "slug": "rampart-one",
+   "group": "jp-display",
+   "fits": "日文立体描边字：日系综艺或玩具感标题。缺部分简体字，只排日文",
+   "category": "Display",
+   "tags": [
+    "/Expressive/Playful",
+    "/Theme/Shaded"
+   ],
+   "source": "Google Fonts",
+   "source_url": "https://fonts.google.com/specimen/Rampart+One",
+   "designers": [
+    "Fontworks Inc."
+   ],
+   "license": "OFL-1.1",
+   "license_file": "rampart-one/OFL.txt",
+   "rfn": [],
+   "copyright": "Copyright 2020 The Rampart Project Authors (https://github.com/fontworks-fonts/Rampart/)",
+   "faces": [
+    {
+     "file": "rampart-one/RampartOne-Regular.ttf",
+     "bytes": 3644956,
+     "name": "Rampart One",
+     "weight": "400",
+     "style": "normal",
+     "stretch": null,
+     "axes": [],
+     "glyphs": 9174,
+     "color": null,
+     "hanzi": 6715,
+     "cov": {
+      "latin": 62,
+      "gb1": 2389,
+      "gb2": 996,
+      "big5": 4496,
+      "jis1": 2965,
+      "digits": 10,
+      "kana": 180,
+      "hangul": 0
+     },
+     "copyright": "Copyright 2020 The Rampart Project Authors (https://github.com/fontworks-fonts/Rampart/)",
+     "designer": "Fontworks Inc.",
+     "version": "Version 1.100",
+     "license_desc": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL",
+     "license_url": "https://scripts.sil.org/OFL"
+    }
+   ],
+   "added": "2026-11-06",
+   "note": "",
+   "weights": "400",
+   "styles": [
+    "normal"
+   ],
+   "axes": {},
+   "color": null,
+   "hanzi": 6715,
+   "scripts": [
+    "拉丁",
+    "简中缺字（一级字 2389/3755）",
+    "繁中缺字（4496/5401）",
+    "日文"
+   ],
+   "bytes": 3644956,
+   "credit_zh": "字体 Rampart One：Fontworks Inc.（SIL Open Font License 1.1）",
+   "credit_en": "Font: Rampart One by Fontworks Inc. — SIL Open Font License 1.1"
+  }
+ }
+}

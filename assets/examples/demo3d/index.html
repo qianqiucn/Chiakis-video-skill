@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>3D demo</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #000; color: #ccc; font-family: "Microsoft YaHei", "Segoe UI", sans-serif; overflow: hidden; }
+  #wrap { position: relative; margin: 0 auto; overflow: hidden; }
+  #stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; background: #000; overflow: hidden; }
+  #bar { height: 56px; display: flex; align-items: center; gap: 12px; padding: 0 16px; box-sizing: border-box; }
+  #bar button { background: #222; color: #eee; border: 1px solid #444; padding: 6px 16px; cursor: pointer; }
+  #t3-seek { flex: 1; }
+  #t3-time { font: 13px Consolas, monospace; min-width: 300px; }
+  #credit { font-size: 11px; color: #666; }
+  body.bare #bar { display: none; }
+</style>
+<!-- timeline range in seconds (replica: the SOURCE video's absolute seconds) -->
+<!-- optional: audio: 'assets/music.m4a', audioOffset: <second in the file that plays at start> -->
+<script>window.T3_CONFIG = { fps: 24, start: 0, end: 7 };</script>
+</head>
+<body>
+<div id="wrap"><div id="stage"></div></div>
+<div id="bar">
+  <button id="t3-play">播放</button>
+  <input id="t3-seek" type="range">
+  <span id="t3-time"></span>
+  <span id="credit">3D 方案演示 · 角色 ZipZipPipe 女仆鲸鱼娘（溟月 by 上善无形，CC BY-NC-SA 4.0） · 空格播放/暂停，←→逐帧，Shift+←→ 跳 1 秒</span>
+</div>
+<script src="engine.js"></script>
+<!-- one classic <script> per segment file, in any order (z decides stacking) -->
+<script src="lib/multiplane.js"></script>
+<script src="lib/depth3d.js"></script>
+<script src="assets/tex/E.tex.js"></script>
+<script src="assets/tex/E_depth.tex.js"></script>
+<script src="segments/demo.js"></script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.nbc
+*.nbi
+.venv/
+venv/
+
+# Node / Build / Renders
+node_modules/
+*.mp4
+*.mov
+*.mkv
+*.wav
+*.flac
+*.m4a
+out/
+work/
+qa/
+_frames_*/
+
+# Local font cache & logs
+assets/fonts/_cache/
+assets/fonts/_index/
+assets/fonts/_logs/
+assets/fonts/specimen/
+
+# OS & Editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.skill

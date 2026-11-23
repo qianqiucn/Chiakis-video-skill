@@ -1,0 +1,17 @@
+{
+  "name": "chiakis-video-skill",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Chiaki's-video-skill: Deterministic HTML/JS/Canvas 2D motion graphics, fast-cut PV/MV, and kinetic typography studio skill for AI coding agents.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "doctor": "python -X utf8 scripts/doctor.py",
+    "test": "node assets/examples/motion/run_tests.mjs",
+    "lint:library": "node scripts/motion_lint.mjs --check-library",
+    "lint:template": "node scripts/motion_lint.mjs assets/template/index.html",
+    "check": "python -X utf8 scripts/skill_check.py"
+  }
+}

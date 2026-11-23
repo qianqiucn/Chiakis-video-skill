@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>__TITLE__</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #000; color: #ccc; font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", sans-serif; overflow: hidden; }
+  #wrap { position: relative; margin: 0 auto; overflow: hidden; }
+  #stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; background: #000; overflow: hidden; }
+  #bar { height: 56px; display: flex; align-items: center; gap: 12px; padding: 0 16px; box-sizing: border-box; }
+  #bar button { background: #222; color: #eee; border: 1px solid #444; padding: 6px 16px; cursor: pointer; }
+  #t3-seek { flex: 1; }
+  #t3-time { font: 13px Consolas, "SF Mono", monospace; min-width: 300px; }
+  #credit { font-size: 11px; color: #666; }
+  body.bare #bar { display: none; }
+</style>
+<!-- timeline range in seconds (study replica: the source video's absolute seconds) -->
+<!-- optional: audio: 'assets/music.m4a', audioOffset: <second in the file that plays at start>
+     check modes: bpm: 120, beatOffset: <timeline sec of beat 0>, accents: [8.0, ...]  -> open with ?beats=1 / ?perf=1 -->
+<script>window.T3_CONFIG = { fps: 24, start: 0, end: 5 };</script>
+</head>
+<body>
+<div id="wrap"><div id="stage"></div></div>
+<div id="bar">
+  <button id="t3-play">播放</button>
+  <input id="t3-seek" type="range">
+  <span id="t3-time"></span>
+  <span id="credit">__CREDIT__ · 空格播放/暂停，←→逐帧，Shift+←→ 跳 1 秒</span>
+</div>
+<script src="engine.js"></script>
+<!-- 2D motion library, loaded by default before any segment (references/motion-library.md «Setup»):
+     GSAP 3.15.1 UMD + plugins, deterministic bridge, house curves T3.EZ, curve probes T3.motionProbe,
+     moves & kinetic type T3.mv, shutter/radial motion blur T3.blur, timing helpers (T3.twos, shake, tail),
+     and 2D character/layer staging T3.her (hair/veil wave, blink, motes).
+     Optional GSAP plugins (DrawSVGPlugin, MorphSVGPlugin, MotionPathPlugin, Physics2DPlugin, TextPlugin,
+     CustomBounce, CustomWiggle) go after SplitText.min.js and before lib/gsap-bridge.js. -->
+<script src="lib/gsap/gsap.min.js"></script>
+<script src="lib/gsap/CustomEase.min.js"></script>
+<script src="lib/gsap/SplitText.min.js"></script>
+<script src="lib/gsap-bridge.js"></script>
+<script src="lib/motion/ez.js"></script>
+<script src="lib/motion/probe.js"></script>
+<script src="lib/motion/moves.js"></script>
+<script src="lib/motion/blur.js"></script>
+<script src="lib/motion/timing.js"></script>
+<script src="lib/motion/her2d.js"></script>
+<!-- bundled local fonts: never write remote @font-face or Google Fonts <link> tags;
+     run `python -X utf8 scripts/fonts.py use <project> "Smiley Sans" "Syne"` to inject lib/fonts.js + assets/fonts/fontpack.js -->
+<!-- optional 2D / 2.5D libs (every lib extends window.T3; load AFTER engine.js and read each header first):
+<script src="lib/multiplane.js"></script>   CSS 3D multi-plane parallax
+<script src="lib/depth3d.js"></script>      WebGL2 single-image + depth map 2.5D push
+<script src="lib/meshwarp.js"></script>     2D deformable mesh grid (hair/cloth/ribbons; required by T3.her.warp2)
+<script src="lib/sequence.js"></script>     frame-exact image sequence overlay (ink/dust/light leaks)
+<script src="lib/accents.js"></script>      polygon accents + impact frames
+<script src="lib/choreo.js"></script>       code-element entrances, flicker, preglow, stencil
+<script src="lib/emblem3d.js"></script>     layered CSS 3D stand-up emblem -->
+<!-- one classic <script> per segment file, in any order (z decides stacking) -->
+<script src="segments/example.js"></script>
+</body>
+</html>
