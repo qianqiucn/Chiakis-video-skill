@@ -24,11 +24,11 @@
 <p>
   <a href="#-live-motion-preview--实机渲染动效预览">🎬 Live Demo</a> ·
   <a href="#-motion-curves--typography--曲线审计与内置素材">📐 Curves &amp; Fonts</a> ·
-  <a href="#-studio-architecture--工作室三工种流水线">🏗️ Architecture</a> ·
+  <a href="#-studio-architecture--13-步旗舰流水线">🏗️ 13-Stage Pipeline</a> ·
   <a href="#-quickstart--3-步快速上手">🚀 Quickstart</a> ·
-  <a href="#-install--unified-chiaki-command--安装与-chiaki-总指令">🧩 Install &amp; /chiaki</a> ·
-  <a href="#-blender--blender-mcp-小白安装配置指南-optional-flagship-3d">🧊 Blender &amp; MCP 小白教程</a> ·
-  <a href="#-expanding-the-font-library--按需扩展字体库">🔤 Fonts</a>
+  <a href="#-install--unified-chiaki-command--一键安装与-chiaki-总指令">🧩 Install &amp; /chiaki</a> ·
+  <a href="docs/PROMPT_TEMPLATE.md">📋 Copy-Paste Prompt</a> ·
+  <a href="#-blender--blender-mcp-小白安装配置指南-optional-flagship-3d">🧊 Blender &amp; MCP 小白教程</a>
 </p>
 
 </div>
@@ -97,22 +97,26 @@ Every bundled font is verified against its internal OpenType license table (`OFL
 
 ---
 
-## 🏗️ Studio Architecture / 工作室三工种流水线
+## 🏗️ Studio Architecture / 13 步旗舰流水线
 
-Instead of letting one agent improvise everything in a single pass, `Chiaki's-video-skill` enforces studio division of labor with verbatim personas (`references/personas.md`), strict file ownership (`references/crafts.md`), and physically read-only review:
+Instead of letting one agent improvise everything in a single pass, `Chiaki's-video-skill` enforces a strict **13-stage studio pipeline** with verbatim personas (`references/personas.md`), pluggable art generation (`references/art-pipeline.md`), strict file ownership (`references/crafts.md`), and physically read-only review + independent scoring:
 
 ```mermaid
 flowchart LR
-    A["1. Brief & Audio<br/>beats.py · onsets.py"] --> B["2. Pitch Meeting<br/>媒介 · 演出 · 摄影 → 创意总监"]
-    B --> C{"3. Parallel 3-Craft Build"}
-    C --> C1["剪辑合成师 (z=10/60)<br/>lib/motion · GSAP · shutter"]
-    C --> C2["平面设计师 (z=20)<br/>fonts.py · per-glyph lyrics"]
-    C --> C3["3D 工程师 (optional)<br/>relief · projection · assets3d · MCP"]
-    C1 & C2 & C3 --> D["4. Sound Master<br/>mgaudio −14 LUFS"]
-    D --> E["5. Mechanical QA & Curves<br/>qa.mjs · motion_lint --curves"]
-    E --> F["6. Read-Only 3-Lens Review<br/>规矩 · 技术 · 剪辑感 + 独立打分"]
-    F --> G["7. 1080p / 2K FLAC Delivery<br/>render_fast.mjs --2k"]
+    A["1. Brief & Beats<br/>beats.py · onsets.py"] --> B["2. 3-Angle Pitch<br/>媒介 · 演出 · 摄影 → 创意总监"]
+    B --> C["3. Shot Table & Gate A<br/>锁分镜 · 锁 art_manifest"]
+    C --> D["4. Pluggable Art Stage<br/>自有API · Gemini · Codex · 自备图"]
+    D --> E{"5. Parallel 3-Craft Build"}
+    E --> E1["剪辑合成师 (z=10/60)<br/>lib/motion · GSAP · shutter"]
+    E --> E2["平面设计师 (z=20)<br/>fonts.py · per-glyph lyrics"]
+    E --> E3["3D 工程师 (optional)<br/>relief · projection · assets3d · MCP"]
+    E1 & E2 & E3 --> F["6. Self-Check & Master<br/>Gate B1 · mgaudio −14 LUFS"]
+    F --> G["7. 3-Lens Review → V1 Render<br/>规矩·技术·剪辑感 → 一版带声渲染"]
+    G --> H["8. Independent 7-Dim Score<br/>只读评委 ≥8/10 · polish_rerender"]
+    H --> I["9. Polish → QC → Re-Render → Gate B2<br/>1080p + 2K FLAC + 开源鸣谢"]
 ```
+
+> 📋 **开箱即用满血提示词表**：打开 **[`docs/PROMPT_TEMPLATE.md`](docs/PROMPT_TEMPLATE.md)**，填完顶部需求表格即可整段复制粘贴给 `/chiaki`（Antigravity / Claude Code）或 `$chiaki`（Codex）直接拉满全部 13 步工序！
 
 ---
 
@@ -155,26 +159,28 @@ python -X utf8 scripts/run_queue.py web --lane demo -- node scripts/motion_lint.
 
 ---
 
-## 🧩 Install & Unified `/chiaki` Command / 安装与 `/chiaki` 总指令
+## 🧩 Install & Unified `/chiaki` Command / 一键安装与 `/chiaki` 总指令
 
-One single slash command **`/chiaki`** drives the entire studio without cluttering your command menu or colliding with other video skills:
+One single slash command (**`/chiaki`** on Antigravity / Claude Code, **`$chiaki`** on Codex) drives the entire 13-stage studio without cluttering your command menu or colliding with other video skills:
 
 | Command | Action |
 |---|---|
-| `/chiaki <想法/歌名>` or `/chiaki new` | Start a new film (doctor → beat/onset grid → pitch meeting → 3-craft build) |
+| `/chiaki <想法>` or `$chiaki new` | Start a new film (full 13-stage pipeline: beats → 3-angle pitch → shot table → Gate A → art → 3-craft build → master → review → render → score → polish → re-render → Gate B2) |
+| `/chiaki art <project>` | Initialize, run, or verify pluggable Art Stage (`scripts/art_gen.py`: `user_files` / `gemini` / `codex` / `custom_api` / `code_only`) |
 | `/chiaki fonts [query / project]` | Search 59 bundled fonts / 1,900+ Google Fonts, check missing glyphs & pack WOFF2 |
 | `/chiaki 3d <需求>` or `/chiaki relief <img.png>` | Blender 2.5D depth relief, camera projection dolly, built sets, free 3D assets & MCP look-dev |
 | `/chiaki preview [start end]` | Static `motion_lint` → 720p MP4 preview + SVG curve sheet + contact sheet |
 | `/chiaki review` | Gate B1 `qa.mjs` → 3-lens read-only review + verifiers → targeted fix → QC |
-| `/chiaki deliver` | `mgaudio` −14 LUFS master → 1080p/2K FLAC → independent 7-dim scorecard → font & 3D credits |
+| `/chiaki deliver` | `mgaudio` −14 LUFS master → V1 render → independent 7-dim scorecard → polish + QC → V2 2K FLAC re-render → Gate B2 & credits |
 | `/chiaki status` | Read-only project progress, render queue status & `doctor.py` check (incl. Blender / MCP) |
 
-| Platform | How to Install | Notes |
+| Platform | One-Command Install (`scripts/install.py` auto-resolves `<SKILL_DIR>`) | Installed Command |
 |---|---|---|
-| **Antigravity (Plugin)** | `python -X utf8 scripts/install_agy_plugin.py` | Installs `skills/chiaki/SKILL.md` (`/chiaki`), `skills/chiakis-video-skill/`, `rules/AGENTS.md`, `agents/`, `assets/logo.svg`, and resolved `hooks.json` |
-| **Claude Code** | `cp -r Chiakis-video-skill ~/.claude/skills/chiakis-video-skill` + `cp Chiakis-video-skill/commands/chiaki/SKILL.md ~/.claude/commands/chiaki.md` | Activates both the skill and `/chiaki` slash command |
-| **Codex** | `cp -r Chiakis-video-skill ~/.codex/skills/chiakis-video-skill` + `cp -r Chiakis-video-skill/commands/chiaki ~/.codex/skills/chiaki` | Activates both the skill and `$chiaki` command |
-| **claude.ai / `.skill` zip** | Download from [GitHub Releases](https://github.com/qianqiucn/Chiakis-video-skill/releases) or run `python -X utf8 scripts/pack_skill.py --lite` | `--lite` stays `≤ 200` files (`~0.6 MB`); fetch fonts on demand via `scripts/fonts.py` |
+| **Antigravity (Plugin)** | `python -X utf8 scripts/install.py --target antigravity` | `/chiaki` (`~/.gemini/config/plugins/chiakis-video-skill/`) |
+| **Codex** | `python -X utf8 scripts/install.py --target codex` | `$chiaki` (`~/.codex/skills/chiaki/` + `chiakis-video-skill/`) |
+| **Claude Code** | `python -X utf8 scripts/install.py --target claude` | `/chiaki` (`~/.claude/commands/chiaki.md` + `skills/chiakis-video-skill/`) |
+| **All Three at Once** | `python -X utf8 scripts/install.py --target all` | Installs Antigravity + Codex + Claude Code cleanly |
+| **claude.ai / `.skill` zip** | Download from [GitHub Releases](https://github.com/qianqiucn/Chiakis-video-skill/releases) or run `python -X utf8 scripts/pack_skill.py --lite` | `--lite` stays `≤ 200` files (`~0.65 MB`) |
 
 ---
 
@@ -346,11 +352,12 @@ python -X utf8 scripts/fonts.py use <project_dir> "Smiley Sans" "Bodoni Moda" "J
 ## 📚 Documentation & Configuration / 完整目录与环境变量
 
 <details>
-<summary><b>📖 13 Studio Craft Manuals (<code>references/</code>)</b> — click to expand</summary>
+<summary><b>📖 14 Studio Craft Manuals (<code>references/</code>)</b> — click to expand</summary>
 
 | File | Focus |
 |---|---|
 | [`house-style.md`](references/house-style.md) | Creative brief, fixed goals vs breakable defaults, studio hierarchy |
+| [`art-pipeline.md`](references/art-pipeline.md) | Pluggable Stage 5 Art & Asset generation (`art_gen.py`: `user_files` / `gemini` / `codex` / `custom_api` / `code_only`) |
 | [`style-grammar.md`](references/style-grammar.md) | Beat grids, 7 Canvas PV transition families, hype / MAD / AE soft Bezier curves, 2D hair/veil staging, exact `Posterize Time` stepping |
 | [`motion-library.md`](references/motion-library.md) | 57 indexed motion IDs (`LIB` / `EXISTING` / `PROSE`), motion sheets & SVG curve-sheet workflow |
 | [`graphic-design.md`](references/graphic-design.md) | Title builds, per-glyph kinetic lyrics, local font selection, 5-layer framing, tagline cards |
@@ -410,6 +417,8 @@ Chiakis-video-skill/
 | `CHIAKI_WEB_SLOTS` | `1` | Max simultaneous headless-Chrome jobs |
 | `CHIAKI_BLENDER_SLOTS` | `2` | Max simultaneous headless-Blender jobs |
 | `CHIAKI_MAX_WORKERS` | `2` | Max Chrome render workers per job |
+| `CHIAKI_IMAGE_API_URL` / `KEY` / `MODEL` | — | Optional OpenAI-Images-compatible custom endpoint for `scripts/art_gen.py` (`custom_api`) |
+| `GEMINI_API_KEY` / `OPENAI_API_KEY` | — | Optional API keys for `scripts/art_gen.py` (`gemini` / `codex` routes) |
 | `FREESOUND_API_KEY` | `~/.config/chiaki-video/freesound_api_key.txt` | Optional Freesound API key for recorded real-world SFX |
 
 </details>

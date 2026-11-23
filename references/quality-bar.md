@@ -1,12 +1,12 @@
 # Quality Bar — Gates, Independent Scorecard & 2D Symptom-to-Fix
 
-## Gate A — Before Building (Storyboard Check)
-Verify all five items before spawning build crafts:
-1. **Clear visual identity**: one cohesive medium, palette, and bundled font pairing per act (`script-writing.md` §0–§1).
+## Gate A — Before Art Generation & Building (Storyboard Lock)
+Verify all five items **before generating images or spawning build crafts** (prevents wasted API credits and rework):
+1. **Clear visual identity**: one cohesive non-repeating visual medium (`mg-styles.md`), palette, and bundled font pairing per act (`script-writing.md` §0–§1).
 2. **Exact audio alignment**: all major cuts, chorus drops, and lyric entries map to measured frame indices from `beats.py` / `onsets.py` using exact rationals `f0 / FPS`.
-3. **Every move grounded in `motion-library.md`**: shot table specifies library IDs, curve family (`style-grammar.md` §6b), and intentional stepped zones (`§6e`) if any.
-4. **Asset completeness**: all required bundled fonts (`fonts.py use`), CC0 textures (`assets/textures/`), and any client-supplied PNG layers exist on disk before build begins.
-5. **Clear file ownership**: brief separates `seg_*.js` / `*_handoff.js` (Edit), `*_design.js` / `board.md` (Design), and `make_audio.py` (Sound).
+3. **Every move grounded in `motion-library.md` & `shot-recipes.md`**: shot table specifies library IDs, shot recipe, curve family (`style-grammar.md` §6b), and intentional stepped zones (`§6e`) if any.
+4. **Approved art & asset manifest (`art-pipeline.md`)**: `work/art_manifest.json` declares the provider (`user_files` | `gemini` | `codex` | `custom_api` | `code_only`) for every shot, with any paid external image API explicitly authorized by the client.
+5. **Clear file ownership**: brief separates `blender/` + `rel/` + `b3d/` (3D), `seg_*.js` / `*_handoff.js` (Edit), `*_design.js` / `board.md` (Design), and `make_audio.py` (Sound).
 
 ## Gate B1 — Before Final Review (Automated Mechanical + Curve Check)
 Run through `run_queue.py`:
@@ -20,12 +20,12 @@ Every item must pass before dispatching the 3-lens final review:
 - **0 `motion_lint.mjs` FAILs**: all `// motion:` IDs valid, no hand-rolled ease functions, ≥ 3 `T3.motionProbe` curves per segment, SVG curve sheet inspected (`Q1`, peak velocity, settle, no accidental plateaus).
 - **Font check clean**: `T3.fonts.report()` shows every packed local font `status: 'loaded'`, zero remote web font requests.
 
-## Gate B2 — On Mastered Delivery (Before Handoff to Client)
-1. **Video spec**: exact duration, exact target FPS (`24` or `30`), `yuv420p` BT.709 color tags, clean `+faststart` MP4 (1080p/720p web + optional 2K `2560x1440` master).
-2. **Audio spec**: 48 kHz stereo (FLAC on 2K master / 192–320k AAC on web MP4), integrated loudness **−14.0 ± 1.0 LUFS**, true peak **≤ −1.0 dBTP**, mono correlation **> 0.3**, zero clipping or boundary pops.
-3. **Stepped-cadence verification** (if any `Posterize Time` passages exist): frame-to-frame grayscale MAD scan confirms exact run-length step cadence with zero leaked full-rate noise/grain inside whole-frame stepped zones (`style-grammar.md` §6e).
-4. **Visual check at full & phone scale**: inspect key hero frames at full resolution and a tiled contact sheet (`snap.mjs --sheet`) to confirm readability and zero clipping/overlap.
-5. **Credits ready**: `python -X utf8 <sk>/scripts/fonts.py credits <project>` output included for open-source font attribution.
+## Gate B2 — On Mastered Final Delivery (After Re-Render & Re-Score)
+1. **Video spec**: exact duration, exact target FPS (`24` or `30`), `yuv420p` BT.709 color tags, clean `+faststart` MP4 (1080p/720p web + 2K `2560x1440` master).
+2. **Audio spec**: 48 kHz stereo (FLAC on 2K archival master / 192–320k AAC on web MP4), integrated loudness **−14.0 ± 1.0 LUFS**, true peak **≤ −1.0 dBTP**, mono correlation **> 0.3**, zero clipping or boundary pops.
+3. **Stepped-cadence & 3D parallax verification**: `cadence.py` MAD scan confirms zero leaked full-rate noise inside `Posterize Time` zones (`style-grammar.md` §6e), and `parallax.py` confirms spatial 3D shots pass (`>= 20 px`, `>= 15%`).
+4. **Independent score & polish sign-off**: every dimension on the independent 7-dim scorecard is **≥ 8 / 10** (after the Stage 12 polish round + QC + Stage 13 re-render if V1 had deductions), plus full-res & phone-scale contact sheet check.
+5. **Open-source credits ready**: both `python -X utf8 <sk>/scripts/fonts.py credits <project>` and `python -X utf8 <sk>/scripts/assets3d.py credits <project>` (if 3D assets used) included with delivery.
 
 ## Scorecard — Independent 7-Dimension Audit (Before Delivery)
 Executed by a **physically read-only `chiaki-reviewer`** using `assets/workflows/score_brief.md` (never self-scored by the main thread). **Target: ≥ 8 / 10 on every single dimension** (do not average away a weak dimension):

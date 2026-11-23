@@ -17,7 +17,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))).replace("\\",
 
 FILES = [
     "house-style", "style-grammar", "graphic-design", "motion-library",
-    "3d", "mg-styles", "shot-recipes", "script-writing",
+    "art-pipeline", "3d", "mg-styles", "shot-recipes", "script-writing",
     "quality-bar", "crafts", "personas", "build-brief", "production",
 ]
 
