@@ -217,9 +217,11 @@ One single slash command (**`/chiaki`** on Antigravity / Claude Code, **`$chiaki
   export CHIAKI_BLENDER="/Applications/Blender.app/Contents/MacOS/Blender"
   ```
 - **一键验收**：跑 `python -X utf8 scripts/doctor.py`，看到 `[OK] Blender (2.5D / 3D)` 就装好了！
-- *(可选 · AI 抠图 / 二次元部位精拆 / 2.5D 深度图)*：如果还要用 `vision/cutout.py`（MIT 2K 抠图）、`vision/part_cutout.py`（19 类动漫部位/头发单层精拆）或 `vision/depth.py`（16-bit 深度图），补装一次视觉依赖即可：
+- *(可选 · AI 抠图 / 二次元部位精拆 / 2.5D 深度图)*：如果还要用 `vision/cutout.py`（MIT 2K 抠图）、`vision/part_cutout.py`（19 类动漫部位/头发单层精拆）或 `vision/depth.py`（16-bit 深度图），推荐直接跑 `scripts/setup_env.py --profile full`（Windows/Linux 有 N 卡自动安装 CUDA `cu128` 版 PyTorch，并支持 `--hf-home` 指定非 C 盘模型缓存），或手动安装：
   ```bash
-  pip install torch torchvision "transformers<5" timm einops kornia huggingface_hub
+  # Windows/Linux NVIDIA GPU（推荐）：先装 CUDA PyTorch，再装视觉包
+  pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+  pip install "transformers<5" "huggingface_hub<1" timm einops kornia
   ```
 
 ---
@@ -434,6 +436,7 @@ Chiakis-video-skill/
 | `CHIAKI_ASSETS3D` | `~/.cache/chiaki-video/assets3d` | Local cache directory for Poly Haven / ambientCG / Sketchfab / BlenderKit assets |
 | `CHIAKI_FONTS` | `<repo>/assets/fonts` | Custom local font library directory |
 | `CHIAKI_MEMORY_DIR` | `~/.chiaki-studio` | External studio self-iteration memory directory (`preferences` / `mistakes` / `film_log`, survives skill updates) |
+| `HF_HOME` | `~/.cache/huggingface` | Optional HuggingFace cache directory for `vision/cutout.py`, `part_cutout.py` & `depth.py` model weights (keeps weights off C:) |
 | `CHIAKI_QUEUE_DIR` | `<tempdir>/chiaki_video_queue` | Shared render queue lock directory |
 | `CHIAKI_WEB_SLOTS` | `1` | Max simultaneous headless-Chrome jobs |
 | `CHIAKI_BLENDER_SLOTS` | `2` | Max simultaneous headless-Blender jobs |

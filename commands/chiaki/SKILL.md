@@ -46,12 +46,13 @@ description: Chiaki's-video-skill 统一快捷入口（/chiaki、/Chiaki 与 Cod
    - **② 想安装/存放到哪个目录或盘符？**
      - Python 虚拟环境路径（例如默认 `<SKILL_DIR>/.venv`，或指定非 C 盘目录如 `D:\AI\chiaki-venv`；也可选择直接装入当前 Python）；
      - 若选 `3d`/`full`：本机已有 `blender.exe` 的路径（若未装，给出 Windows `winget` / macOS `brew` / 官网安装引导）、3D 素材库缓存目录（`CHIAKI_ASSETS3D`）、以及是否自动配置当前 AI 客户端的 Blender MCP；
+     - 若选 `full`：HuggingFace AI 模型权重缓存目录（`HF_HOME`，建议指到非 C 盘目录防占满系统盘；`setup_env.py` 会自动检测 N 卡安装 CUDA `cu128` 版 PyTorch）；
      - 可选共享字体库目录（`CHIAKI_FONTS`）。
    - **③ 是否开启「工作室自迭代记忆」？（仅首次未初始化时问一次，以后永不重复打扰）**
      - 选模式：`ask`（默认推荐：每片完片出 ≤ 5 行确认卡，点头再记）/ `auto`（完片自动沉淀）/ `readonly`（只读不写）/ `off`（关闭）；
      - 存哪儿：默认 `~/.chiaki-studio/`（独立于 Skill 仓库、升级永不丢失、三端共享），或指定自定义目录（`CHIAKI_MEMORY_DIR`）。
 3. **经用户点头后一键落地并复查**：
-   - 运行 `python -X utf8 "<SKILL_DIR>/scripts/setup_env.py" --profile <2d|3d|full> --venv "<用户指定路径>" [--blender "<路径>"] [--assets3d "<路径>"] [--fonts-dir "<路径>"] [--memory-mode <ask|auto|readonly|off>] [--memory-dir "<路径>"] [--wire-mcp <antigravity|codex|claude|none>]`（先跑 `--dry-run` 或直接按确认方案执行）。
+   - 运行 `python -X utf8 "<SKILL_DIR>/scripts/setup_env.py" --profile <2d|3d|full> --venv "<用户指定路径>" [--blender "<路径>"] [--assets3d "<路径>"] [--fonts-dir "<路径>"] [--hf-home "<路径>"] [--memory-mode <ask|auto|readonly|off>] [--memory-dir "<路径>"] [--wire-mcp <antigravity|codex|claude|none>]`（先跑 `--dry-run` 或直接按确认方案执行）。
    - 若缺 **Node.js ≥ 22** 或 **Chrome/Edge** 等系统软件，给出对应系统的一键命令（如 `winget` / `brew`）或在用户明确同意后代为执行。
    - 装完自动用目标 Python 重跑 `doctor.py`，把最终全绿验收报告发给用户。
 

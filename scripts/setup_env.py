@@ -20,6 +20,7 @@ import argparse
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -31,6 +32,29 @@ for _s in (sys.stdout, sys.stderr):
         pass
 
 ROOT = Path(__file__).resolve().parent.parent
+
+
+def detect_nvidia_gpu() -> tuple[bool, str]:
+    """Detect NVIDIA GPU via nvidia-smi so Windows/Linux full installs pick CUDA PyTorch automatically."""
+    if sys.platform == "darwin":
+        return False, ""
+    smi = shutil.which("nvidia-smi")
+    if not smi:
+        return False, ""
+    try:
+        r = subprocess.run(
+            [smi, "--query-gpu=name", "--format=csv,noheader"],
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=5,
+        )
+        if r.returncode == 0 and r.stdout.strip():
+            return True, r.stdout.strip().splitlines()[0].strip()
+    except Exception:
+        pass
+    return False, ""
 
 
 def set_user_env(key: str, val: str, dry: bool):
@@ -109,6 +133,8 @@ def main() -> int:
     ap.add_argument("--blender", default="", help="Path to blender executable to save in CHIAKI_BLENDER")
     ap.add_argument("--assets3d", default="", help="Custom folder for free 3D asset cache (CHIAKI_ASSETS3D)")
     ap.add_argument("--fonts-dir", default="", help="Custom folder for shared font library (CHIAKI_FONTS)")
+    ap.add_argument("--hf-home", default="", help="Custom folder for HuggingFace AI model cache (HF_HOME, keeps weights off C:)")
+    ap.add_argument("--cuda", choices=("auto", "cu128", "cu124", "cpu"), default="auto", help="PyTorch wheel backend for --profile full (default: auto-detect NVIDIA GPU -> cu128)")
     ap.add_argument("--memory-dir", default="", help="Custom folder for studio self-iteration memory (CHIAKI_MEMORY_DIR)")
     ap.add_argument("--memory-mode", choices=("", "ask", "auto", "readonly", "off"), default="", help="Initial studio memory switch mode")
     ap.add_argument("--wire-mcp", choices=("none", "antigravity", "codex", "claude"), default="none", help="Safely wire built-in zero-dependency Blender MCP bridge")
@@ -139,11 +165,27 @@ def main() -> int:
         else:
             subprocess.check_call(cmd_core)
         if args.profile == "full":
-            cmd_depth = [target_py, "-m", "pip", "install", "torch", "torchvision", "transformers<5", "timm", "einops", "kornia", "huggingface_hub"]
-            if args.dry_run:
-                print("[DRY RUN] Would run:", " ".join(cmd_depth))
+            has_nv, gpu_name = detect_nvidia_gpu()
+            if args.cuda == "auto":
+                cuda_tag = "cu128" if has_nv else "cpu"
             else:
-                subprocess.check_call(cmd_depth)
+                cuda_tag = args.cuda
+            if cuda_tag in ("cu128", "cu124"):
+                idx_url = f"https://download.pytorch.org/whl/{cuda_tag}"
+                cmd_torch = [target_py, "-m", "pip", "install", "torch", "torchvision", "--index-url", idx_url]
+                print(f"[INFO] PyTorch CUDA backend: {cuda_tag}" + (f" (detected GPU: {gpu_name})" if gpu_name else ""))
+            else:
+                cmd_torch = [target_py, "-m", "pip", "install", "torch", "torchvision"]
+                print("[INFO] PyTorch backend: default PyPI (CPU / Apple Silicon MPS)")
+            cmd_vision = [
+                target_py, "-m", "pip", "install",
+                "transformers<5", "huggingface_hub<1", "timm", "einops", "kornia",
+            ]
+            for cmd in (cmd_torch, cmd_vision):
+                if args.dry_run:
+                    print("[DRY RUN] Would run:", " ".join(cmd))
+                else:
+                    subprocess.check_call(cmd)
 
     if args.blender:
         set_user_env("CHIAKI_BLENDER", str(Path(args.blender).resolve()), args.dry_run)
@@ -157,6 +199,11 @@ def main() -> int:
         if not args.dry_run:
             p.mkdir(parents=True, exist_ok=True)
         set_user_env("CHIAKI_FONTS", str(p), args.dry_run)
+    if args.hf_home:
+        p = Path(args.hf_home).resolve()
+        if not args.dry_run:
+            p.mkdir(parents=True, exist_ok=True)
+        set_user_env("HF_HOME", str(p), args.dry_run)
     if args.memory_dir:
         p = Path(args.memory_dir).resolve()
         if not args.dry_run:

@@ -196,9 +196,18 @@ def check_py_pkgs():
         except Exception:
             dmiss.append(m)
     if not dmiss:
-        ok("Vision/Depth AI (optional)", "vision stack ready (cutout.py, part_cutout.py & depth.py)")
+        accel = "CPU-only"
+        try:
+            import torch as _t
+            if _t.cuda.is_available():
+                accel = f"CUDA: {_t.cuda.get_device_name(0)}"
+            elif hasattr(_t.backends, "mps") and _t.backends.mps.is_available():
+                accel = "Apple MPS"
+        except Exception:
+            pass
+        ok("Vision/Depth AI (optional)", f"vision stack ready ({accel}; cutout.py, part_cutout.py & depth.py)")
     else:
-        warn("Vision/Depth AI (optional)", f"missing {', '.join(dmiss)} — optional, for vision/cutout.py, part_cutout.py & depth.py (`pip install torch torchvision \"transformers<5\" timm einops kornia huggingface_hub`)")
+        warn("Vision/Depth AI (optional)", f"missing {', '.join(dmiss)} — optional, for vision/cutout.py, part_cutout.py & depth.py (`setup_env.py --profile full` auto-detects NVIDIA CUDA)")
 
 
 def check_bundled():
@@ -273,6 +282,7 @@ def main() -> int:
                 "CHIAKI_ASSETS3D": os.environ.get("CHIAKI_ASSETS3D", ""),
                 "CHIAKI_FONTS": os.environ.get("CHIAKI_FONTS", ""),
                 "CHIAKI_MEMORY_DIR": os.environ.get("CHIAKI_MEMORY_DIR", ""),
+                "HF_HOME": os.environ.get("HF_HOME", ""),
             },
             "studio_memory": {
                 "initialized": mem_init,
