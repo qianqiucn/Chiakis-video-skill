@@ -97,6 +97,12 @@ Even a short preview sample follows the same workflow: template `lib/motion` loa
   Look: characters rise sequentially (1 f per char); on a word swap the shared prefix holds completely still while differing suffixes exit and enter cleanly.
 - **`type.roll`** · instrument-like tabular value roll · B · craft · design · LIB moves.js T3.mv.roll
   Look: quadratic ease-out onto target value over 12–24 f with tabular digits (`font-variant-numeric: tabular-nums`) and preserved decimals.
+- **`type.3d-extrude`** · true 3D extruded CJK/JP/Latin vector glyph geometry (`fonts.py glyph3d`) · H · craft · design, 3d · EXISTING three_kit.js T3.three.extrudeText
+  Look: real beveled 3D vector typography with `flat` / `toon` (+ inverted-hull ink) / `glass` / `wire` shading and per-glyph camera-locked motion · Timing: → `3d.md` §5e, `graphic-design.md` §5 (e).
+- **`type.3d-ring`** · 360° cylindrical 3D lyric ribbon with Z-sandwich back/front split · H · craft · design, edit · EXISTING three_kit.js T3.three.textRing
+  Look: crisp `T3.fonts` typography wrapped around a 3D tilted cylinder; draw `drawBack` behind a character cutout and `drawFront` across their torso for real depth occlusion · Timing: → `3d.md` §5e.
+- **`type.3d-corridor`** · 3D kinetic typography corridor / flying lyric poster slabs · H · craft · design, edit · EXISTING three_kit.js T3.three.textCorridor
+  Look: camera flying past angled 3D poster typography slabs in perspective Z-space (ideal for lyric PV bridges & drops) · Timing: → `3d.md` §5e.
 
 ### her
 - **`her.wave`** · rooted travelling wave for 2D hair, ribbons, and veils (two-pass alpha warp) · A · craft · edit · LIB her2d.js T3.her.wave, T3.her.warp2
@@ -129,6 +135,10 @@ Even a short preview sample follows the same workflow: template `lib/motion` loa
   Timing: → `lib/depth3d.js` header (keep camera angles gentle to avoid edge stretch).
 - **`cam.emblem`** · layered CSS-3D emblem standing up on the beat · H · craft · design · EXISTING emblem3d.js T3.standUp
   Timing: → `graphic-design.md` §7 (`T3.emblem3d`, `T3.standUp`).
+- **`cam.three-relief`** · real-time Three.js 2.5D depth-map displacement mesh orbit/crane · H · craft · 3d, edit · EXISTING three_kit.js T3.three.relief
+  Look: zero-Blender WebGL 2.5D depth-map mesh displaced on GPU (`depth.py --soften`), unlit `SRGBColorSpace` illustration colours · Timing: → `3d.md` §5e.
+- **`cam.three-field`** · stylized graphic-3D perspective grid, instanced monoliths & orbital halo · H · craft · 3d, edit · EXISTING three_kit.js T3.three.field
+  Look: stylized 2D-native 3D geometric horizon / architectural pillar space matching flat/cel/editorial art without photoreal PBR clutter · Timing: → `3d.md` §5e.
 
 ### trans
 - **`trans.flash`** · white flash · R · craft · edit · PROSE
@@ -159,6 +169,8 @@ Even a short preview sample follows the same workflow: template `lib/motion` loa
   Timing: → `graphic-design.md` §7; `style-grammar.md` §3b.
 - **`trans.tail`** · carry-over afterimage / afterglow across the cut · B · craft · edit · LIB timing.js T3.tail
   Look: outgoing frame or highlight lingers across frames 0–3 of the incoming shot (`afterimage`: 38 / 16 / 5 / 2 %, `afterglow`: 30 / 14 / 6 / 2 %) · Timing: → `style-grammar.md` §3c.
+- **`trans.3d-louver`** · `z = 60` 3D flipping louver blinds transition · H · craft · edit · EXISTING three_kit.js T3.three.louverTransition
+  Look: physical 3D vertical/horizontal slats flipping 180° in wave stagger across a cut, replacing flat 2D wipes · Timing: → `3d.md` §5e.
 
 ### fx
 - **`fx.shutter`** · sub-frame 2D motion blur · A · craft · edit · LIB blur.js T3.blur.shutter
@@ -175,6 +187,8 @@ Even a short preview sample follows the same workflow: template `lib/motion` loa
   Timing: → `graphic-design.md` §5; impact frame restraint budget in `house-style.md` §6.
 - **`fx.polygons`** · fast-cut polygon accents · R · craft · design · EXISTING accents.js T3.accents
   Timing: → `graphic-design.md` §5; polygon strobe accent restraint in `house-style.md` §6.
+- **`fx.3d-prism`** · real-time 3D chromatic glass prism bars refracting the live 2D scene · H · craft · edit, design · EXISTING three_kit.js T3.three.prismOverlay
+  Look: bevelled WebGL glass prism rods with RGB chromatic dispersion, specular sheen, and fresnel rim sweeping across a live 2D canvas · Timing: → `3d.md` §5e.
 
 ### time
 - **`time.twos`** · stepped clock (`Posterize Time`) with optional landing re-anchors · A · craft · edit · LIB timing.js T3.twos

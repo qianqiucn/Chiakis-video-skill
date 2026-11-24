@@ -458,6 +458,12 @@ def main() -> int:
     p_ay.add_argument("--mode-override", default="", choices=("",) + VALID_MODES)
     add_dir(p_ay)
 
+    p_dc = sub.add_parser("draft-card", help="Render the mandatory Stage-13 Gate B2 post-delivery preference ask & candidate memory card")
+    p_dc.add_argument("--proposal", default="", help="Optional path to work/memory_proposal.json")
+    p_dc.add_argument("--title", default="", help="Optional delivered film title")
+    p_dc.add_argument("--mode-override", default="", choices=("",) + VALID_MODES)
+    add_dir(p_dc)
+
     p_fg = sub.add_parser("forget", help="Delete one entry by ID (e.g. P02, M04, F001)")
     p_fg.add_argument("entry_id")
     add_dir(p_fg)
@@ -606,6 +612,39 @@ def main() -> int:
         print(f"[OK] Applied studio memory proposal ({eff_mode}) -> {', '.join(written) or 'no entries'}")
         for al in upgrade_alerts:
             print(f"  ★ SKILL-UPGRADE CANDIDATE: {al}")
+        return 0
+
+    if args.cmd == "draft-card":
+        cfg = load_config(mdir)
+        eff_mode = args.mode_override if args.mode_override in VALID_MODES else cfg["mode"]
+        if eff_mode in ("off", "readonly"):
+            print(f"[SKIP] Studio memory mode is `{eff_mode}` — omit post-delivery preference prompt.")
+            return 0
+        proposal: dict[str, Any] = {}
+        if args.proposal:
+            pp = Path(args.proposal)
+            if pp.exists():
+                proposal = json.loads(pp.read_text(encoding="utf-8"))
+        title = args.title or (proposal.get("film") or {}).get("title") or "本片"
+        lines = [
+            "---",
+            "### 🧠 下支片想怎么更合你胃口？（可选，10 秒回复即可）",
+            "",
+            f"《{title}》已完片交付！可以把你的长期偏好记进本地工作室记忆（`{mdir}`，当前模式 `{eff_mode}`，升级 Skill 永不丢失），下支片会越做越懂你：",
+            "1. **这次最戳你的地方**？（画风 / 字体 / 节奏 / Three.js 或 Blender 3D 技巧）",
+            "2. **下次想少用或避开的雷点**？（比如闪白强度、某类配色、转场或音效习惯）",
+            "3. **常驻默认偏好**？（如 3D 引擎规格、24/30 fps、成曲默认纯原曲母带 `pure_song` 等）",
+        ]
+        if proposal:
+            lines.append("")
+            lines.append(_format_proposal_card(proposal, eff_mode, mdir))
+        if eff_mode == "ask":
+            lines.append("")
+            lines.append("> 回复「确认写入」或补充你的喜好，我会落盘进长期记忆；回复「跳过」本次不写，随时可用 `/chiaki memory mode off` 关闭。")
+        else:
+            lines.append("")
+            lines.append("> 当前为 `auto` 模式：若你补充新的个人喜好，我会直接更新进长期记忆；随时可用 `/chiaki memory mode ask|off` 切换。")
+        print("\n".join(lines))
         return 0
 
     if args.cmd == "forget":

@@ -9,16 +9,17 @@
 [![Node >= 22](https://img.shields.io/badge/Node-%E2%89%A522-10B981?style=for-the-badge&logo=node.js&logoColor=white&labelColor=0F172A)](https://nodejs.org/)
 [![Python >= 3.10](https://img.shields.io/badge/Python-%E2%89%A53.10-3B82F6?style=for-the-badge&logo=python&logoColor=white&labelColor=0F172A)](requirements.txt)
 [![Blender 4.2+/5.x](https://img.shields.io/badge/Blender-2.5D_%2B_3D_%2B_MCP-EA7600?style=for-the-badge&logo=blender&logoColor=white&labelColor=0F172A)](#-blender--blender-mcp-小白安装配置指南-optional-flagship-3d)
+[![Three.js r160 MIT](https://img.shields.io/badge/Three.js-Graphic_3D_%2B_CJK_Extrude-00C2FF?style=for-the-badge&logo=threedotjs&logoColor=white&labelColor=0F172A)](#)
 [![Fonts: 59 OFL/Apache](https://img.shields.io/badge/Bundled_Fonts-59_OFL%2FApache-A78BFA?style=for-the-badge&labelColor=0F172A)](assets/fonts/catalog.md)
 [![Unit Tests](https://img.shields.io/badge/Motion_Tests-174%2F174_Passing-34D399?style=for-the-badge&labelColor=0F172A)](assets/examples/motion/run_tests.mjs)
 
 <h3>
-  Flagship Deterministic 2D + 2.5D + Blender 3D Motion Graphics, Fast-Cut PV / MV &amp; Kinetic Typography Studio for AI Agents
+  Flagship Deterministic 2D + Three.js Stylized Graphic-3D + Blender Cinematic 3D Motion Graphics, Fast-Cut PV / MV &amp; Kinetic Typography Studio for AI Agents
 </h3>
 
 <p>
-  面向 <b>Claude Code · Antigravity · Codex</b> 的旗舰级 <b>2D + 2.5D + Blender 3D 动效与快剪视频工作室技能</b><br />
-  帧级确定性网页时间线 · GSAP 3.15.1 + 动效曲线审计 · 59 套商用开源字库 · <code>mgaudio</code> 音效母带 · 满血 Blender 浮雕/投影/搭景/免费 3D 素材库 &amp; MCP 实时调光
+  面向 <b>Claude Code · Antigravity · Codex</b> 的旗舰级 <b>2D + Three.js 风格化 3D + Blender 电影级 3D 双引擎动效与快剪视频工作室技能</b><br />
+  帧级确定性网页时间线 · 内置 Three.js 真 3D 挤出中/日/英立体字/Z 夹心歌词环/实时色散棱镜/3D 百叶窗 · GSAP 3.15.1 + 动效曲线审计 · 59 套商用开源字库 · <code>mgaudio</code> 音效母带 · 满血 Blender 浮雕/投影/搭景/免费 3D 素材库 &amp; MCP 实时调光
 </p>
 
 <p>
@@ -65,8 +66,8 @@
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <h3>🧊 Full Blender 2.5D &amp; Real 3D Pipeline + MCP</h3>
-      Go beyond flat 2D whenever a shot needs optical depth or space travel: <b>2.5D depth relief</b> (<code>depth_relief.py</code>), <b>camera projection dolly</b> (<code>scripts/blender/projection/</code>), <b>built 3D sets &amp; cel/anime shading</b> (<code>asset_lib.py</code>), <b>4 free 3D asset libraries</b> (<code>assets3d.py</code>), and <b>live Blender MCP look-dev</b>.
+      <h3>🧊 Dual-3D Flagship: Three.js Graphic-3D + Blender 3D</h3>
+      <b>Two co-starring 3D engines, freely selectable per film:</b> bundled offline <b>Three.js r160 (MIT) + <code>lib/three_kit.js</code> + <code>fonts.py glyph3d</code></b> brings true 3D extruded CJK/JP/Latin typography (<code>flat</code>/<code>toon</code>+ink/<code>glass</code>/<code>wire</code>), character Z-sandwich 360° lyric rings, 3D typography corridors, live chromatic glass prisms, and <code>z=60</code> 3D louver transitions directly into 2D PVs; paired with <b>Blender 2.5D relief</b>, <b>camera projection</b>, <b>built sets &amp; cel shading</b>, <b>4 free 3D libraries</b>, and <b>live Blender MCP look-dev</b>.
     </td>
     <td width="50%" valign="top">
       <h3>🔤 59 Bundled Fonts · CC0 Textures · <code>mgaudio</code></h3>
@@ -75,7 +76,13 @@
   </tr>
 </table>
 
-> **Flagship Scope / 旗舰定位说明**：面向 **原创 2D/2.5D/3D 动效、快剪 PV/MV、动态歌词排版、品牌片头、MAD 与复刻学习** 的全流程制片技能。无需私有榜单模板或付费生图 API，开箱即享完整 2D 引擎 + 可选满血 Blender 3D 渲染与 MCP 实时调光。
+> **Flagship Scope / 旗舰定位说明**：面向 **原创 2D + Three.js 风格化 3D + Blender 电影级 3D 动效、快剪 PV/MV、动态歌词排版、品牌片头、MAD 与复刻学习** 的全流程制片技能。Three.js 与 Blender 并列旗舰品质硬性规格，用户可在需求表自由选择（`全能双 3D 旗舰` / `Three.js 风格化 3D` / `Blender 电影级 3D` / `纯 2D`）。
+>
+> **✨ What's New in `v1.8.0`（双 3D 旗舰架构：Three.js 风格化 3D 字/场景工具链 × Blender 电影级 3D + 完片强制偏好复盘卡）**：
+> - **离线内置 Three.js r160（MIT）+ `lib/three_kit.js` 风格化图形 3D 工具箱**：单一共享 `WebGLRenderer`（`NoToneMapping` + `SRGBColorSpace` 零色偏、不爆 Chrome 上下文），完整提供 8 大 2D 原生质感 3D 原语 —— **`extrudeText`**（`flat`/`toon`+黑描边/`glass`/`wire` 真 3D 立体字）、**`textRing`**（角色 Z 夹心 `drawBack`/`drawFront` 360° 歌词环，自动测宽防叠字）、**`textCorridor`**（3D 歌词海报走廊，内置 `maxWidth` 防越界）、**`prismOverlay`**（实时色散玻璃棱镜折穿 2D 画面）、**`louverTransition`**（`z=60` 真透视 3D 百叶窗翻转转场）、**`field`**（风格化 3D 地平线网格与建筑方柱）、**`relief`**（免 Blender GPU 深度浮雕）与 **`stage`**（2D 抠图真 Z 舞台），并全部注册进 `references/motion-library.md`（64 条 `0 FAIL / 0 NOTE`）。
+> - **离线中/日/英真 3D 矢量字形提取（`scripts/fonts.py glyph3d`）**：基于 `fontTools` + `skia-pathops` 仅抽取本片用到的标题/歌词字符并自动合并可变字重笔画，生成 4–60 KB 离线 `assets/fonts/glyph3d.js`（比 15 MB 传统 Three.js 字体 JSON 小千倍以上），`lib/three_kit.js` 自动判定 TTF/OTF 环绕方向保证中文字内孔（如「星」「破」「晓」）零反转。
+> - **双 3D 旗舰自由选择（`docs/PROMPT_TEMPLATE.md`、`references/3d.md` §5e、`house-style.md`、`crafts.md`）**：明确 Three.js（2D 原生风格化图形/文字/棱镜/转场 3D）与 Blender（写实/光影/光学景深/实景搭景/相机投影 3D）并列旗舰硬指标，**即便是已安装 Blender 的用户默认「全能双 3D 旗舰」也会让两套引擎同片共演**；支持 GPU（实测 1080p 24fps 实时输出）与 `CHIAKI_CPU=1` 无独显软渲染兜底。
+> - **Gate B2 强制「完片偏好复盘卡」（`scripts/memory.py draft-card`）**：针对真实用户反馈「做完片后未主动询问审美偏好」，新增 `memory.py draft-card` 子命令并将其写入 `quality-bar.md` Gate B2 第 6 项、`rules/AGENTS.md` 阶段 5、`commands/chiaki/SKILL.md` 与 `SKILL.md` Stage 13 —— 只要记忆模式不是 `off`/`readonly`，每次终片交付末尾**强制附上 10 秒 3 问「🧠 下支片想怎么更合你胃口？」偏好提问与候选记忆卡**。
 >
 > **✨ What's New in `v1.7.1`（长序列渲染防卡死 & 质检提速 + 评审防截断 + Antigravity Swarm 混合编排）**：
 > - **渲染与 CDP 防停滞内核（`scripts/_cdp.mjs`、`scripts/render_fast.mjs`）**：给 CDP 全链路补上超时/断连立即失败与双 `rAF` 兜底；新增分 worker 实时阶段心跳、单帧超时自动重启 Chrome 并回落软件绘制、无进度看门狗（`--stall-timeout`）自动释放队列槽位、`.part.mp4` 原子落盘防毁旧片，以及 **`--patch-frames` / `--encode-only`** 局部重渲免全片重导出。

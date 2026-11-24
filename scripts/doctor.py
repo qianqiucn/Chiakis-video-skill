@@ -220,12 +220,19 @@ def check_bundled():
         warn("Bundled Fonts", "catalog.json missing (lite install? Run `python scripts/fonts.py get starter`)", tier="optional")
     gsap = ROOT / "assets" / "template" / "lib" / "gsap" / "gsap.min.js"
     ez = ROOT / "assets" / "template" / "lib" / "motion" / "ez.js"
+    three = ROOT / "assets" / "template" / "lib" / "three" / "three.min.js"
+    three_kit = ROOT / "assets" / "template" / "lib" / "three_kit.js"
     mg = ROOT / "assets" / "mgaudio" / "mgaudio" / "__init__.py"
     if gsap.exists() and ez.exists():
         ok("2D Motion + GSAP", "assets/template/lib/motion/ + GSAP 3.15.1 present", tier="required")
     else:
         fail("2D Motion + GSAP", "missing template motion libraries", tier="required")
         req_missing.append("assets/template/lib/motion")
+    if three.exists() and three_kit.exists():
+        ok("Three.js Graphic-3D", "bundled Three.js r160 (MIT) + lib/three_kit.js ready (zero install)", tier="required")
+    else:
+        fail("Three.js Graphic-3D", "missing assets/template/lib/three/three.min.js or lib/three_kit.js", tier="required")
+        req_missing.append("assets/template/lib/three_kit.js")
     if mg.exists():
         mg_root = str(ROOT / "assets" / "mgaudio")
         if mg_root not in sys.path:

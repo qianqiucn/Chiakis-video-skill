@@ -41,3 +41,4 @@ The following third-party libraries, reference catalogues, textures, and fonts a
 - **On-Demand HuggingFace Weights** (downloaded only when invoking `scripts/vision/cutout.py`, `part_cutout.py`, or `depth.py`):
   - `ZhengPeng7/BiRefNet_HR`, `ZhengPeng7/BiRefNet_HR-matting`, and `joelseytre/toonout` — **MIT License**
   - `24yearsold/l2d_sam_iter2` (`checkpoint-18000.pt`) and `depth-anything/Depth-Anything-V2-Small-hf` — **Apache License 2.0**
+- **Three.js (`r160`)** (`assets/template/lib/three/three.min.js`, `assets/template/lib/three/LICENSE`) — **MIT License**, Copyright (c) 2010–2023 Three.js Authors (classic-script `file://` wrapper of `three.module.min.js`).

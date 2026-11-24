@@ -25,7 +25,8 @@ Every role reads its craft card here together with its verbatim persona from `re
   2. At least 3 `T3.motionProbe(...)` calls registered in `init()` sharing the exact pose functions called in `render(t)`.
   3. Landed elements carry `move.settle` or live ambient `move.drift` (no dead freezes unless deliberate `Posterize Time`).
   4. Fast slides/whips use `T3.blur.shutter`; stepped passages shadow `f = T3.twos(...)` at entry so zero full-rate grain/drift leaks through.
-  5. Static `motion_lint.mjs` passes with 0 FAIL and `--curves` SVG sheet is visually checked before handoff.
+  5. When the brief uses Three.js Graphic-3D (`全能双 3D 旗舰` or `Three.js 风格化 3D`), drive `T3.three.field`, `T3.three.relief`, `T3.three.prismOverlay`, and `T3.three.louverTransition` (`z = 60`) through the single shared `T3.three.renderer()`, 100 % pure in `t` (`3d.md` §5e).
+  6. Static `motion_lint.mjs` passes with 0 FAIL and `--curves` SVG sheet is visually checked before handoff.
 
 ---
 
@@ -36,12 +37,13 @@ Every role reads its craft card here together with its verbatim persona from `re
   - `design/board_<key>.md` (typography specs, colour tokens, safe margins, 5-layer framing notes)
   - `work/motion_<key>_design.md`
   - `web/segments/<key>_design.js` (`z = 20`)
-  - Bundled font packing via `python -X utf8 <sk>/scripts/fonts.py use <project> ...` (coordinated with director on `index.html`).
+  - Bundled font packing via `python -X utf8 <sk>/scripts/fonts.py use <project> ...` and (when Three.js 3D typography is selected) offline 3D glyph extraction via `python -X utf8 <sk>/scripts/fonts.py glyph3d <project> ...` (coordinated with director on `index.html`).
 - **Most often missed checks**:
   1. Zero remote fonts (`https://`); all fonts local via `fonts.py use`, and `T3.fonts.missing()` checked for every CJK/JP character.
   2. Outlined/hollow display text uses `fonts.py use ... --static` to eliminate variable-font internal contour seams.
-  3. Fast-cut lyric PVs animate per glyph (`T3.mv.chars`, `SplitText`, or Canvas per-char) instead of sliding whole text blocks.
-  4. Text clears faces/focal subjects and reads cleanly at phone scale (720p contact sheet).
+  3. Fast-cut lyric PVs animate per glyph (`T3.mv.chars`, `SplitText`, Canvas per-char, or Three.js `T3.three.extrudeText` / `textRing` / `textCorridor` when Three.js 3D is active) instead of sliding whole text blocks.
+  4. When using `T3.three.extrudeText`, keep `flat` / `toon` (+ ink) / `glass` / `wire` cohesive with the 2D palette and verify enclosed CJK holes (`星`, `日`, `口`) on a full-res still.
+  5. Text clears faces/focal subjects and reads cleanly at phone scale (720p contact sheet).
 
 ---
 
@@ -77,15 +79,15 @@ Every role reads its craft card here together with its verbatim persona from `re
 
 ---
 
-## 7. 3D & Depth — Blender 2.5D Relief, Projection & Built Sets (`chiaki-builder` · Model: `flash`)
-- **Role**: `3D 工程师` (Blender depth relief, camera projection, built sets, optical mechanisms, and optional live look-dev via Blender MCP).
-- **Reread**: `3d.md` (full), `house-style.md` §4 & §7, `production.md` §3 «3D & Blender».
+## 7. 3D & Depth — Dual-3D Specialist: Blender 3D + Three.js Graphic-3D (`chiaki-builder` · Model: `flash`)
+- **Role**: `3D 工程师` (Blender depth relief, camera projection, built sets, optical mechanisms, live look-dev via Blender MCP; and Three.js stylized graphic-3D modules / WebGL 2.5D reliefs / `fonts.py glyph3d` verification when selected).
+- **Reread**: `3d.md` (full, incl. §5e Three.js Graphic-3D), `house-style.md` §4 & §7, `production.md` §3 «3D & Blender / Three.js».
 - **Owns**:
   - `<project>/blender/` (Blender shot scripts, `design.json`, `.blend` files)
   - `<project>/web/assets/rel/<ID>/` (SINE-keyed `depth_relief.py` sequences, played via `T3.relX`)
   - `<project>/web/assets/b3d/<ID>/` (per-frame curved camera projection & built-set sequences, played frame-for-frame)
   - `<project>/work/assets3d_used.json` (borrowed 3D asset credits via `scripts/assets3d.py get ... --project`)
-  - NEVER edits `.js` segment files or `web/index.html`.
+  - Optional standalone Three.js helper/stage modules (`web/segments/<key>_three.js` when assigned by director; otherwise never edits `seg_*.js`, `*_design.js`, or `web/index.html`).
 - **Tools**: `scripts/vision/depth.py`, `scripts/vision/parallax.py`, `scripts/blender/depth_relief.py`, `scripts/blender/projection/*`, `scripts/assets3d.py`, `scripts/blender/asset_lib.py`, `scripts/run_queue.py blender`, optional live **Blender MCP** (look-dev only).
 - **Most often missed checks**:
   1. Render 2–3 sample frames (first + last) and inspect full-size before batch rendering a sequence.

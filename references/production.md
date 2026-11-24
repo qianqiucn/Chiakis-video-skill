@@ -6,7 +6,7 @@ Everything required for 2D animation, fonts, textures, and procedural sound is b
 - **Headless Chrome / Chromium / Edge**: auto-detected across Windows, macOS, and Linux in `scripts/_cdp.mjs` (override with `CHIAKI_CHROME`).
 - **FFmpeg**: auto-detected via `CHIAKI_FFMPEG`, system `PATH`, or Python's `imageio-ffmpeg`.
 - **Python ≥ 3.10**: install packages once with `pip install -r <sk>/requirements.txt` (`fonttools`, `brotli`, `Pillow`, `numpy`, `opencv-python`, `imageio-ffmpeg`, `scipy`, `numba`, `soundfile`, `pedalboard`).
-- **Bundled 2D Motion Runtime**: `assets/template/` (`engine.js`, GSAP 3.15.1 UMD + `lib/gsap-bridge.js`, `lib/motion/*`, `lib/accents.js`, `lib/choreo.js`, `lib/depth3d.js`, `lib/emblem3d.js`, `lib/fonts.js`, `lib/meshwarp.js`, `lib/multiplane.js`, `lib/sequence.js`).
+- **Bundled 2D + Stylized 3D Motion Runtime**: `assets/template/` (`engine.js`, GSAP 3.15.1 UMD + `lib/gsap-bridge.js`, **Three.js r160 MIT + `lib/three_kit.js`**, `lib/motion/*`, `lib/accents.js`, `lib/choreo.js`, `lib/depth3d.js`, `lib/emblem3d.js`, `lib/fonts.js`, `lib/meshwarp.js`, `lib/multiplane.js`, `lib/sequence.js`).
 - **Bundled Open-Source Fonts (`assets/fonts/`)**: 59 commercial-safe OFL-1.1 / Apache-2.0 families (47 Latin/Display/Mono/Pixel + 12 CJK/JP), indexed in `assets/fonts/catalog.json` and `assets/fonts/catalog.md`.
 - **Bundled Procedural Audio Engine (`assets/mgaudio/`)**: MIT-licensed 48 kHz synth, drums, SFX, mixing & `-14 LUFS` mastering engine.
 - **Bundled CC0 2D Textures (`assets/textures/`)**: 4K dust, film/fine grain, paper, and washi overlays.
@@ -70,6 +70,8 @@ python -X utf8 <sk>/scripts/run_queue.py --status
   python -X utf8 <sk>/scripts/fonts.py use <project> "Smiley Sans" "Syne" "JetBrains Mono"
   # Outlined/hollow display font (merges variable font strokes):
   python -X utf8 <sk>/scripts/fonts.py use <project> "Montserrat:900" --static --alias "Montserrat Outline"
+  # Extract compact 3D vector glyph contours for Three.js T3.three.extrudeText (supports CJK/JP/Latin!):
+  python -X utf8 <sk>/scripts/fonts.py glyph3d <project> "Smiley Sans" "星尘破晓WORLD" --alias hero3d
   ```
 - **Generate open-source font end-credits**: `python -X utf8 <sk>/scripts/fonts.py credits <project>`
 
@@ -93,7 +95,9 @@ python -X utf8 <sk>/scripts/run_queue.py --status
 - **Anime 19-part single-layer + clean plate** (`part_cutout.py`, Apache-2.0 + MIT): `python -X utf8 <sk>/scripts/vision/part_cutout.py art.png hair.png --part hair --clean-plate clean.png --json work/hair_rig.json` (ready for `T3.her.wave` + `T3.her.warp2`).
 - **Pixel-aligned edit paste-back** (`pasteback.py`): `python -X utf8 <sk>/scripts/vision/pasteback.py orig.png edit.png diff out.png --align --lf 40 --region x0,y0,x1,y1`.
 
-### 3D & Blender (`depth_relief.py`, `projection/`, `assets3d.py`, `asset_lib.py`, Blender MCP)
+### 3D & Dual-3D Toolchain (Three.js Stylized Graphic-3D + Blender Cinematic 3D)
+- **Three.js Stylized Graphic-3D** (bundled offline, zero install; see `references/3d.md` §5e):
+  Load `<script src="lib/three/three.min.js">` + `<script src="lib/three_kit.js">` in `web/index.html`, extract 3D CJK/JP/Latin contours with `fonts.py glyph3d`, and compose `T3.three.extrudeText` / `textRing` / `textCorridor` / `prismOverlay` / `louverTransition` / `field` / `relief` / `stage` deterministically in any segment `render(t)`.
 - **Softened 16-bit depth map** (requires optional `pip install torch transformers`):
   `python -X utf8 <sk>/scripts/vision/depth.py art.png work/art_depth.png --bits 16 --soften`
 - **Headless Blender 2.5D relief sequence** (always through `run_queue.py blender`; see `references/3d.md` §3.2):

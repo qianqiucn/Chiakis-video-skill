@@ -104,7 +104,16 @@ def main() -> int:
         auto_out = run_mem("apply", str(prop_p), "--dir", str(d))
         assert "[OK] Applied" in auto_out and "SKILL-UPGRADE CANDIDATE" in auto_out, auto_out
 
-        # 8. Forget & reset
+        # 8. Draft post-delivery preference card (Gate B2 Item #6)
+        run_mem("mode", "ask", "--dir", str(d))
+        card = run_mem("draft-card", "--dir", str(d), "--proposal", str(prop_p), "--title", "星尘破晓")
+        assert "下支片想怎么更合你胃口" in card and "确认写入" in card and "Film Two" in card, card
+        run_mem("mode", "off", "--dir", str(d))
+        card_off = run_mem("draft-card", "--dir", str(d), "--proposal", str(prop_p))
+        assert "[SKIP]" in card_off, card_off
+        run_mem("mode", "auto", "--dir", str(d))
+
+        # 9. Forget & reset
         run_mem("forget", "P02", "--dir", str(d))
         st_f = json.loads(run_mem("status", "--dir", str(d), "--json"))
         assert st_f["preferences"] == 1
@@ -112,7 +121,7 @@ def main() -> int:
         st_r = json.loads(run_mem("status", "--dir", str(d), "--json"))
         assert st_r["preferences"] == 0 and st_r["mistakes"] == 0 and st_r["films"] == 0 and st_r["mode"] == "auto"
 
-    print("ok   test_memory.py  # 8 studio-memory suites passed")
+    print("ok   test_memory.py  # 9 studio-memory suites passed")
     return 0
 
 
