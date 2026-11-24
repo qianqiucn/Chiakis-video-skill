@@ -9,7 +9,7 @@ Usage:
         [--grow 7] [--feather 10] [--region x0,y0,x1,y1 ...] [--min-area 400] [--align] [--lf 40]
 
 Mask modes:
-  <mask.png>             grayscale mask file (white = take from edit, e.g. segment.py *_mask.png)
+  <mask.png>             grayscale mask file (white = take from edit, e.g. part_cutout.py --mask)
   diff / diff:<thresh>   auto-mask where edit differs from original (default thresh 24 after 2px blur)
   box                    fill the --region x0,y0,x1,y1 boxes directly (use --grow 0 --feather 8)
   ellipse                fill ellipses inscribed in the --region boxes (ideal for eyes/mouths)

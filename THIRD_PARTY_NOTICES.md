@@ -31,3 +31,13 @@ The following third-party libraries, reference catalogues, textures, and fonts a
 - **Licenses**: **SIL Open Font License 1.1 (OFL-1.1)** and **Apache License 2.0** only (100% free for personal and commercial video production)
 - **Full Attribution**: Each family folder in `assets/fonts/<slug>/` preserves its verbatim `OFL.txt` or `LICENSE.txt`. Machine-readable metadata and per-family designer/license credits are listed in `assets/fonts/catalog.json` and `assets/fonts/catalog.md`. Use `python -I scripts/fonts.py credits <project>` to generate end-credit lines automatically.
 - **Template Sample Font**: `assets/template/lib/fonts/BodoniModaItalic_opsz6_w500.ttf` (Bodoni Moda, SIL Open Font License 1.1).
+
+## 5. Self-Contained Anime 19-Part SemanticSam Loader (`scripts/vision/_l2dsam/`) & Optional Vision Weights
+- **Location**: `scripts/vision/_l2dsam/`
+- **Upstream Sources**:
+  - `shitagaki-lab/see-through` (SIGGRAPH 2026 SemanticSam adapter): https://github.com/shitagaki-lab/see-through — **Apache License 2.0**
+  - Meta Segment Anything (`segment-anything`) & HQ-SAM (`sam-hq`): **Apache License 2.0**
+- **License**: Full verbatim Apache License 2.0 text is bundled at `scripts/vision/_l2dsam/LICENSE`. Modified files (`extend_sam.py`, `sam/build_sam.py`) carry adaptation notices per Apache-2.0 §4(b).
+- **On-Demand HuggingFace Weights** (downloaded only when invoking `scripts/vision/cutout.py`, `part_cutout.py`, or `depth.py`):
+  - `ZhengPeng7/BiRefNet_HR`, `ZhengPeng7/BiRefNet_HR-matting`, and `joelseytre/toonout` — **MIT License**
+  - `24yearsold/l2d_sam_iter2` (`checkpoint-18000.pt`) and `depth-anything/Depth-Anything-V2-Small-hf` — **Apache License 2.0**

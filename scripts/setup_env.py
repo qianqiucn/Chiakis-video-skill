@@ -4,7 +4,7 @@ Called by the agent AFTER running `scripts/doctor.py` and asking the user:
   1. Which profile they want:
        - `2d`   : core 2D motion, bundled fonts, mgaudio & MP4 render (`requirements.txt`, ~180 MB)
        - `3d`   : `2d` + Blender path (`CHIAKI_BLENDER`), 3D asset cache (`CHIAKI_ASSETS3D`), optional Blender MCP bridge wiring
-       - `full` : `3d` + PyTorch & Transformers for 2.5D Depth Anything V2 (`vision/depth.py`, +1.5-3 GB)
+       - `full` : `3d` + PyTorch/Vision stack for `vision/cutout.py`, `vision/part_cutout.py` & `vision/depth.py` (+1.5-3 GB)
   2. Where they want virtual environments / caches installed (so nothing fills up C: uninvited).
 
 Never modifies the machine unless executed with explicit user-chosen flags; supports `--dry-run`.
@@ -137,7 +137,7 @@ def main() -> int:
         else:
             subprocess.check_call(cmd_core)
         if args.profile == "full":
-            cmd_depth = [target_py, "-m", "pip", "install", "torch", "transformers"]
+            cmd_depth = [target_py, "-m", "pip", "install", "torch", "torchvision", "transformers<5", "timm", "einops", "kornia", "huggingface_hub"]
             if args.dry_run:
                 print("[DRY RUN] Would run:", " ".join(cmd_depth))
             else:

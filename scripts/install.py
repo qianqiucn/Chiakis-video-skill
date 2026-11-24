@@ -28,7 +28,7 @@ for _s in (sys.stdout, sys.stderr):
 
 ROOT = Path(__file__).resolve().parent.parent
 SKILL_SLUG = "chiakis-video-skill"
-VERSION = "1.6.1"
+VERSION = json.loads((ROOT / "plugin.json").read_text(encoding="utf-8")).get("version", "1.6.2")
 SKIP_DIRS = {".git", "__pycache__", "node_modules", ".venv", "venv"}
 
 

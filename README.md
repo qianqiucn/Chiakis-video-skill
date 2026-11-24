@@ -77,7 +77,7 @@
 
 > **Flagship Scope / 旗舰定位说明**：面向 **原创 2D/2.5D/3D 动效、快剪 PV/MV、动态歌词排版、品牌片头、MAD 与复刻学习** 的全流程制片技能。无需私有榜单模板或付费生图 API，开箱即享完整 2D 引擎 + 可选满血 Blender 3D 渲染与 MCP 实时调光。
 >
-> **✨ What's New in `v1.6.1`（MIT 2K 抠图实测升级 + 旗舰质量量化标杆 + 宿主多模态死规矩）**：新增实测验证的纯 MIT 高清抠图工具 **`scripts/vision/cutout.py`**（`--model hr` `BiRefNet_HR` 2048px 通用/道具 + `--model toonout` 1024px 二次元人物/特效 + 自动去白边，RTX 5070 Ti FP16 约 0.8–1.0 s/张，全面统一高清 RGBA 抠图链路）；内置去内容化旗舰量化质量基线 **`references/benchmark-quality.md`** 与 **`rules/AGENTS.md` §3 宿主多模态死规矩**（**Gemini** 原生多模态 `read_file` 直听音频与直看带声 `.mp4`，**Claude / Codex** 走传统频谱图 + 密集截图 + SVG 曲线图）。
+> **✨ What's New in `v1.6.2`（19 类二次元部位 2K 单层精拆 + 零重影底图 + 视觉链路去重）**：新增零外部仓库依赖、开箱即用的 **`scripts/vision/part_cutout.py`**（内置精简 Apache-2.0 `24yearsold/l2d_sam_iter2` 19 类二次元部位语义分割 + MIT `ToonOut` 2K 局部放大发丝精修 + 头部锚点去噪 + `--clean-plate` 外背景去重影底图，~1.1–1.4 s/张、100% 原图 2K RGB，直通 `T3.her.wave` 零脸耳变形零双影飘动）；彻底退役旧版文本选区抠图脚本并去重统一全仓视觉链路（`cutout.py` 抠主体 · `part_cutout.py` 拆头发/19 部位 · `pasteback.py` 对齐补图 · `depth.py` 深度图）。延续 `v1.6.x` 的纯 MIT 高清抠图 **`cutout.py`**、旗舰质量量化标杆 **`references/benchmark-quality.md`** 与 **`rules/AGENTS.md` §3 宿主多模态死规矩**。
 
 ---
 
@@ -217,9 +217,9 @@ One single slash command (**`/chiaki`** on Antigravity / Claude Code, **`$chiaki
   export CHIAKI_BLENDER="/Applications/Blender.app/Contents/MacOS/Blender"
   ```
 - **一键验收**：跑 `python -X utf8 scripts/doctor.py`，看到 `[OK] Blender (2.5D / 3D)` 就装好了！
-- *(可选 · 2.5D 深度图 AI 推理)*：如果还要用 `scripts/vision/depth.py` 自动从单张插画生成 16-bit 深度图，再补装一次 PyTorch 与 Transformers：
+- *(可选 · AI 抠图 / 二次元部位精拆 / 2.5D 深度图)*：如果还要用 `vision/cutout.py`（MIT 2K 抠图）、`vision/part_cutout.py`（19 类动漫部位/头发单层精拆）或 `vision/depth.py`（16-bit 深度图），补装一次视觉依赖即可：
   ```bash
-  pip install torch transformers
+  pip install torch torchvision "transformers<5" timm einops kornia huggingface_hub
   ```
 
 ---
@@ -401,13 +401,13 @@ Chiakis-video-skill/
 ├── SKILL.md                    # Agent entrypoint & 7-step flagship video studio pipeline
 ├── README.md                   # This guide (incl. beginner Blender & Blender MCP tutorial)
 ├── LICENSE                     # MIT License
-├── THIRD_PARTY_NOTICES.md      # GSAP, mg-styles-15, video-shotcraft, OFL/Apache fonts
+├── THIRD_PARTY_NOTICES.md      # GSAP, mg-styles-15, video-shotcraft, OFL/Apache fonts, _l2dsam
 ├── docs/                       # Visual banner, live 24fps demo.gif, curve sheet & font specimen
 ├── commands/chiaki/            # Unified /chiaki slash-command router (new/fonts/3d/preview/review/deliver/status)
-├── references/                 # 13 studio craft manuals (incl. full 3d.md & 15 mg-styles)
+├── references/                 # 15 studio craft manuals (incl. 3d.md, art-pipeline.md, benchmark-quality.md & 15 mg-styles)
 ├── scripts/                    # Cross-platform render, QA, lint, audio/video analysis, fonts, assets3d, doctor, queue
-│   ├── blender/                # depth_relief.py, asset_lib.py, projection/ camera-projection toolkit
-│   └── vision/                 # Depth Anything V2 (depth.py) & optical-flow parallax.py
+│   ├── blender/                # depth_relief.py, asset_lib.py, mcp_bridge.py, projection/ camera-projection toolkit
+│   └── vision/                 # cutout.py (MIT), part_cutout.py (+_l2dsam), pasteback.py, depth.py, parallax.py
 ├── assets/
 │   ├── template/               # engine.js, index.html, GSAP 3.15.1, lib/motion/*, 2D/2.5D helpers
 │   ├── examples/               # 8 motion unit test suites (174 assertions) & demos

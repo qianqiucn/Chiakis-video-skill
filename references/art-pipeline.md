@@ -81,17 +81,23 @@ python -X utf8 <sk>/scripts/art_gen.py check <project>
 ## 4. Visual Acceptance & Pre-Build Prep (Before Stage 6 Build)
 Before handing assets to the 3D, Edit, and Design crafts:
 1. **Inspect every plate at full size**: confirm zero unwanted gibberish text/watermarks, harmonious palette matching the pitch's hex tokens, and clear negative space where kinetic typography will sit.
-2. **Foreground cut-outs & pixel-aligned clean plates (`scripts/vision/`)**:
-   - **Flagship RGBA foreground cut-out (`scripts/vision/cutout.py`, MIT-licensed, GPU FP16 ~0.8–1.0 s/img + auto edge defringe)**:
-     - **`--model toonout`** (`joelseytre/toonout`, 1024px, MIT): **first choice for stylized anime characters** on dark/busy painted scenes (preserves white sleeves & glowing FX wisps without alpha holes).
-     - **`--model hr`** (`ZhengPeng7/BiRefNet_HR`, 2048px, MIT, default): **first choice for 2K props, flowers, objects & clean-ground characters** (razor-sharp 2048px edges, zero cloth holes).
+2. **Vision cut-outs, 19-part anime split & pixel-aligned clean plates (`scripts/vision/`)** — single canonical toolkit (one tool per job, zero overlap):
+   - **Whole foreground RGBA cut-out (`scripts/vision/cutout.py`, MIT, GPU FP16 ~0.8–1.0 s/img + auto edge defringe)**:
+     - **`--model toonout`** (`joelseytre/toonout`, 1024px, MIT): **default for stylized anime characters** on dark/busy painted scenes (preserves white sleeves & glowing FX wisps without alpha holes).
+     - **`--model hr`** (`ZhengPeng7/BiRefNet_HR`, 2048px, MIT, script default): **default for 2K props, botanicals, objects & clean-ground subjects** (razor-sharp 2048px edges, zero cloth holes).
      - **`--model hr-matting`** (`ZhengPeng7/BiRefNet_HR-matting`, 2048px, MIT): optional specialist **only** for genuinely translucent glass/veils/smoke/real human hair.
      ```bash
      python -X utf8 <sk>/scripts/vision/cutout.py web/assets/art/<id>.png web/assets/art/<id>_rgba.png --model toonout
      python -X utf8 <sk>/scripts/vision/cutout.py web/assets/art/<prop>.png web/assets/art/<prop>_rgba.png --model hr
      ```
-   - **Optional sub-part text mask (`scripts/vision/segment.py`, Grounding DINO + SAM 2.1)**: use ONLY when isolating a single labeled sub-part inside a frame (e.g. `"hair."` alone for `T3.her.wave`, or `"hat."` separately), never as the general foreground cutout tool.
-   - **Pixel-aligned clean plate / surgical edit composite (`scripts/vision/pasteback.py`)**: `--align` uses SIFT+RANSAC to cancel AI edit shift/scale drift; `--lf 40` matches low-frequency exposure across the seam:
+   - **Anime 19-part single-layer cut-out & zero-ghosting clean plate (`scripts/vision/part_cutout.py`, self-contained Apache-2.0 `24yearsold/l2d_sam_iter2` + MIT `ToonOut` 2K local zoom, ~1.1–1.4 s/img)**:
+     - **Default for hair (`T3.her.wave`) and any character sub-part** (`hair`, `headwear`, `face`, `eyes`, `eyewear`, `ears`, `earwear`, `nose`, `mouth`, `neck`, `neckwear`, `topwear`, `handwear`, `bottomwear`, `legwear`, `footwear`, `tail`, `wings`, `objects`; comma-separated allowed, e.g. `--part hair,headwear`).
+     - Preserves **100% original 2K RGB** (zero diffusion redraw distortion), excludes face/eyes/ears/hat/hands/clothes cleanly, sharpens outer hair tips at native 2K via 2nd-pass local-zoom `ToonOut`, filters disconnected lower-body false positives on `hair`, and optionally writes `--clean-plate` (0.04 s outer-background TELEA erasure strictly outside protected body/face/hat masks so animated hair/ponytails never double-ghost) plus `--json` (1920×1080 rig coordinates).
+     ```bash
+     python -X utf8 <sk>/scripts/vision/part_cutout.py web/assets/art/<id>.png web/assets/art/<id>_hair.png \
+       --part hair --clean-plate web/assets/art/<id>_clean.png --json work/<id>_hair_rig.json
+     ```
+   - **Pixel-aligned clean plate / surgical edit composite (`scripts/vision/pasteback.py`)**: `--align` uses SIFT+RANSAC to cancel AI edit shift/scale drift; `--lf 40` matches low-frequency exposure across the seam (ideal for aligned closed-eye / gaze patches in `T3.her.eyes` or localized retouches):
      ```bash
      python -X utf8 <sk>/scripts/vision/pasteback.py orig.png edit.png diff out.png --align --lf 40 --region x0,y0,x1,y1
      ```

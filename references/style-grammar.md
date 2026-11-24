@@ -179,7 +179,8 @@ Layered 2D compositing works on still illustrations or separated PNG plates: eve
 - Our tools for each: `T3.sequence` / `T3.multiplane` for depth planes, client-supplied or pre-split PNG layers, the approved sample's rooted wave for hair and veil (`her.wave`, motion-library; `T3.meshwarp.sway` is a plain sine from one root, for tails, ribbons and cloth), aligned eye-state layers for blinks (`T3.her.eyes`), and procedural Canvas light sweeps.
   - The sample's own motion is in the template as code (motion-library group `her`, `lib/motion/her2d.js`): the wave and the two-pass warp below (`her.wave`), the eye-state opacities of the blink, gaze and glance (`her.eyes`), the group camera (`her.camera`) and the dust (`her.motes`). Build her shots on these calls; the figures here stay the reference they reproduce.
 - **Reference 2D composite recipe** (verified with `lib/motion/her2d.js`):
-  - Layers: plate + closed-eyes patch + hair + static front trim + veil + bow, dust on its own canvas.
+  - Asset prep: generate the single-layer hair RGBA + outer-background zero-ghosting clean plate + 1080p rig boxes in one shot via `scripts/vision/part_cutout.py <in.png> <hair.png> --part hair --clean-plate <clean.png> --json <rig.json>` (`art-pipeline.md` §4), and align closed-eye/gaze edits via `scripts/vision/pasteback.py --align --lf 40`.
+  - Layers: clean plate + closed-eyes patch + hair + static front trim + veil + bow, dust on its own canvas.
   - Camera: group zoom × 1.0755 and pan 88.6 px on cosine curves, still moving at the cut; the plate over-scaled 2 % so no edge shows.
   - What made it hold up at 1:1:
     - a semi-transparent layer is warped as two opaque images (premultiplied colour, and 1 − alpha) recombined with multiply + lighter, because meshwarp's overlapping triangles draw seams on soft edges;

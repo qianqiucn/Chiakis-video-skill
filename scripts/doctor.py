@@ -190,15 +190,15 @@ def check_py_pkgs():
             warn(label, f"missing: {', '.join(miss)}")
             opt_missing.extend(miss)
     dmiss = []
-    for m in ("torch", "transformers"):
+    for m in ("torch", "torchvision", "transformers", "timm", "einops", "kornia"):
         try:
             importlib.import_module(m)
         except Exception:
             dmiss.append(m)
     if not dmiss:
-        ok("Vision/Depth AI (optional)", "torch + transformers installed (vision/cutout.py & vision/depth.py ready)")
+        ok("Vision/Depth AI (optional)", "vision stack ready (cutout.py, part_cutout.py & depth.py)")
     else:
-        warn("Vision/Depth AI (optional)", f"missing {', '.join(dmiss)} — optional, for vision/cutout.py & vision/depth.py (`pip install torch torchvision \"transformers<5\" timm einops kornia`)")
+        warn("Vision/Depth AI (optional)", f"missing {', '.join(dmiss)} — optional, for vision/cutout.py, part_cutout.py & depth.py (`pip install torch torchvision \"transformers<5\" timm einops kornia huggingface_hub`)")
 
 
 def check_bundled():

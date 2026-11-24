@@ -77,6 +77,11 @@ python -X utf8 <sk>/scripts/run_queue.py --status
 - **Motion tracking / measurement**: `python -X utf8 <sk>/scripts/measure.py ...`
 - **Frame-to-frame diff / cut detection**: `python -X utf8 <sk>/scripts/framediff.py film.mp4`
 
+### Vision Cut-outs & Clean Plates (`scripts/vision/`, full flags in `references/art-pipeline.md` §4)
+- **Whole foreground RGBA** (`cutout.py`, MIT): `python -X utf8 <sk>/scripts/vision/cutout.py art.png art_rgba.png --model toonout` (anime characters) or `--model hr` (2K props/objects).
+- **Anime 19-part single-layer + clean plate** (`part_cutout.py`, Apache-2.0 + MIT): `python -X utf8 <sk>/scripts/vision/part_cutout.py art.png hair.png --part hair --clean-plate clean.png --json work/hair_rig.json` (ready for `T3.her.wave` + `T3.her.warp2`).
+- **Pixel-aligned edit paste-back** (`pasteback.py`): `python -X utf8 <sk>/scripts/vision/pasteback.py orig.png edit.png diff out.png --align --lf 40 --region x0,y0,x1,y1`.
+
 ### 3D & Blender (`depth_relief.py`, `projection/`, `assets3d.py`, `asset_lib.py`, Blender MCP)
 - **Softened 16-bit depth map** (requires optional `pip install torch transformers`):
   `python -X utf8 <sk>/scripts/vision/depth.py art.png work/art_depth.png --bits 16 --soften`
