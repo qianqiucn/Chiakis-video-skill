@@ -1,5 +1,5 @@
 // motion_lint.mjs — the motion check: a page's segments against the motion library (references/motion-library.md).
-// Node only (D:/Node/node.exe or node on PATH), so it runs in Codex's sandbox as well. The static scan opens no browser
+// Node only (node on PATH), so it runs in Codex's sandbox as well. The static scan opens no browser
 // (< 1 s); --runtime and --curves open the page through scripts/_cdp.mjs, so run those through scripts/run_queue.py web.
 //
 // Usage:
@@ -105,6 +105,8 @@ const FRAME_VAR = /(?<![\w$.])(?:f|ft|fp|f0|fr|fi|fl|lf|ff|frame|frm|t|tt|lt|tau
 export const R3_THRESHOLDS = Object.freeze({
   signed: false,
   q1ShareMin: 0.6,        // an arrival puts at least this share of its travel in the first quarter (power3.out 0.58, power4.out 0.68, expo.out 0.82)
+  q1ShareMax: 0.9,        // cliff arrival: > 90 % of travel crammed into Q1 over >= cliffMinF frames leaves a visually dead tail
+  cliffMinF: 16,          // minimum arrival length (frames) before a high-Q1 curve counts as a cliff + long flat tail
   arrivalMinF: 8,         // an arrival shorter than this many frames
   constRunF: 6,           // a run of constant velocity this long (frames) …
   constRelTol: 0.002,     // … its speed staying within 0.2 % of itself (a sine shorter than ~6 s never does) …
@@ -1225,6 +1227,7 @@ export function probeMetrics(samples, { id = '', kind: kindIn = null } = {}, TH 
   const N = out.notes;
   if (kind === 'arrive') {
     if (q1 < TH.q1ShareMin) N.push(`arrival puts ${(q1 * 100).toFixed(0)} % of its travel in the first quarter (< ${TH.q1ShareMin * 100} %)`);
+    if (TH.q1ShareMax && q1 > TH.q1ShareMax && dur >= (TH.cliffMinF || 16)) N.push(`cliff arrival: ${(q1 * 100).toFixed(0)} % of travel in Q1 over ${dur.toFixed(1)} f (long near-flat tail; soften curve or add follow-through)`);
     if (startV < TH.symStartV && peakPos >= 0.3 && peakPos <= 0.7) N.push('symmetric in-out arrival (starts from rest, peak mid-move)');
     if (dur < TH.arrivalMinF) N.push(`arrival over ${dur.toFixed(1)} f (< ${TH.arrivalMinF} f)`);
   }

@@ -9,11 +9,11 @@ This file sets the studio's creative standards. It overrides defaults in other r
 4. **Breakable defaults**: any house default below (shot lengths, palette counts, layer counts, transition cadence) may be broken **on purpose** when the chosen visual form calls for it — declare the departure and its reason in the storyboard / `REVIEW_BRIEF.md` so reviewers judge intent rather than flagging deliberate style choices as mistakes.
 
 ## 1. Format, Energy & Music
-- **Resolution & FPS**: author on a `1920x1080` logical stage at native **24 fps** (cinematic / hype / editorial) or **30 fps** (lyric PV / UI / crisp web MG); deliver 1080p/720p web MP4 plus optional **2K (`2560x1440`)** master with lossless 48 kHz FLAC audio.
-- **Music first**: cut to measured beat grids (`scripts/beats.py`) and exact broadband onsets (`scripts/onsets.py` — `floor(onset_frame)`), never guessed timestamps.
-- **Sound design (`assets/mgaudio/` + optional `scripts/freesound.py`)**:
-  - Real-world physical actions use recorded SFX where available; procedural `mgaudio.sfx` handles swooshes, risers, hits, UI clicks, glitches, paper, and tonal accents.
-  - Keep mixes clean and uncrowded (≤ 3 concurrent SFX per frame), duck music ~3 dB on hero hits, keep stereo mono-compatible (`stereo_corr > 0.3`), and master to **−14 LUFS integrated, true peak ≤ −1.1 dBTP**.
+- **Resolution & FPS**: author on a `1920x1080` logical stage at native **24 fps** (cinematic / hype / editorial) or **30 fps** (lyric PV / UI / crisp web MG); review at 720p first when iterating fast, and deliver 1080p web MP4 plus optional **2K (`2560x1440`)** master with lossless 48 kHz FLAC audio (pass `--grain` to `render_fast.mjs` when tactile grain/paper overlays are prominent).
+- **Music & vocal timing first**: cut percussion hits to measured beat grids (`scripts/beats.py`) and broadband onsets (`scripts/onsets.py` — `floor(onset_frame)`). For **sung lyrics / vocal PVs**, NEVER rely on drum trackers alone: run `scripts/vocal_spec.py` before Gate A and lock lyric entries by direct multimodal listening (`read_file` on micro-WAVs) + 300 Hz–4 kHz vocal spectrograms.
+- **Sound strategy (`pure_song` vs `full_sfx` — declare explicitly in brief)**:
+  - **Song PVs / Lyric MVs (default: `pure_song` clean master)**: preserve the finished vocal/musical recording cleanly mastered to **−14 LUFS integrated, true peak ≤ −1.1 dBTP, 48 kHz stereo** with **zero added whooshes/risers/glitches** unless the client explicitly asks for SFX accents — artificial swooshes fight vocal clarity and studio mastering.
+  - **Promos / Openers / Trailers / Original Procedural Scores (default: `full_sfx` via `assets/mgaudio/` + optional `scripts/freesound.py`)**: real-world physical actions use recorded SFX where available; procedural `mgaudio.sfx` handles swooshes, risers, hits, UI clicks, glitches, paper, and tonal accents. Keep mixes uncrowded (≤ 3 concurrent SFX per frame), duck music ~3 dB on hero hits, keep stereo mono-compatible (`stereo_corr > 0.3`), and master to **−14 LUFS / ≤ −1.1 dBTP**.
 
 ## 2. Story, Clarity & Focal Hierarchy
 - **One clear focal point per beat**: every shot has one primary read (hero title, lyric phrase, key illustration, or visual metaphor). Secondary typography, HUD accents, and graphic overlays support the hero rather than fighting it.

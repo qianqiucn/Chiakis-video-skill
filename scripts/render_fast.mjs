@@ -11,12 +11,13 @@
 // --errors-json f writes the raw records for qa.mjs.
 // Usage:
 //   node render_fast.mjs <index.html> <start s> <end s> <out.mp4> [--audio a.wav] [--audio-start 0]
-//        [--workers 2] [--fps 24] [--scale 1 | --2k [--max-mb 480]] [--cpu] [--disk] [--png] [--keep] [--query "&x=1"]
+//        [--workers 2] [--fps 24] [--scale 1 | --2k [--max-mb 480]] [--grain] [--cpu] [--disk] [--png] [--keep] [--query "&x=1"]
 //        [--errors-json f]
 //   --scale 0.5  half-size draft (motion checks, QA): one small MP4 only (<out>_720p.mp4)
 //   --2k         the delivery at 2560×1440: frames captured at 4/3 scale, one MP4 (<out>_2k.mp4) whose bitrate is capped
-//                at 15 Mbps, or lower so the file stays under --max-mb (default 480: the desktop's 500 MB upload limit; the phone
-//                gets the 2K through a private page: references/production.md «Delivery to a phone»)
+//                at 15 Mbps (22 Mbps with --grain), or lower so the file stays under --max-mb (default 480)
+//   --grain      film-grain / paper-texture preservation preset: lower CQ/CRF and higher maxrate so tactile grain
+//                and paper fiber overlays survive H.264 compression at 720p, 1080p, and 2K
 //   --cpu        libx264 instead of NVENC (smaller files, slower)
 //   --disk       old mode: frames to <out dir>/_frames_<name>/ (resumable; --keep keeps them, --png = PNG frames)
 import fs from 'node:fs';
@@ -28,8 +29,9 @@ const a = process.argv.slice(2);
 const opt = (k, d) => { const i = a.indexOf(k); return i >= 0 ? a[i + 1] : d; };
 const has = (k) => a.includes(k);
 const [page, startS, endS, out] = a;
-if (!out) { console.log('usage: node render_fast.mjs <index.html> <start> <end> <out.mp4> [--audio f] [--audio-start s] [--workers 2] [--fps 24] [--scale 1 | --2k [--max-mb 480]] [--cpu] [--disk] [--png] [--keep] [--query q] [--errors-json f]'); process.exit(1); }
+if (!out) { console.log('usage: node render_fast.mjs <index.html> <start> <end> <out.mp4> [--audio f] [--audio-start s] [--workers 2] [--fps 24] [--scale 1 | --2k [--max-mb 480]] [--grain] [--cpu] [--disk] [--png] [--keep] [--query q] [--errors-json f]'); process.exit(1); }
 const k2 = has('--2k');
+const grain = has('--grain');
 const fps = +opt('--fps', 24), W = workerCount(opt('--workers', 2)), scale = k2 ? 4 / 3 : +opt('--scale', 1), query = opt('--query', '');
 const disk = has('--disk') || has('--keep') || has('--png');
 const fmt = has('--png') ? 'png' : 'jpeg', ext = fmt === 'png' ? 'png' : 'jpg';
@@ -40,8 +42,8 @@ const small = out.replace(/\.mp4$/i, '') + (k2 ? '_2k.mp4' : '_720p.mp4');
 const audio = opt('--audio', ''), dur = (N / fps).toFixed(4);
 const aIn = audio ? ['-ss', opt('--audio-start', '0'), '-t', dur, '-i', audio] : [];
 const vEnc = (q, big) => nvenc
-  ? ['-c:v', 'h264_nvenc', '-preset', 'p6', '-tune', 'hq', '-rc', 'vbr', '-cq', String(q), '-b:v', '0', '-maxrate', big ? '40M' : '12M', '-bufsize', big ? '80M' : '24M', '-pix_fmt', 'yuv420p']
-  : ['-c:v', 'libx264', '-preset', 'medium', '-crf', String(q + 1), '-pix_fmt', 'yuv420p'];
+  ? ['-c:v', 'h264_nvenc', '-preset', 'p6', '-tune', 'hq', '-rc', 'vbr', '-cq', String(q), '-b:v', '0', '-maxrate', big ? (grain ? '50M' : '40M') : (grain ? '18M' : '12M'), '-bufsize', big ? (grain ? '100M' : '80M') : (grain ? '36M' : '24M'), '-pix_fmt', 'yuv420p']
+  : ['-c:v', 'libx264', '-preset', 'medium', '-crf', String(grain ? q : q + 1), '-pix_fmt', 'yuv420p'];
 const aEnc = (br) => (audio ? ['-map', '1:a', '-c:a', 'aac', '-b:a', br, '-shortest'] : []);
 // HD colour: the JPEG frames are BT.601, so the scale converts the matrix to BT.709 (accurate rounding: the fast path
 // darkens ≈ 3 levels) and every output is tagged BT.709 (setparams marks the frames, which the encoder follows)
@@ -52,18 +54,18 @@ const sp = 'setparams=range=tv:color_primaries=bt709:color_trc=bt709:colorspace=
 function encodeArgs(vin) {
   // JPEG screenshots decode as full-range YUV: convert to standard TV range so phones/players show the true levels
   if (k2) {                                            // 2K delivery: native 2560×1440, bitrate capped to the upload limit
-    const mbps = Math.min(15, (+opt('--max-mb', 480) * 8) / +dur - 0.25);
+    const mbps = Math.min(grain ? 22 : 15, (+opt('--max-mb', 480) * 8) / +dur - 0.25);
     const rate = [`${mbps.toFixed(2)}M`, `${(2 * mbps).toFixed(2)}M`];
-    const enc = nvenc ? ['-c:v', 'h264_nvenc', '-preset', 'p6', '-tune', 'hq', '-rc', 'vbr', '-cq', '19', '-b:v', rate[0], '-maxrate', rate[0], '-bufsize', rate[1], '-pix_fmt', 'yuv420p']
-      : ['-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-maxrate', rate[0], '-bufsize', rate[1], '-pix_fmt', 'yuv420p'];
+    const enc = nvenc ? ['-c:v', 'h264_nvenc', '-preset', 'p6', '-tune', 'hq', '-rc', 'vbr', '-cq', grain ? '16' : '19', '-b:v', rate[0], '-maxrate', rate[0], '-bufsize', rate[1], '-pix_fmt', 'yuv420p']
+      : ['-c:v', 'libx264', '-preset', 'medium', '-crf', grain ? '16' : '18', '-maxrate', rate[0], '-bufsize', rate[1], '-pix_fmt', 'yuv420p'];
     return [...vin, ...aIn, '-map', '0:v', ...aEnc('192k'), '-vf', `scale=2560:-2:in_range=pc:out_range=tv:${cm},format=yuv420p,${sp}`, ...enc, ...tag, '-movflags', '+faststart', small];
   }
-  if (scale !== 1) return [...vin, ...aIn, '-map', '0:v', ...aEnc('192k'), '-vf', `scale=1280:-2:in_range=pc:out_range=tv:${cm},format=yuv420p,${sp}`, ...vEnc(24, false), ...tag, '-movflags', '+faststart', small];
+  if (scale !== 1) return [...vin, ...aIn, '-map', '0:v', ...aEnc('192k'), '-vf', `scale=1280:-2:in_range=pc:out_range=tv:${cm},format=yuv420p,${sp}`, ...vEnc(grain ? 18 : 24, false), ...tag, '-movflags', '+faststart', small];
   return [...vin, ...aIn, '-filter_complex', `[0:v]scale=in_range=pc:out_range=tv:${cm},format=yuv420p,${sp},split=2[big][s];[s]scale=1280:-2:flags=lanczos[sm]`,
-    '-map', '[big]', ...aEnc('192k'), ...vEnc(21, true), ...tag, '-movflags', '+faststart', out,
-    '-map', '[sm]', ...aEnc('192k'), ...vEnc(27, false), ...tag, '-movflags', '+faststart', small];
+    '-map', '[big]', ...aEnc('192k'), ...vEnc(grain ? 17 : 21, true), ...tag, '-movflags', '+faststart', out,
+    '-map', '[sm]', ...aEnc('192k'), ...vEnc(grain ? 20 : 27, false), ...tag, '-movflags', '+faststart', small];
 }
-console.log(`frames ${F0}..${F1} (${N}), workers ${W}, ${disk ? 'disk ' + fmt : 'pipe'}, ${nvenc ? 'NVENC' : 'libx264'}${scale !== 1 ? ', scale ' + scale : ''}`);
+console.log(`frames ${F0}..${F1} (${N}), workers ${W}, ${disk ? 'disk ' + fmt : 'pipe'}, ${nvenc ? 'NVENC' : 'libx264'}${scale !== 1 ? ', scale ' + scale : ''}${grain ? ', grain' : ''}`);
 const t0 = Date.now(); const pages = [], told = new Set();
 // say each kind of render error once, the moment a worker first meets it (the full list comes at the end)
 const onRenderError = (r, line) => { const k = failKey(r); if (!told.has(k)) { told.add(k); console.log('RENDER ERROR ' + line); } };

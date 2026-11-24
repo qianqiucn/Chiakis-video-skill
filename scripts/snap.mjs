@@ -20,7 +20,15 @@ const outDir = outArg && path.resolve(outArg);   // absolute: ffmpeg's concat li
 if (!spec) { console.log('usage: node snap.mjs <index.html> <outDir> "<frames>" [--sheet name] [--cols 6] [--scale 0.5] [--query "&beats=1"] [--fps 24] [--png]'); process.exit(1); }
 const fps = +opt('--fps', 24), scale = +opt('--scale', 0.5), cols = +opt('--cols', 6), sheet = opt('--sheet', '');
 const png = a.includes('--png');
-const frames = parseFrames(spec);
+let frames;
+try {
+  frames = parseFrames(spec);
+  if (!frames.length) throw new Error('empty frame list');
+} catch (err) {
+  console.error(`snap.mjs: invalid frame spec "${spec}" (${err.message || err}).`);
+  console.error('Hint: argument order is: node snap.mjs <index.html> <outDir> "<frames>" [--sheet name] [--cols 6] [--scale 0.5] [--fps 24]');
+  process.exit(1);
+}
 fs.mkdirSync(outDir, { recursive: true });
 const t0 = Date.now();
 const pg = await openPage(page, { query: opt('--query', '') });

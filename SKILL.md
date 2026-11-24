@@ -65,9 +65,10 @@ Commands: `<py>` = `python -X utf8` (or your venv Python with `requirements.txt`
   2. **Where to install**: custom Python venv path (e.g. a non-system drive) or current Python, plus optional `CHIAKI_BLENDER`, `CHIAKI_ASSETS3D`, `CHIAKI_FONTS`, and MCP client target (`antigravity` / `codex` / `claude`).
 - Once confirmed, run `python -X utf8 <sk>/scripts/setup_env.py --profile ...` and re-run `doctor.py` to confirm green.
 
-### 1. Brief & Audio / Reference Analysis (never guess beats by ear)
-- Confirm topic, duration, act count, target FPS (`24` or `30`), music track (or procedural `mgaudio` bed), visual asset / art generation route (`user_files` / `gemini` / `codex` / `custom_api` / `code_only`), Blender 3D scope, and mode (Original / Lyric PV / Study Replica). Fill harmless defaults and report them in one concise line.
-- Run `python -X utf8 <sk>/scripts/beats.py <audio> --fps <FPS>` for BPM & beat grid, and `python -X utf8 <sk>/scripts/onsets.py <audio> <f0-f1> --fps <FPS>` to lock key drops/hits onto exact broadband downbeats (`floor(onset_frame)`).
+### 1. Brief & Audio / Vocal / Reference Analysis (never guess beats or vocals)
+- Confirm topic, duration, act count, target FPS (`24` or `30`), music track (or procedural `mgaudio` bed), **audio strategy** (`pure_song` default for song/lyric PVs vs `full_sfx` for promos/openers/original scores), visual asset / art generation route (`user_files` / `gemini` / `codex` / `custom_api` / `code_only`), Blender 3D scope, and delivery cadence (720p review first → 2K FLAC final). Fill harmless defaults and report them in one concise line.
+- Run `python -X utf8 <sk>/scripts/beats.py <audio> --fps <FPS>` for BPM & beat grid, and `python -X utf8 <sk>/scripts/onsets.py <audio> <f0-f1> --fps <FPS>` (or `--from <sec> --to <sec>`) to lock key drops/hits onto exact broadband downbeats (`floor(onset_frame)`).
+- **Vocal / lyric timing rule (mandatory for song PVs / lyric MVs)**: `beats.py` / `onsets.py` track drums, NOT sung human vocals. Run `python -X utf8 <sk>/scripts/vocal_spec.py <audio> --out <proj>/work/vocal --fps <FPS>`, listen directly to each 3–5 s micro-WAV via multimodal `read_file`, and cross-check its frame-numbered 300 Hz–4 kHz spectrogram to lock every lyric entry BEFORE Gate A.
 - If studying a reference video, extract frame cadence (`scripts/cadence.py`), optical flow (`scripts/motion.py`), brightness/saturation (`scripts/look.py`), and cut diffs (`scripts/framediff.py`).
 
 ### 2. Pitch Meeting — 3 Competing Concepts (`assets/workflows/pitch.js` or `pitch.py`)
@@ -81,34 +82,35 @@ Commands: `<py>` = `python -X utf8` (or your venv Python with `requirements.txt`
 - Pass **Gate A BEFORE generating any images or writing segment code**: verify concept originality, measured beat alignment, valid motion IDs, approved `art_manifest.json` & cost boundary, and strict file ownership.
 
 ### 5. Pluggable Art & Asset Preparation (`art-pipeline.md`, `fonts.py`, `3d.md`)
-- **Images / Plates**: execute `<project>/work/art_manifest.json` via `python -X utf8 <sk>/scripts/art_gen.py run <project>` (or the host agent's native Gemini / Codex image tool), verify every plate visually at full resolution, and confirm completeness with `art_gen.py check <project>`.
-- **Fonts & 2D Textures**: search bundled 59 OFL/Apache fonts (`scripts/fonts.py search --local ...`) or fetch Google Fonts on demand, pack WOFF2 + Base64 locally via `scripts/fonts.py use <project> ...`, and copy chosen CC0 overlays from `<sk>/assets/textures/` into `web/assets/tex/`.
-- **Depth & 3D Assets**: generate softened 16-bit depth maps (`scripts/vision/depth.py ... --bits 16 --soften`) for relief/projection shots, and fetch free HDRIs / PBR materials / models via `scripts/assets3d.py get ... --project <project>`.
+- **Images / Plates**: execute `<project>/work/art_manifest.json` via `python -X utf8 <sk>/scripts/art_gen.py run <project> --workers 3` (supports per-shot `refs: [...]` multi-reference anchoring and automatic 429/5xx backoff retries, or use the host's native Gemini/Codex image tool), verify every plate visually at full resolution, and confirm completeness with `art_gen.py check <project>`. Use `scripts/vision/segment.py` (Grounding DINO + SAM 2.1) for foreground cut-outs/occlusion masks and `scripts/vision/pasteback.py --align --lf 40` for pixel-aligned clean plates or surgical edits.
+- **Fonts & 2D Textures**: search bundled 59 OFL/Apache fonts (`scripts/fonts.py search --local ...`) or fetch Google Fonts on demand, pack WOFF2 + Base64 locally via `scripts/fonts.py use <project> ...` (`--static` for stroked/outlined glyphs), stretch low-contrast raw paper scans with `scripts/prep_texture.py`, and copy chosen CC0 overlays from `<sk>/assets/textures/` into `web/assets/tex/`.
+- **Depth & 3D Assets**: generate softened 16-bit depth maps (`scripts/vision/depth.py ... --bits 16 --soften`) for relief/projection shots, and fetch free HDRIs / PBR materials / models via `scripts/assets3d.py get ... --project <project>` (self-contained attribution is recorded in `work/assets3d_used.json`).
 
 ### 6. 3-Craft Studio Build (`assets/workflows/build.js` or `build.py`)
 - **Scaffold**: copy `<sk>/assets/template/` into `<project>/web/`, set `window.T3_CONFIG = { fps, start, end, audio, bpm, beatOffset }`.
-- **Z-order convention**: scene/animation segments `z = 10`; dedicated graphic-design/typography overlays `z = 20` (`*_design.js`); cross-cut transitions / hand-offs `z = 60` (`*_handoff.js`).
+- **Z-order convention**: scene/animation segments `z = 10`; dedicated graphic-design/typography overlays `z = 20` (`*_design.js`); optional unified tactile film/paper coat `z = 45` (`film_texture.js`, face-protected & `T3.twos`-locked in stepped passages); cross-cut transitions / hand-offs `z = 60` (`*_handoff.js`).
 - **Parallel 3-Craft Division of Labor**:
   - **3D 工程师 (`flash`, optional when act uses Blender)**: owns `blender/`, `web/assets/rel/` (SINE-keyed reliefs via `T3.relX`), `web/assets/b3d/` (projection / built-set sequences, played frame-for-frame), and `work/assets3d_used.json`; optional live Blender MCP for look-dev, all batch renders queued via `run_queue.py blender`, verified by `parallax.py`.
   - **剪辑合成师 (`pro`)**: owns `segments/seg_*.js` (`z = 10`) and `segments/*_handoff.js` (`z = 60`); writes motion sheet, cites library IDs, registers ≥ 3 `T3.motionProbe(...)` curves.
   - **平面设计师 (`flash`)**: owns `design/board.md`, bundled font choices, colour tokens, and `segments/*_design.js` (`z = 20`, per-glyph kinetic typography).
-  - **执行导演 (`Dailies`, read-only `pro`) → 修改员 (`flash`) → 质检 (`flash`)**: first-cut review on curve sheets, contact sheets, and draft clip.
+  - **执行导演 (`Dailies`, read-only `pro`) → 并行分专业修改员 (`flash`, Edit + Design + 3D) → 质检 (`flash`)**: first-cut review on curve sheets, contact sheets, and draft clip, closed in one parallel pass across crafts.
 
 ### 7. Self-Check & Gate B1 (`quality-bar.md`)
-- Run static `motion_lint.mjs` (0 FAIL), queued `motion_lint.mjs --curves` (inspect SVG curve sheets), `qa.mjs` (0 render/page/text/freeze errors), `snap.mjs --sheet` contact sheets, `parallax.py` on spatial shots, and `cadence.py` on stepped passages.
+- Run static `motion_lint.mjs` (0 FAIL), queued `motion_lint.mjs --curves` (inspect SVG curve sheets — check both sluggish `Q1 < 0.60` and `Q1 > 0.90` cliff arrivals with long flat tails), `qa.mjs` (0 render/page/text/freeze errors; check in-shot motion & dark-frame `p5 >= 30`), `snap.mjs --sheet` contact sheets, `parallax.py` on spatial shots, and `cadence.py` on stepped passages.
 
 ### 8. Sound Design & Mastering (dedicated `声音设计师` · `flash`)
-- Add `<sk>/assets/mgaudio` to `sys.path` to synthesize beat-synced procedural SFX (`whoosh`, `impact`, `riser`, `text_hit`, `glitch`, `ui`, `paper`...) and optional music beds; supplement physical sounds via `scripts/freesound.py` when configured.
-- Mix with `mgaudio.Mix`: ≤ 3 concurrent SFX per frame, ~3 dB music ducking on hero hits, mono-safe stereo (`stereo_corr > 0.3`), mastered to **−14.0 ± 1.0 LUFS integrated, true peak ≤ −1.1 dBTP**, exported as 48 kHz / 24-bit `work/master.wav`.
+- **Song PVs / Lyric MVs (`pure_song` default)**: cleanly trim, fade edges gently, and master the original recording to **−14.0 ± 1.0 LUFS integrated, true peak ≤ −1.1 dBTP, 48 kHz / 24-bit** (`work/master.wav`) with **zero competing swooshes/risers** unless the client explicitly requested SFX.
+- **Promos / Openers / Original Scores (`full_sfx`)**: add `<sk>/assets/mgaudio` to `sys.path` to synthesize beat-synced procedural SFX (`whoosh`, `impact`, `riser`, `text_hit`, `glitch`, `ui`, `paper`...) and optional music beds; supplement physical sounds via `scripts/freesound.py`; mix with `mgaudio.Mix` (≤ 3 concurrent SFX/frame, ~3 dB ducking, `stereo_corr > 0.3`) and master to **−14.0 ± 1.0 LUFS / ≤ −1.1 dBTP** (`work/master.wav`).
 
 ### 9. Internal 3-Lens Adversarial Review (`assets/workflows/review_fix.js` or `review_fix.py`)
 - Physically read-only `规矩审片员` + `技术审片员` + `剪辑感审片员` (`pro`) → 3 independent verifiers (`pro`) → targeted pre-render fixes (`flash`) → read-only `质检` (`flash`).
+- **Short-Film (< 60 s) Fast-Track**: clear confirmed blockers (sync drift, render/font defects, legibility collisions, dead frames) quickly so you reach Stage 10's full audiovisual render without stalling in multi-round still-frame loops; reserve fine cosmetic polish for Stage 12 after watching the rendered video + Stage 11 independent scoring.
 
 ### 10. First Full Audiovisual Render (V1)
-- Render the full timeline with mastered audio (`render_fast.mjs web/index.html 0 <end> out/film_v1.mp4 --audio work/master.wav --fps <FPS> [--2k]`) through `run_queue.py web` so independent scoring evaluates the true finished picture + sound.
+- Render the full timeline with mastered audio through `run_queue.py web` (`render_fast.mjs web/index.html 0 <end> out/film_v1.mp4 --audio work/master.wav --fps <FPS> [--scale 0.6667] [--grain]`) — add **`--grain`** whenever 35mm film grain or paper fiber overlays are used, and prefer 720p first during review before upgrading the approved final to 2K `--2k`.
 
 ### 11. Independent 7-Dimension Scorecard (`assets/workflows/polish_rerender.js` or `polish_rerender.py`)
-- Dispatch a physically read-only `chiaki-reviewer` (`pro`, `assets/workflows/score_brief.md`) to audit the V1 render, curve sheets, QA log, and loudness report across all 7 dimensions (**≥ 8 / 10 on every single dimension**, never averaged). Outputs `work/SCORE_V1.md` with verdict `DELIVER` or `REVISE`.
+- Dispatch a physically read-only `chiaki-reviewer` (`pro`, `assets/workflows/score_brief.md`) to audit the V1 render, curve sheets, QA log, loudness report, and (on song PVs) ≥ 2 climax lyric lines via `vocal_spec.py` micro-WAVs across all 7 dimensions (**≥ 8 / 10 on every single dimension**, never averaged). Outputs `work/SCORE_V1.md` with verdict `DELIVER` or `REVISE`.
 
 ### 12. Targeted Polish Round + QC (`修一轮`)
 - For every deduction or `< 8` dimension in `work/SCORE_V1.md`, `polish_rerender` dispatches scoped `修改员` (`flash`) by owning craft/files for minimal surgical fixes, followed by read-only `质检` (`flash`) frame-by-frame verification. (Skipped only if V1 already passed `DELIVER` with zero blocking issues.)

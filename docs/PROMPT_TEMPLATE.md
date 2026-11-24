@@ -10,12 +10,13 @@
 | **影片类型** | 原创快剪 PV / 动态歌词 MV / 品牌片头 / MAD / 风格复刻学习 |
 | **幕数与时长** | 例：4 幕 · 约 1 分 30 秒 · 24 fps（或 30 fps） |
 | **音乐来源** | 填写本地音频路径，或填「用内置 mgaudio 按风格原创合成」 |
+| **音效策略** | `纯原曲洁净母带（成曲/歌词 PV 默认推荐，零额外 swoosh 干扰人声）` / `克制点缀` / `全套电影级音效+压低（片头/宣传片推荐）` |
 | **画面 / 角色设定** | 填人物外貌/世界观关键词，或本地原画/角色设定图文件夹路径 |
 | **出图方式（可混用）** | `用户自备图` / `Gemini 多模态生图` / `Codex 生图` / `自定义生图 API` / `纯代码 2D+3D` |
 | **Blender 3D / MCP** | `关闭（纯 2D）` / `2.5D 深度浮雕` / `满血 Blender 3D（浮雕+投影+搭景+MCP 实时调光）` |
 | **重点压轴幕次** | 例：第 3 幕副歌高潮 / 压轴主镜头投入最多精力与层次 |
 | **产出保存目录** | `./projects/my_video`（按项目单独建子文件夹） |
-| **交付规格** | 1080p Web MP4 + 2K (`2560x1440`) 48 kHz FLAC 母版 + 720p 手机预览 |
+| **交付规格** | 先出 720p 审片，确认后再升渲 2K (`2560x1440`) 48 kHz FLAC 母版 + 1080p Web MP4 |
 
 ---
 
@@ -31,19 +32,19 @@
 
 严格按 `Chiaki's-video-skill` 完整 13 步推进，所有子代理必须贴入 `references/personas.md` 原话身份与性格、附 `references/crafts.md` 工种卡并锁定 `Model`：
 
-1. **Brief & 音轨分析**：用 `scripts/beats.py` + `scripts/onsets.py` 逐帧实测鼓点与重音（严禁靠猜节拍）。
+1. **Brief & 音轨/人声分析**：用 `scripts/beats.py` + `scripts/onsets.py` 逐帧实测鼓点；**成曲/歌词 PV 必须先跑 `scripts/vocal_spec.py` 并多模态直听微切片 + 声谱图锁死每句歌词起唱帧（严禁拿鼓点当歌词帧）**。
 2. **三方案提案会**（`pitch.js` / `pitch.py`）：每幕由「媒介设计师 / 演出策划 / 摄影指导」交 3 套独立方案 → 「创意总监」拍板 → 「执行制片」统筹全片，杜绝各幕撞型、撞色、撞字。
-3. **分镜表**：落清精确有理数帧范围（`f0 / FPS`）、视觉风格、镜头配方、动效 ID、出图来源、`work/cues.csv` 与 `work/art_manifest.json`。
-4. **Gate A（出图前闸门）**：先锁死分镜、节拍与出图清单，确认无返工风险再出图。
-5. **多源出图与资产准备**（`art-pipeline.md` + `scripts/art_gen.py`）：按上表路线出图/整理原图 → 原尺寸视觉验收 → 本地打包开源字体（`fonts.py use`，禁用外链字体）→ 准备 CC0 纹理、16-bit 柔化深度图（`vision/depth.py --soften`）与免费 3D 素材（`assets3d.py`）。
-6. **三工种并行搭建**（`build.js` / `build.py`）：3D 工程师（`flash`，有 3D/2.5D 时启用）+ 剪辑合成师（`pro`，`z=10/60`）+ 平面设计师（`flash`，`z=20`）→ 物理只读「执行导演」一版看样 → 修改员 → 质检。
-7. **自查（Gate B1）**：静态 `motion_lint.mjs`（0 FAIL）+ `--curves` SVG 曲线图审阅 + `qa.mjs` + `snap.mjs --sheet` + 空间 `parallax.py` + 定格 `cadence.py`。
-8. **声音设计与母带**：派独立「声音设计师」（`flash`）读 `cues.csv`，用 `assets/mgaudio` + 可选 Freesound 混音并母带至 **−14 LUFS / ≤ −1.1 dBTP / 48 kHz**（`work/master.wav`）。
-9. **初版三视角内审**（`review_fix.js` / `review_fix.py`）：物理只读「规矩 · 技术 · 剪辑感」三审片员 → 三复核员 → 定向修复阻断项 → 质检。
-10. **一版带声全片渲染**：经 `run_queue.py web` 渲染带 `master.wav` 的一版全片 MP4（`out/film_v1.mp4`）。
-11. **独立 7 维严格评分**（`polish_rerender.js` / `polish_rerender.py` + `score_brief.md`）：派物理只读「独立成片评分员」（`pro`）对照带声一版成片与曲线图按 7 维逐项打分（**每维 ≥ 8 分才算及格，绝不算平均分**）。
+3. **分镜表**：落清精确有理数帧范围（`f0 / FPS`）、人声起唱帧、视觉风格、镜头配方、动效 ID、出图来源、`work/cues.csv` 与 `work/art_manifest.json`。
+4. **Gate A（出图前闸门）**：先锁死分镜、节拍/人声帧与出图清单，确认无返工风险再出图。
+5. **多源出图与资产准备**（`art-pipeline.md` + `scripts/art_gen.py`）：按上表路线出图/整理原图（支持 `refs` 多图参考锚定与并发重试）→ 原尺寸视觉验收（按需用 `vision/segment.py` / `vision/pasteback.py` 抠图补图）→ 本地打包开源字体（`fonts.py use`，描边字用 `--static`）→ 用 `prep_texture.py` 提取高反差纸纹、生成 16-bit 柔化深度图（`vision/depth.py --soften`）与免费 3D 素材（`assets3d.py`）。
+6. **三工种并行搭建**（`build.js` / `build.py`）：3D 工程师（`flash`，有 3D/2.5D 时启用）+ 剪辑合成师（`pro`，`z=10/60`）+ 平面设计师（`flash`，`z=20`）+ 统一质感罩层（`film_texture.js`，`z=45`）→ 物理只读「执行导演」一版看样 → **并行分专业修改员** → 质检。
+7. **自查（Gate B1）**：静态 `motion_lint.mjs`（0 FAIL）+ `--curves` SVG 曲线图审阅（核查 `Q1` 滞后与 `> 0.90` 悬崖长死尾）+ `qa.mjs` + `snap.mjs --sheet` + 空间 `parallax.py` + 定格 `cadence.py`。
+8. **声音设计与母带**：派独立「声音设计师」（`flash`）按需求表音效策略执行 —— 成曲/歌词 PV 默认 `pure_song` 洁净母带（零额外 swoosh 破坏原曲听感），片头/原创配乐走 `assets/mgaudio` + Freesound —— 统一母带至 **−14 LUFS / ≤ −1.1 dBTP / 48 kHz**（`work/master.wav`）。
+9. **初版三视角内审**（`review_fix.js` / `review_fix.py`）：物理只读「规矩 · 技术 · 剪辑感」三审片员 → 三复核员 → 定向修复阻断项 → 质检（短片 `< 60 s` 优先清阻断项，尽快进入带声一版看片）。
+10. **一版带声全片渲染**：经 `run_queue.py web` 渲染带 `master.wav` 的一版全片 MP4（`out/film_v1.mp4`；纸纹/胶片质感片必带 `--grain` 参数防 H.264 磨平纹理）。
+11. **独立 7 维严格评分**（`polish_rerender.js` / `polish_rerender.py` + `score_brief.md`）：派物理只读「独立成片评分员」（`pro`）对照带声一版成片与曲线图按 7 维逐项打分（**每维 ≥ 8 分才算及格，绝不算平均分**；歌词 PV 必抽查 ≥ 2 句高潮人声对口型）。
 12. **修一轮 + 质检**：针对独立评分卡的每一条扣分项，按文件边界派「修改员」（`flash`）做最小化定向修复，由物理只读「质检」（`flash`）逐条原尺寸截图复验。
-13. **重渲染定稿 → 复评 → Gate B2 交片**：重渲 1080p Web + 2K `--2k` + 48 kHz FLAC 母版，复评确认全维 ≥ 8，过 Gate B2 并导出字体与 3D 素材开源鸣谢（`fonts.py credits` / `assets3d.py credits`）。
+13. **重渲染定稿 → 复评 → Gate B2 交片**：先交 720p 审片确认，确认后升渲 1080p Web + 2K `--2k`（带 `--grain`）+ 48 kHz FLAC 母版，复评确认全维 ≥ 8，过 Gate B2 并导出字体与 3D 素材开源鸣谢（`fonts.py credits` / `assets3d.py credits`）。
 
 ---
 

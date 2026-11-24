@@ -1,25 +1,38 @@
 """onsets.py — where exactly does a hit land? Run with Python (-X utf8); needs numpy + ffmpeg.
 
-  onsets.py <audio> <from-to> [<from-to> ...] [--fps 24] [--quiet]
-      <audio>: any file ffmpeg reads (the FINAL soundtrack of the film); ranges are video frames, e.g. 425-442.
+  onsets.py <audio> [<from-to> ...] [--from <sec> --to <sec>] [--fps 24] [--quiet]
+      <audio>: any file ffmpeg reads (the FINAL soundtrack of the film); ranges are video frames (e.g. 425-442)
+      or pass --from/--to in seconds (e.g. --from 17.7 --to 18.4) which is converted to frames automatically.
       For each range, per half frame: the low-band envelope (< 150 Hz, 25 ms RMS), broadband spectral flux (> 150 Hz,
       STFT 2048, hop 1 ms, positive differences only) and low-band flux. Then two answers:
         downbeat  = the frame holding the broadband flux peak (clap/snare + full band): put the cut / the slam HERE,
                     i.e. on floor(onset frame), the frame that contains the onset — never a rounded beat-grid frame;
         low rise  = the first frame where the low envelope passes half of its range max (808 or bass slide).
       A low rise several frames before the downbeat is a pre-roll (an 808 sliding in), not the hit.
+      NOTE: onsets.py tracks percussion/drum transients, NOT sung vocal syllables — use scripts/vocal_spec.py for lyrics.
 """
-import argparse, os, shutil, subprocess, sys
+import argparse, math, os, shutil, subprocess, sys
 import numpy as np
 
 ap = argparse.ArgumentParser()
-ap.add_argument('audio'); ap.add_argument('ranges', nargs='+'); ap.add_argument('--fps', type=float, default=24.0)
+ap.add_argument('audio')
+ap.add_argument('ranges', nargs='*', help='Frame ranges like 425-442 (optional when --from/--to is given)')
+ap.add_argument('--from', dest='from_s', type=float, default=None, help='Start time in seconds (optional alternative to frame range)')
+ap.add_argument('--to', dest='to_s', type=float, default=None, help='End time in seconds (optional alternative to frame range)')
+ap.add_argument('--fps', type=float, default=24.0)
 ap.add_argument('--quiet', action='store_true', help='only the two answers per range')
 a = ap.parse_args()
+if a.from_s is not None or a.to_s is not None:
+    if a.to_s is None:
+        sys.exit('onsets.py: --from requires --to (in seconds)')
+    t0 = 0.0 if a.from_s is None else a.from_s
+    a.ranges.append(f"{int(math.floor(t0 * a.fps))}-{int(math.ceil(a.to_s * a.fps))}")
+if not a.ranges:
+    sys.exit('usage: onsets.py <audio> <f0-f1> [...] | --from <sec> --to <sec> [--fps 24] [--quiet]')
 def _find_ffmpeg(explicit=""):
     if explicit and os.path.exists(explicit):
         return explicit
-    for env in ("CHIAKI_FFMPEG", "FFMPEG_PATH", "QCRV_FFMPEG"):
+    for env in ("CHIAKI_FFMPEG", "FFMPEG_PATH"):
         v = os.environ.get(env)
         if v and os.path.exists(v):
             return v

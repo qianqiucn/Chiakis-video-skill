@@ -50,18 +50,18 @@ description: Chiaki's-video-skill 统一快捷入口（/chiaki、/Chiaki 与 Cod
    - 装完自动用目标 Python 重跑 `doctor.py`，把最终全绿验收报告发给用户。
 
 ### 1. 开新片（13 步旗舰全流程：`new` 或直接写需求）
-1. **环境体检 & Brief**：跑 `python -X utf8 "<SKILL_DIR>/scripts/doctor.py"`；补齐主题、幕数、时长、FPS（24/30）、音乐、出图路线（`user_files` / `gemini` / `codex` / `custom_api` / `code_only`）、Blender 3D 范围并一行汇报；有音乐立即跑 `scripts/beats.py` 与 `scripts/onsets.py` 锁死鼓点帧号。
+1. **环境体检 & Brief**：跑 `python -X utf8 "<SKILL_DIR>/scripts/doctor.py"`；补齐主题、幕数、时长、FPS（24/30）、音乐、**音效策略**（成曲/歌词 PV 默认纯原曲洁净母带 `pure_song`；片头/宣传片/原创编曲默认全套 `full_sfx`）、出图路线（`user_files` / `gemini` / `codex` / `custom_api` / `code_only`）、Blender 3D 范围并一行汇报；有音乐立即跑 `scripts/beats.py` + `scripts/onsets.py` 锁鼓点，**带人声歌词的成曲 PV 必跑 `scripts/vocal_spec.py` 并通过多模态直听微切片 + 300Hz–4kHz 声谱图锁清歌词起唱帧**。
 2. **开工前一行报成本**：说明预计子代理数、模型档位与总耗时。
 3. **提案会（3 套方案）**：跑 `<SKILL_DIR>/assets/workflows_agy/pitch.py`（或 `assets/workflows/pitch.js`）：媒介设计师 / 演出策划 / 摄影指导并行交 3 份方案 → 创意总监拍板 → 执行制片核查各幕不撞型（15 种 `mg-styles.md` 严禁同片重复）。
-4. **分镜表 + Gate A（先锁分镜再出图）**：写完整分镜表（精确有理数帧界、镜头配方 `shot-recipes.md`、动效 ID、出图来源、`work/cues.csv`）和 `work/art_manifest.json`，**先过 Gate A 再动出图额度**。
-5. **多源出图与资产准备**：按 `references/art-pipeline.md` 跑 `scripts/art_gen.py run <proj>`（或调用 Gemini 多模态 / Codex 生图 / 验收用户原图）→ 肉眼原尺寸验图 → 打包本地字体（`fonts.py use`）→ 复制 CC0 纹理 → 生成柔化 16-bit 深度图（`vision/depth.py --soften`）与免费 3D 素材（`assets3d.py`）。
-6. **三工种并行搭建**：拷贝 `<SKILL_DIR>/assets/template/` 到 `<proj>/web/`，按 `build.py` / `build.js` 严格分工 **3D 工程师 (`flash`)** + **剪辑合成师 (`pro`)** + **平面设计师 (`flash`)** → 执行导演一版看样 (`pro`) → 修改员 (`flash`) → 质检 (`flash`)。
-7. **自查（Gate B1）**：静态 `motion_lint.mjs`（0 FAIL）+ `--curves` SVG 曲线图 + `qa.mjs` + `snap.mjs --sheet` + 空间 `parallax.py` + 定格 `cadence.py`。
-8. **声音设计与母带**：派独立 **声音设计师** (`flash`) 读 `work/cues.csv`，用 `assets/mgaudio` + 可选 Freesound 产出 `-14 LUFS / <= -1.1 dBTP` 48 kHz `work/master.wav`。
-9. **初版三视角内审**：运行 `review_fix.py` / `review_fix.js`（物理只读 `规矩·技术·剪辑感` 三视角 → 三复核 → 定向修阻断项 → 质检）。
-10. **一版带声渲染**：经 `run_queue.py web` 渲染带 `master.wav` 的一版全片 MP4（`out/film_v1.mp4`）。
-11. **独立 7 维评分 → 修一轮 → 质检**：运行 `polish_rerender.py` / `polish_rerender.js`（物理只读 `独立成片评分员` `pro` 按 `score_brief.md` 严格打分，每维 ≥ 8 及格 → 若有扣分项则派 `修改员` `flash` 定向修一轮 → `质检` `flash` 逐条原尺寸复验）。
-12. **重渲染定稿 & 复评**：重渲 1080p Web + 2K `--2k` 并按 `references/production.md` §4 封装 48 kHz FLAC 母版，由只读评分员复验扣分项已达标。
+4. **分镜表 + Gate A（先锁分镜再出图）**：写完整分镜表（精确有理数帧界、人声起唱帧、镜头配方 `shot-recipes.md`、动效 ID、出图来源、`work/cues.csv`）和 `work/art_manifest.json`，**先过 Gate A 再动出图额度**。
+5. **多源出图与资产准备**：按 `references/art-pipeline.md` 跑 `scripts/art_gen.py run <proj> --workers 3`（支持多参考图 `refs` 与自动重试，或调用宿主自带 Gemini/Codex 生图）→ 原尺寸肉眼验图 → 按需用 `vision/segment.py` 抠图 / `vision/pasteback.py --align --lf 40` 对齐补图 → 打包本地字体（`fonts.py use`，描边字用 `--static`）→ 纸纹高反差提取（`prep_texture.py`）→ 16-bit 柔化深度图（`vision/depth.py --soften`）与免费 3D 素材（`assets3d.py`）。
+6. **三工种并行搭建**：拷贝 `<SKILL_DIR>/assets/template/` 到 `<proj>/web/`，按 `build.py` / `build.js` 严格分工 **3D 工程师 (`flash`)** + **剪辑合成师 (`pro`)** + **平面设计师 (`flash`)**（全片统一纸纹/颗粒罩层放 `z=45` `film_texture.js`）→ 执行导演一版看样 (`pro`) → **按工种并行修改员 (`flash`)** → 质检 (`flash`)。
+7. **自查（Gate B1）**：静态 `motion_lint.mjs`（0 FAIL）+ `--curves` SVG 曲线图（核查 `Q1` 滞后及 `> 0.90` 悬崖长死尾）+ `qa.mjs` + `snap.mjs --sheet` + 空间 `parallax.py` + 定格 `cadence.py`。
+8. **声音设计与母带**：派独立 **声音设计师** (`flash`) 按所选音效策略执行 —— 成曲/歌词 PV 默认 `pure_song` 洁净母带（零额外 swoosh 干扰人声），片头/原创配乐走 `assets/mgaudio` + Freesound 全套混音与压低 —— 统一母带至 `-14 LUFS / <= -1.1 dBTP` 48 kHz `work/master.wav`。
+9. **初版三视角内审**：运行 `review_fix.py` / `review_fix.js`（物理只读 `规矩·技术·剪辑感` 三视角 → 三复核 → 定向修阻断项 → 质检；短片 `< 60 s` 快速通道优先清零阻断项直奔带声一版渲染）。
+10. **一版带声渲染**：经 `run_queue.py web` 先出带 `master.wav` 的 720p/1080p 一版全片 MP4（`out/film_v1.mp4`；纸纹/胶片感影片加 `--grain` 保颗粒）。
+11. **独立 7 维评分 → 修一轮 → 质检**：运行 `polish_rerender.py` / `polish_rerender.js`（物理只读 `独立成片评分员` `pro` 按 `score_brief.md` 严格打分，歌词 PV 必抽查 ≥ 2 句高潮人声对口型，每维 ≥ 8 及格 → 若有扣分项则派 `修改员` `flash` 定向修一轮 → `质检` `flash` 逐条原尺寸复验）。
+12. **重渲染定稿 & 复评**：审片确认后升渲 1080p Web + 2K `--2k`（纹理片带 `--grain`）并封装 48 kHz FLAC 母版，由只读评分员复验扣分项已达标。
 13. **Gate B2 交付**：核验硬指标 + 开源鸣谢（`fonts.py credits` 与 `assets3d.py credits`），交付成片、评分卡、决策记录与已验证/未验证清单。
 
 ### 2. 多源出图与素材验收（`art`）

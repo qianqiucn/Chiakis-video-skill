@@ -173,7 +173,7 @@ def check_blender():
 
 def check_py_pkgs():
     groups = [
-        ("Fonts (fontTools/brotli/PIL)", ["fontTools", "brotli", "PIL"]),
+        ("Fonts (fontTools/brotli/PIL/pathops)", ["fontTools", "brotli", "PIL", "pathops"]),
         ("Video/Beat (numpy/cv2)", ["numpy", "cv2"]),
         ("Audio (mgaudio deps)", ["scipy", "numba", "soundfile", "pedalboard"]),
     ]

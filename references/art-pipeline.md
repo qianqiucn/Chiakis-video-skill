@@ -28,13 +28,15 @@ Initialize a starter manifest with `python -X utf8 <sk>/scripts/art_gen.py init 
   "defaults": {
     "provider": "user_files",
     "size": "1920x1080",
-    "style_bible": "Cohesive colour palette, lighting direction, and medium shared across all generated shots"
+    "style_bible": "Cohesive colour palette, lighting direction, and medium shared across all generated shots",
+    "extra_body": {}
   },
   "shots": [
     {
       "id": "act1_hero",
       "act": "act1",
       "provider": "gemini",
+      "refs": ["web/assets/art/char_sheet.png"],
       "out": "web/assets/art/act1_hero.png",
       "prompt": "Wide editorial illustration, clean composition with clear upper-left negative space for typography, zero embedded text or watermarks",
       "source": "",
@@ -51,15 +53,17 @@ Initialize a starter manifest with `python -X utf8 <sk>/scripts/art_gen.py init 
 # 1. Create starter manifest
 python -X utf8 <sk>/scripts/art_gen.py init <project>
 
-# 2. Preview what will be copied / generated without calling any API
+# 2. Preview what will be copied / generated (incl. multi-ref counts) without calling any API
 python -X utf8 <sk>/scripts/art_gen.py run <project> --dry
 
-# 3. Execute manifest (skips files that already exist unless --force)
-python -X utf8 <sk>/scripts/art_gen.py run <project>
+# 3. Execute manifest in parallel with automatic backoff retries on HTTP 429/5xx (skips existing files unless --force)
+python -X utf8 <sk>/scripts/art_gen.py run <project> --workers 3 --retries 3
 
 # 4. Verify every manifest asset exists on disk with valid dimensions
 python -X utf8 <sk>/scripts/art_gen.py check <project>
 ```
+
+> **Multi-reference character & style anchoring (`refs`)**: pass one or more local image paths in `"refs": [...]` per shot (e.g. a character turnaround sheet or locked colour key). `art_gen.py` automatically encodes them as base64 data URIs (`image` field for `custom_api` / OpenAI-Ark endpoints), `inlineData` parts (for `gemini`), or multipart `/v1/images/edits` (for `codex`).
 
 ---
 
@@ -67,19 +71,27 @@ python -X utf8 <sk>/scripts/art_gen.py check <project>
 | Variable | Provider | Purpose |
 |---|---|---|
 | `CHIAKI_IMAGE_API_URL` | `custom_api` | OpenAI-Images-compatible POST endpoint (e.g. `https://.../v1/images/generations`) |
-| `CHIAKI_IMAGE_API_KEY` | `custom_api` | Bearer token for your custom image endpoint |
+| `CHIAKI_IMAGE_API_KEY` | `custom_api` | Bearer token for your custom image endpoint (or set `CHIAKI_IMAGE_API_KEY_FILE` pointing to a local key file) |
 | `CHIAKI_IMAGE_MODEL` | `custom_api` | Model identifier expected by your endpoint |
-| `GEMINI_API_KEY` | `gemini` | Google Gemini API key (optional model override `CHIAKI_GEMINI_IMAGE_MODEL`, default `gemini-2.5-flash-image`) |
-| `OPENAI_API_KEY` | `codex` | OpenAI API key (optional model override `CHIAKI_OPENAI_IMAGE_MODEL`, default `gpt-image-1`) |
+| `GEMINI_API_KEY` | `gemini` | Google Gemini API key (optional `CHIAKI_GEMINI_IMAGE_MODEL`, default `gemini-2.5-flash-image`, or `GEMINI_API_KEY_FILE`) |
+| `OPENAI_API_KEY` | `codex` | OpenAI API key (optional `CHIAKI_OPENAI_IMAGE_MODEL`, default `gpt-image-1`, or `OPENAI_API_KEY_FILE`) |
 
 ---
 
-## 4. Visual Acceptance & Pre-Build Prep (Before Stage 5 Build)
+## 4. Visual Acceptance & Pre-Build Prep (Before Stage 6 Build)
 Before handing assets to the 3D, Edit, and Design crafts:
 1. **Inspect every plate at full size**: confirm zero unwanted gibberish text/watermarks, harmonious palette matching the pitch's hex tokens, and clear negative space where kinetic typography will sit.
-2. **Prepare separated layers** (when a shot uses `lib/multiplane.js`, `T3.her.wave`, `projection/`, or `AL.emissive_card`): verify clean alpha edges with zero white/green fringe.
+2. **Foreground cut-outs & pixel-aligned clean plates (`scripts/vision/`)**:
+   - **Subject cut-out & occlusion masks** (Grounding DINO + SAM 2.1, requires optional `torch` + `transformers`):
+     ```bash
+     python -X utf8 <sk>/scripts/vision/segment.py web/assets/art/<id>.png "girl. sword." work/seg_<id>
+     ```
+   - **Pixel-aligned clean plate / surgical edit composite** (`--align` uses SIFT+RANSAC to cancel AI edit shift/scale drift; `--lf 40` matches low-frequency exposure across the seam):
+     ```bash
+     python -X utf8 <sk>/scripts/vision/pasteback.py orig.png edit.png diff out.png --align --lf 40 --region x0,y0,x1,y1
+     ```
 3. **Generate softened 16-bit depth maps** for shots marked `"needs_depth": true`:
    ```bash
    python -X utf8 <sk>/scripts/vision/depth.py web/assets/art/<id>.png work/<id>_depth_soft.png --bits 16 --soften
    ```
-4. **Pack local fonts & CC0 textures**: run `scripts/fonts.py use <project> ...`, copy chosen overlays from `<sk>/assets/textures/` into `web/assets/tex/`, and fetch any Blender 3D models/HDRIs via `scripts/assets3d.py get ... --project <project>`.
+4. **Pack local fonts & CC0 textures**: run `scripts/fonts.py use <project> ...` (`--static` for stroked/outlined glyphs), stretch raw paper scans via `scripts/prep_texture.py`, copy chosen overlays from `<sk>/assets/textures/` into `web/assets/tex/`, and fetch any Blender 3D models/HDRIs via `scripts/assets3d.py get ... --project <project>`.

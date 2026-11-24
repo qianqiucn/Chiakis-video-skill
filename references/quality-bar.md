@@ -3,8 +3,8 @@
 ## Gate A — Before Art Generation & Building (Storyboard Lock)
 Verify all five items **before generating images or spawning build crafts** (prevents wasted API credits and rework):
 1. **Clear visual identity**: one cohesive non-repeating visual medium (`mg-styles.md`), palette, and bundled font pairing per act (`script-writing.md` §0–§1).
-2. **Exact audio alignment**: all major cuts, chorus drops, and lyric entries map to measured frame indices from `beats.py` / `onsets.py` using exact rationals `f0 / FPS`.
-3. **Every move grounded in `motion-library.md` & `shot-recipes.md`**: shot table specifies library IDs, shot recipe, curve family (`style-grammar.md` §6b), and intentional stepped zones (`§6e`) if any.
+2. **Exact audio & vocal alignment**: all major percussion cuts map to measured frame indices from `beats.py` / `onsets.py` (`f0 / FPS`); **for song PVs / lyric MVs**, sung lyric entry frames MUST be verified via `scripts/vocal_spec.py` (direct multimodal listening to micro-WAVs + 300 Hz–4 kHz spectrogram), never guessed from drum peaks.
+3. **Every move grounded in `motion-library.md` & `shot-recipes.md`**: shot table specifies library IDs, shot recipe, curve family (`style-grammar.md` §6b), audio mode (`pure_song` vs `full_sfx`), and intentional stepped zones (`§6e`) if any.
 4. **Approved art & asset manifest (`art-pipeline.md`)**: `work/art_manifest.json` declares the provider (`user_files` | `gemini` | `codex` | `custom_api` | `code_only`) for every shot, with any paid external image API explicitly authorized by the client.
 5. **Clear file ownership**: brief separates `blender/` + `rel/` + `b3d/` (3D), `seg_*.js` / `*_handoff.js` (Edit), `*_design.js` / `board.md` (Design), and `make_audio.py` (Sound).
 
@@ -17,11 +17,11 @@ Every item must pass before dispatching the 3-lens final review:
 - **0 render errors & 0 page errors** across every frame of the timeline.
 - **0 broken text** (`NaN`, `undefined`, `null`, missing glyphs via `T3.fonts.missing`).
 - **0 unintended black or frozen stretches** (except declared dramatic holds or `Posterize Time` steps).
-- **0 `motion_lint.mjs` FAILs**: all `// motion:` IDs valid, no hand-rolled ease functions, ≥ 3 `T3.motionProbe` curves per segment, SVG curve sheet inspected (`Q1`, peak velocity, settle, no accidental plateaus).
-- **Font check clean**: `T3.fonts.report()` shows every packed local font `status: 'loaded'`, zero remote web font requests.
+- **0 `motion_lint.mjs` FAILs & clean curve audit**: all `// motion:` IDs valid, no hand-rolled ease functions, ≥ 3 `T3.motionProbe` curves per segment, SVG curve sheet inspected (`0.60 <= Q1 <= 0.90` on long arrivals — catch both sluggish starts and `Q1 > 0.90` cliff arrivals with long flat tails, plus verify continuous in-shot motion and readable dark-frame luminance `p5 >= 30` unless deliberate fade-to-black).
+- **Font & texture check clean**: `T3.fonts.report()` shows every packed local font `status: 'loaded'`, zero remote web font requests; tactile paper/grain overlays visibly survive 720p encoding (`prep_texture.py` + `z = 45` coat + `render_fast.mjs --grain`).
 
 ## Gate B2 — On Mastered Final Delivery (After Re-Render & Re-Score)
-1. **Video spec**: exact duration, exact target FPS (`24` or `30`), `yuv420p` BT.709 color tags, clean `+faststart` MP4 (1080p/720p web + 2K `2560x1440` master).
+1. **Video spec**: exact duration, exact target FPS (`24` or `30`), `yuv420p` BT.709 color tags, clean `+faststart` MP4 (pass `--grain` for textured/35mm films; 720p review → 1080p web + 2K `2560x1440` master).
 2. **Audio spec**: 48 kHz stereo (FLAC on 2K archival master / 192–320k AAC on web MP4), integrated loudness **−14.0 ± 1.0 LUFS**, true peak **≤ −1.0 dBTP**, mono correlation **> 0.3**, zero clipping or boundary pops.
 3. **Stepped-cadence & 3D parallax verification**: `cadence.py` MAD scan confirms zero leaked full-rate noise inside `Posterize Time` zones (`style-grammar.md` §6e), and `parallax.py` confirms spatial 3D shots pass (`>= 20 px`, `>= 15%`).
 4. **Independent score & polish sign-off**: every dimension on the independent 7-dim scorecard is **≥ 8 / 10** (after the Stage 12 polish round + QC + Stage 13 re-render if V1 had deductions), plus full-res & phone-scale contact sheet check.
@@ -37,7 +37,7 @@ Executed by a **physically read-only `chiaki-reviewer`** using `assets/workflows
 | 3 | **Rhythm & Editing** | Cuts lock to measured downbeats; strong tension/release & motivated hand-offs | Off-beat cuts, monotonous uniform shot lengths, jarring unmotivated wipes |
 | 4 | **Typography & Graphic Design** | Expressive bundled fonts, clear hierarchy, per-glyph craft, clean safe margins | System fallback fonts, colliding text, unreadable phone-scale captions, slide-deck bars |
 | 5 | **Visual Depth & Composition** | True 5-layer framing, harmonious colour arc, crisp textures & lighting | Flat single-layer graphics, harsh unmotivated neon, messy clutter |
-| 6 | **Sound & Sync** | Clean `-14 LUFS` mix, crisp physical/procedural SFX synced to visuals, dynamic ducking | Missing SFX, muddy overlapping noise (> 3/f), clipping, out-of-sync hits |
+| 6 | **Sound & Sync** | Clean `−14 LUFS` master (`≤ −1.1 dBTP`). In `pure_song` mode: uncorrupted song master + tight vocal/beat visual sync (spot-checked on ≥ 2 climax lyric lines via `vocal_spec.py` micro-WAVs). In `full_sfx` mode: crisp physical/procedural SFX synced to visuals + clean ducking | Clipping, off-sync vocal lyrics (> ±3 f drift) or hits, competing SFX muddying vocals, missing SFX when `full_sfx` was specified, > 3 overlapping SFX/f |
 | 7 | **Technical Craft** | 0 errors, clean BT.709 encode, zero aliasing/clipping/cadence leaks | Render glitches, broken fonts, leaked 30 fps grain inside 12 fps stepped shot, frozen frames |
 
 ## Symptom → Fix (2D Motion Troubleshooting)

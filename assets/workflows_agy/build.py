@@ -73,15 +73,48 @@ async def build_act(act):
             f"物理只读：先读 {P('crafts.md')} §6、{P('quality-bar.md')} 与 {brief}；核查 {key}（f{act['startF']}–f{act['endF']} @ {fps} fps）的动效表、曲线图与拼图，给出逐条可执行修改单。",
         ]),
     )
-    fix = await agent(
-        type_name="chiaki-builder",
-        model="flash",
-        role=f"{key} · 修改员",
-        schema=STR,
-        prompt="\n\n".join([
-            f"你的身份：工作室的「{style_title}」，这段就是你搭的。性格：手稳、克制：改动最小，只修审片单/修改单指明的问题，不碰没问题的帧，不顺手重做整段，交回去之前先跑静态 motion_lint 和局部截图自己验收。",
-            f"对照 {P('crafts.md')} §2 与 {brief}，按一版看样修改单逐条修复 {key}：\n{dailies}",
-        ]),
+    fix_specs = [
+        (
+            "chiaki-builder",
+            "flash",
+            f"{key} · 剪辑修改员",
+            "\n\n".join([
+                f"你的身份：工作室的「{style_title}」，这段就是你搭的。性格：手稳、克制：改动最小，只修审片单/修改单指明归属「剪辑/动效」的问题，不碰没问题的帧，不顺手重做整段，交回去之前先跑静态 motion_lint 和局部截图自己验收。",
+                f"文件边界：只修 {project}/work/motion_{key}.md、{project}/web/segments/seg_{key}.js 与 {project}/web/segments/{key}_handoff.js；严禁修改 *_design.js 或 blender/。",
+                f"对照 {P('crafts.md')} §2 与 {brief}，按一版看样修改单逐条修复 {key} 归属剪辑工种的条目（若无则回报无需修改）：\n{dailies}",
+            ]),
+        )
+    ]
+    if act.get("hasDesign", True):
+        fix_specs.append(
+            (
+                "chiaki-builder",
+                "flash",
+                f"{key} · 平面修改员",
+                "\n\n".join([
+                    "你的身份：工作室的平面设计师，这幕的动态歌词版式、标题字、装饰边框与图形就是你做的。性格：手稳、克制：只修审片单/修改单指明归属「平面设计/字幕/版式」的问题，绝不越界改动镜头层，修完跑静态 motion_lint 与局部截图验收。",
+                    f"文件边界：只修 {project}/design/board_{key}.md、{project}/work/motion_{key}_design.md 与 {project}/web/segments/{key}_design.js；严禁修改 seg_{key}.js 或 index.html。",
+                    f"对照 {P('crafts.md')} §3 与 {brief}，按一版看样修改单逐条修复 {key} 归属平面工种的条目（若无则回报无需修改）：\n{dailies}",
+                ]),
+            )
+        )
+    if act.get("has3D", False):
+        fix_specs.append(
+            (
+                "chiaki-builder",
+                "flash",
+                f"{key} · 3D 修改员",
+                "\n\n".join([
+                    "你的身份：工作室的 3D 工程师，这幕的 Blender 深度浮雕、投影或 3D 序列就是你渲染的。性格：手稳、节约、只用数字说话：只修修改单指明归属「3D/浮雕/投影/深度」的问题（如露边、撕裂、角度、光照），严禁改动 JS，无头渲染经 run_queue.py blender 排队。",
+                    f"文件边界：只修 {project}/blender/、{project}/web/assets/rel/ 与 {project}/web/assets/b3d/；严禁修改任何 .js 或 index.html。",
+                    f"对照 {P('crafts.md')} §7 与 {brief}，按一版看样修改单逐条修复 {key} 归属 3D 工种的条目（若无则回报无需修改）：\n{dailies}",
+                ]),
+            )
+        )
+
+    fix = await parallel(
+        fix_specs,
+        lambda sp: agent(type_name=sp[0], model=sp[1], role=sp[2], prompt=sp[3], schema=STR),
     )
     qc = await agent(
         type_name="chiaki-reviewer",

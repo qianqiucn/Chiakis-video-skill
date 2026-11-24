@@ -1939,6 +1939,10 @@ def make_static(f, pin):
     contours merged. Variable fonts draw a stroke over a stroke (the bar of an A over its legs); filled that is
     invisible, but -webkit-text-stroke / ctx.strokeText outline every contour and the overlaps show as seams inside the
     letters. A static font is only merged. Needs skia-pathops (pip install skia-pathops). → notes for the report."""
+    try:
+        import pathops  # noqa: F401
+    except ImportError:
+        raise SystemExit('--static 要合并轮廓，需要 skia-pathops：pip install skia-pathops')
     from fontTools.ttLib.removeOverlaps import removeOverlaps
     notes = []
     if 'fvar' in f:
@@ -1951,10 +1955,6 @@ def make_static(f, pin):
                 notes.append(f'{ax.axisTag} {v} 超出范围，用了 {limits[ax.axisTag]:g}')
         instancer.instantiateVariableFont(f, limits, inplace=True, overlap=instancer.OverlapMode.KEEP_AND_DONT_SET_FLAGS)
         notes.append('切自可变字体：' + '，'.join(f'{k} {v:g}' for k, v in limits.items()))
-    try:
-        import pathops  # noqa: F401
-    except ImportError:
-        raise SystemExit('--static 要合并轮廓，需要 skia-pathops：D:\\Tools\\vision-venv\\Scripts\\python.exe -m pip install skia-pathops')
     try:
         removeOverlaps(f)
     except Exception as ex:  # noqa: BLE001 — a glyph pathops cannot merge: keep it as drawn, say which

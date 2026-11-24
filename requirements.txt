@@ -1,7 +1,8 @@
-# Core font subsetting, license auditing, and specimen generation (scripts/fonts.py)
+# Core font subsetting, contour overlap removal (--static), license auditing, and specimen generation (scripts/fonts.py)
 fonttools>=4.50.0
 brotli>=1.1.0
 Pillow>=10.0.0
+skia-pathops>=0.8.0
 
 # Video / audio rhythm, onset, optical-flow, and cadence analysis (scripts/onsets.py, motion.py, cadence.py, look.py, measure.py, framediff.py)
 numpy>=1.26.0

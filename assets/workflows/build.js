@@ -58,14 +58,47 @@ const results = await Promise.all(
       ].join("\n\n"),
     });
 
-    const fix = await agent({
-      model: "flash",
-      role: `${act.key} · 修改员`,
-      prompt: [
-        `你的身份：工作室的「${act.styleTitle || "2D 动效剪辑合成师"}」，这段就是你搭的。性格：手稳、克制：改动最小，只修审片单/修改单指明的问题，不碰没问题的帧，不顺手重做整段，交回去之前先跑静态 motion_lint 和局部截图自己验收。`,
-        `对照 ${P("crafts.md")} §2 与 ${act.briefFile}，按执行导演一版看样修改单逐条修复 ${act.key}：\n${dailies}`,
-      ].join("\n\n"),
-    });
+    const fixTasks = [
+      agent({
+        model: "flash",
+        role: `${act.key} · 剪辑修改员`,
+        prompt: [
+          `你的身份：工作室的「${act.styleTitle || "2D 动效剪辑合成师"}」，这段就是你搭的。性格：手稳、克制：改动最小，只修审片单/修改单指明归属「剪辑/动效」的问题，不碰没问题的帧，不顺手重做整段，交回去之前先跑静态 motion_lint 和局部截图自己验收。`,
+          `文件边界：只修 ${project}/work/motion_${act.key}.md、${project}/web/segments/seg_${act.key}.js 与 ${project}/web/segments/${act.key}_handoff.js；严禁修改 *_design.js 或 blender/。`,
+          `对照 ${P("crafts.md")} §2 与 ${act.briefFile}，按执行导演一版看样修改单逐条修复 ${act.key} 归属剪辑工种的条目（若无则回报无需修改）：\n${dailies}`,
+        ].join("\n\n"),
+      }),
+    ];
+
+    if (act.hasDesign !== false) {
+      fixTasks.push(
+        agent({
+          model: "flash",
+          role: `${act.key} · 平面修改员`,
+          prompt: [
+            "你的身份：工作室的平面设计师，这幕的动态歌词版式、标题字、装饰边框与图形就是你做的。性格：手稳、克制：只修审片单/修改单指明归属「平面设计/字幕/版式」的问题，绝不越界改动镜头层，修完跑静态 motion_lint 与局部截图验收。",
+            `文件边界：只修 ${project}/design/board_${act.key}.md、${project}/work/motion_${act.key}_design.md 与 ${project}/web/segments/${act.key}_design.js；严禁修改 seg_${act.key}.js 或 index.html。`,
+            `对照 ${P("crafts.md")} §3 与 ${act.briefFile}，按执行导演一版看样修改单逐条修复 ${act.key} 归属平面工种的条目（若无则回报无需修改）：\n${dailies}`,
+          ].join("\n\n"),
+        })
+      );
+    }
+
+    if (act.has3D) {
+      fixTasks.push(
+        agent({
+          model: "flash",
+          role: `${act.key} · 3D 修改员`,
+          prompt: [
+            "你的身份：工作室的 3D 工程师，这幕的 Blender 深度浮雕、投影或 3D 序列就是你渲染的。性格：手稳、节约、只用数字说话：只修修改单指明归属「3D/浮雕/投影/深度」的问题（如露边、撕裂、角度、光照），严禁改动 JS，无头渲染经 run_queue.py blender 排队。",
+            `文件边界：只修 ${project}/blender/、${project}/web/assets/rel/ 与 ${project}/web/assets/b3d/；严禁修改任何 .js 或 index.html。`,
+            `对照 ${P("crafts.md")} §7 与 ${act.briefFile}，按执行导演一版看样修改单逐条修复 ${act.key} 归属 3D 工种的条目（若无则回报无需修改）：\n${dailies}`,
+          ].join("\n\n"),
+        })
+      );
+    }
+
+    const fix = await Promise.all(fixTasks);
 
     const qc = await agent({
       model: "flash",

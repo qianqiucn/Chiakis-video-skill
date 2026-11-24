@@ -94,8 +94,13 @@ def record(rec):
     if A.project:
         used_p = f"{A.project.replace(chr(92), '/').rstrip('/')}/work/assets3d_used.json"
         os.makedirs(os.path.dirname(used_p), exist_ok=True)
-        used = json.load(open(used_p, encoding="utf-8")) if os.path.exists(used_p) else []
-        if key not in used: used.append(key)
+        raw = json.load(open(used_p, encoding="utf-8")) if os.path.exists(used_p) else {}
+        if isinstance(raw, list):
+            # Upgrade legacy list-of-keys format seamlessly into self-contained metadata dict
+            used = {k: {m: cat[k].get(m, "") for m in ("source", "id", "name", "kind", "author", "license", "page")} for k in raw if k in cat}
+        else:
+            used = dict(raw)
+        used[key] = {m: rec.get(m, "") for m in ("source", "id", "name", "kind", "author", "license", "page")}
         with open(used_p, "w", encoding="utf-8") as fh:
             json.dump(used, fh, ensure_ascii=False, indent=1)
     return rec
@@ -312,7 +317,13 @@ elif A.cmd == "list":
 elif A.cmd == "credits":
     if not A.args: sys.exit("usage: assets3d.py credits <project dir>")
     used_p = f"{A.args[0].replace(chr(92), '/').rstrip('/')}/work/assets3d_used.json"
-    cat = catalog(); used = [cat[k] for k in (json.load(open(used_p, encoding="utf-8")) if os.path.exists(used_p) else []) if k in cat]
+    cat = catalog()
+    raw = json.load(open(used_p, encoding="utf-8")) if os.path.exists(used_p) else {}
+    if isinstance(raw, dict):
+        # Self-contained per-project records work even when CHIAKI_ASSETS3D is unset or moved
+        used = [v if isinstance(v, dict) else cat[k] for k, v in raw.items() if isinstance(v, dict) or k in cat]
+    else:
+        used = [cat[k] for k in raw if k in cat]
     models = [r for r in used if r["kind"] == "model"]
     if models:
         by_src = {}

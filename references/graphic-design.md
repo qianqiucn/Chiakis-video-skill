@@ -113,7 +113,7 @@ This section is the home of the layering recipe: four layers, each moving on its
      - an end slate: the mark over the blurred key image, flashing white into the panel;
      - a poster split: half a halftone white field holding the mark and a dark vertical card (type inverts where it crosses the card's edge, a small italic with a hand-drawn underline), the other half her profile looking at it.
    - (d) texture type, cheap and quiet: a giant ghost word cropped by the frame edge (≈ 25–30 % H, only 5–8 % off the background, or 25 % grey, or outline or stripes only), repeated micro-type on tapes, a vertical line of micro-text at the frame edge; behind everything and away from her; it counts as a material (layer 2).
-   - (e) per-glyph kinetic typography (fast-cut vocal & lyric PVs): never animate multi-character lyrics as uniform flat phrase blocks on level stripes — build glyph-level life across four layers:
+   - (e) per-glyph kinetic typography (fast-cut vocal & lyric PVs): never animate multi-character lyrics as uniform flat phrase blocks on level stripes — and **never lock sung lyric entry frames from drum trackers alone** (`beats.py` / `onsets.py` track percussion, not human voice). Run `scripts/vocal_spec.py` before Gate A, listen to each 3–5 s micro-WAV directly via multimodal `read_file` alongside its 300 Hz–4 kHz spectrogram, and lock every lyric syllable to the real sung onset (±2 f tolerance). Build glyph-level life across four layers:
      1. *3-state hollow-preview relay*: stagger each character `2–3 f` (`hollowLead ≈ 2.5 f`), flashing a `≈ 2.1×` stroke-only outline toward its slot before silky Bezier squash-and-stretch fill (`sy 1.4 → 1.0`, `sx 0.82 → 1.0`, optional bottom `mirrorEcho`) and continuous `±2–3 px` micro-breath;
      2. *kanji-giant / kana-mini sculpture*: split content Kanji (`1.2×–1.5×`) from particles/Kana (`0.68×–0.85×`) with bespoke `(x, y, rot)` around the hero or alternating baseline wave-arcs (`waveY`), wide enough in tracking (`≥ 24 px`) so tilted strokes never collide;
      3. *depth-sandwich occlusion*: place display words between the translucent background wash/petals (tinted glazing petals at ~30 % alpha when overlapping text) and opaque foreground wireframe hands or character edges so typography sits inside real Z-space;
@@ -144,3 +144,8 @@ Typical uses, not slots: a few per intro, wherever they serve the moment (house-
 Type and graphics move through the motion library: arrivals, exits, settles and staggers from `lib/motion` (`T3.mv`,
 `T3.EZ`), and every helper above by its id (motion-library.md groups `type`, `move`, `fx`), written into the design
 motion sheet before the code.
+
+## 8. Tactile Film Coat (`film_texture.js` at `z = 45`)
+When a film uses paper, ink, print, or 35mm cinema textures (`assets/textures/`), place a dedicated unified tactile coat at **`z = 45`** (above both scene art `z = 10` and typography `z = 20`, below cross-cut hand-offs `z = 60`):
+- **Pre-stretch raw paper scans**: `Paper001_4K_color.jpg` spans only `[236..252]` luma and vanishes under naive `multiply`; run `scripts/prep_texture.py --mode paper` first so real fiber tooth survives H.264 compression (`assets/textures/README.md`).
+- **Protect faces & preserve stepped cadence**: attenuate texture softly over character faces, step tile offsets with `T3.twos` inside `Posterize Time` passages, and render textured films with `render_fast.mjs --grain`.
