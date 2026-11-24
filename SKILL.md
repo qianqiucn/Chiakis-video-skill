@@ -27,6 +27,10 @@ A flagship deterministic **2D + 2.5D + Blender 3D** motion-graphics and fast-cut
 - **When a method hits its limit, switch methods** instead of turning the same knob: a flat 2D frame needs foreground/midground/background parallax layers, texture, or per-glyph choreography — not louder flashes.
 - **Never act as your own final reviewer or independent scorer.** Always dispatch read-only reviewer/verifier/scorer roles (`references/personas.md` §3).
 
+### 宿主多模态死规矩（Hard Rule: Gemini Native Multimodal vs Claude / Codex Traditional）
+- **Gemini 宿主（Antigravity 等原生音视频多模态模型）**：**必须直接用 `read_file` 原生多模态直听音频（原曲 / `vocal_spec.py --wav-only` 微切片 `.wav`）并直看带声渲染视频（720p/1080p `.mp4` 或分幕 10–25 s 片段）** 来锁人声起唱、审一版看样、三视角终审、复核与独立 7 维评分；`beats.py`/`onsets.py` 与 `snap.mjs` 仅作帧号校验与单帧像素查错，**严禁在 Gemini 上跳过直看带声视频、只靠静态拼图或频谱图打分/签字**！
+- **Claude / Codex 宿主（图像 + 文本为主的传统模型）**：走**传统频谱分析 + 密集截图 + 曲线/数值路线** —— 用 `beats.py` + `onsets.py` + `vocal_spec.py`（高反差帧号 300 Hz–4 kHz 人声声谱图 `spec_*.png`）锁音轨，用 `snap.mjs --sheet` + 转场前后逐帧图 + `motion_lint.mjs --curves` SVG 曲线图 + `cadence.py` / `parallax.py` / `qa.mjs` 审片与评分。
+
 ## Read this when (top to bottom for a new video)
 
 | file | read when |
@@ -68,7 +72,9 @@ Commands: `<py>` = `python -X utf8` (or your venv Python with `requirements.txt`
 ### 1. Brief & Audio / Vocal / Reference Analysis (never guess beats or vocals)
 - Confirm topic, duration, act count, target FPS (`24` or `30`), music track (or procedural `mgaudio` bed), **audio strategy** (`pure_song` default for song/lyric PVs vs `full_sfx` for promos/openers/original scores), visual asset / art generation route (`user_files` / `gemini` / `codex` / `custom_api` / `code_only`), Blender 3D scope, and delivery cadence (720p review first → 2K FLAC final). Fill harmless defaults and report them in one concise line.
 - Run `python -X utf8 <sk>/scripts/beats.py <audio> --fps <FPS>` for BPM & beat grid, and `python -X utf8 <sk>/scripts/onsets.py <audio> <f0-f1> --fps <FPS>` (or `--from <sec> --to <sec>`) to lock key drops/hits onto exact broadband downbeats (`floor(onset_frame)`).
-- **Vocal / lyric timing rule (mandatory for song PVs / lyric MVs)**: `beats.py` / `onsets.py` track drums, NOT sung human vocals. Run `python -X utf8 <sk>/scripts/vocal_spec.py <audio> --out <proj>/work/vocal --fps <FPS>`, listen directly to each 3–5 s micro-WAV via multimodal `read_file`, and cross-check its frame-numbered 300 Hz–4 kHz spectrogram to lock every lyric entry BEFORE Gate A.
+- **Vocal / lyric timing rule (mandatory for song PVs / lyric MVs — Host-Split Iron Rule)**: `beats.py` / `onsets.py` track drums, NOT sung human vocals.
+  - **Gemini hosts**: run `python -X utf8 <sk>/scripts/vocal_spec.py <audio> --out <proj>/work/vocal --fps <FPS> --wav-only` and **listen directly via native multimodal `read_file` on the track & micro-WAVs** to lock sung lyric entries BEFORE Gate A.
+  - **Claude / Codex hosts**: run `python -X utf8 <sk>/scripts/vocal_spec.py <audio> --out <proj>/work/vocal --fps <FPS>` (full mode) and read the frame-numbered 300 Hz–4 kHz vocal spectrograms (`spec_*.png`) + energy envelopes BEFORE Gate A.
 - If studying a reference video, extract frame cadence (`scripts/cadence.py`), optical flow (`scripts/motion.py`), brightness/saturation (`scripts/look.py`), and cut diffs (`scripts/framediff.py`).
 
 ### 2. Pitch Meeting — 3 Competing Concepts (`assets/workflows/pitch.js` or `pitch.py`)
@@ -104,13 +110,14 @@ Commands: `<py>` = `python -X utf8` (or your venv Python with `requirements.txt`
 
 ### 9. Internal 3-Lens Adversarial Review (`assets/workflows/review_fix.js` or `review_fix.py`)
 - Physically read-only `规矩审片员` + `技术审片员` + `剪辑感审片员` (`pro`) → 3 independent verifiers (`pro`) → targeted pre-render fixes (`flash`) → read-only `质检` (`flash`).
+- **Host-Split Review Rule**: on **Gemini**, render a quick 720p audiovisual preview clip (`out/preview_720p.mp4` or per-act 720p clips) BEFORE running Stage 9 so all reviewers & verifiers **watch the real `.mp4` via native multimodal `read_file`** (using stills only for pixel inspection); on **Claude / Codex**, audit via `snap.mjs --sheet` contact sheets + transition frames + `curves.svg` + `qa.mjs`.
 - **Short-Film (< 60 s) Fast-Track**: clear confirmed blockers (sync drift, render/font defects, legibility collisions, dead frames) quickly so you reach Stage 10's full audiovisual render without stalling in multi-round still-frame loops; reserve fine cosmetic polish for Stage 12 after watching the rendered video + Stage 11 independent scoring.
 
 ### 10. First Full Audiovisual Render (V1)
 - Render the full timeline with mastered audio through `run_queue.py web` (`render_fast.mjs web/index.html 0 <end> out/film_v1.mp4 --audio work/master.wav --fps <FPS> [--scale 0.6667] [--grain]`) — add **`--grain`** whenever 35mm film grain or paper fiber overlays are used, and prefer 720p first during review before upgrading the approved final to 2K `--2k`.
 
 ### 11. Independent 7-Dimension Scorecard (`assets/workflows/polish_rerender.js` or `polish_rerender.py`)
-- Dispatch a physically read-only `chiaki-reviewer` (`pro`, `assets/workflows/score_brief.md`) to audit the V1 render, curve sheets, QA log, loudness report, and (on song PVs) ≥ 2 climax lyric lines via `vocal_spec.py` micro-WAVs across all 7 dimensions (**≥ 8 / 10 on every single dimension**, never averaged). Outputs `work/SCORE_V1.md` with verdict `DELIVER` or `REVISE`.
+- Dispatch a physically read-only `chiaki-reviewer` (`pro`, `assets/workflows/score_brief.md`) to audit the V1 render, curve sheets, QA log, and loudness report across all 7 dimensions (**≥ 8 / 10 on every single dimension**, never averaged). **Host-Split Iron Rule**: on **Gemini**, the scorer MUST watch `out/film_v1.mp4` (and per-act 720p clips for long films) + listen to climax vocal micro-WAVs directly via native multimodal `read_file`; on **Claude / Codex**, inspect `vocal_spec.py` PNG spectrograms + `snap.mjs` contact sheets + `curves.svg` + QA/loudness metrics. Outputs `work/SCORE_V1.md` with verdict `DELIVER` or `REVISE`.
 
 ### 12. Targeted Polish Round + QC (`修一轮`)
 - For every deduction or `< 8` dimension in `work/SCORE_V1.md`, `polish_rerender` dispatches scoped `修改员` (`flash`) by owning craft/files for minimal surgical fixes, followed by read-only `质检` (`flash`) frame-by-frame verification. (Skipped only if V1 already passed `DELIVER` with zero blocking issues.)

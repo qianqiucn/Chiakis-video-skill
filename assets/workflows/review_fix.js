@@ -42,7 +42,7 @@ const rawNotes = await Promise.all(
       prompt: [
         lens.persona,
         `物理只读：严禁修改项目文件。先读 ${reviewBrief}、${P("house-style.md")}、${P("quality-bar.md")}、${P("style-grammar.md")}。`,
-        `核查本项目（${project}）的 QA 报告、SVG 曲线图、成片/样张与音频报告，按「帧号 / 位置 / 证据 / 具体改法」列出问题清单。`,
+        `核查本项目（${project}）的 QA 报告、SVG 曲线图、成片/样张与音频报告（【宿主死规矩】Gemini 宿主必须直接用多模态 read_file 观看带声 .mp4 视频与听音频，拼图仅查单帧像素；Claude/Codex 宿主走传统频谱图 + 密集截图拼图 + SVG 曲线图），按「帧号 / 位置 / 证据 / 具体改法」列出问题清单。`,
       ].join("\n\n"),
     })
   )

@@ -3,7 +3,7 @@
 ## Gate A — Before Art Generation & Building (Storyboard Lock)
 Verify all five items **before generating images or spawning build crafts** (prevents wasted API credits and rework):
 1. **Clear visual identity**: one cohesive non-repeating visual medium (`mg-styles.md`), palette, and bundled font pairing per act (`script-writing.md` §0–§1).
-2. **Exact audio & vocal alignment**: all major percussion cuts map to measured frame indices from `beats.py` / `onsets.py` (`f0 / FPS`); **for song PVs / lyric MVs**, sung lyric entry frames MUST be verified via `scripts/vocal_spec.py` (direct multimodal listening to micro-WAVs + 300 Hz–4 kHz spectrogram), never guessed from drum peaks.
+2. **Exact audio & vocal alignment (Host-Split Iron Rule)**: all major percussion cuts map to measured frame indices from `beats.py` / `onsets.py` (`f0 / FPS`); **for song PVs / lyric MVs**, NEVER guess lyrics from drum peaks — **Gemini hosts** MUST listen directly via native multimodal `read_file` on the track / `vocal_spec.py --wav-only` micro-WAVs; **Claude / Codex hosts** inspect `vocal_spec.py` 300 Hz–4 kHz frame-numbered PNG spectrograms (`spec_*.png`).
 3. **Every move grounded in `motion-library.md` & `shot-recipes.md`**: shot table specifies library IDs, shot recipe, curve family (`style-grammar.md` §6b), audio mode (`pure_song` vs `full_sfx`), and intentional stepped zones (`§6e`) if any.
 4. **Approved art & asset manifest (`art-pipeline.md`)**: `work/art_manifest.json` declares the provider (`user_files` | `gemini` | `codex` | `custom_api` | `code_only`) for every shot, with any paid external image API explicitly authorized by the client.
 5. **Clear file ownership**: brief separates `blender/` + `rel/` + `b3d/` (3D), `seg_*.js` / `*_handoff.js` (Edit), `*_design.js` / `board.md` (Design), and `make_audio.py` (Sound).
@@ -28,7 +28,7 @@ Every item must pass before dispatching the 3-lens final review:
 5. **Open-source credits ready**: both `python -X utf8 <sk>/scripts/fonts.py credits <project>` and `python -X utf8 <sk>/scripts/assets3d.py credits <project>` (if 3D assets used) included with delivery.
 
 ## Scorecard — Independent 7-Dimension Audit (Before Delivery)
-Executed by a **physically read-only `chiaki-reviewer`** using `assets/workflows/score_brief.md` (never self-scored by the main thread). **Target: ≥ 8 / 10 on every single dimension** (do not average away a weak dimension):
+Executed by a **physically read-only `chiaki-reviewer`** using `assets/workflows/score_brief.md` (never self-scored by the main thread). **Target: ≥ 8 / 10 on every single dimension** (do not average away a weak dimension). **Host-Split Iron Rule**: on **Gemini**, the scorer MUST watch the rendered audiovisual `.mp4` directly via multimodal `read_file` (plus micro-WAVs for vocal sync) — never score from stills alone; on **Claude / Codex**, audit via `vocal_spec.py` PNG spectrograms + `snap.mjs` contact sheets + `curves.svg` + `qa.mjs` reports.
 
 | # | Dimension | What earns ≥ 8 / 10 | Automatic ≤ 6 failure triggers |
 |---|---|---|---|

@@ -10,7 +10,7 @@ const scoreV1 = await agent({
   role: "独立成片评分员（一版打分）",
   prompt: [
     "你的身份：资深动态设计评委（Motionographer 编辑、Buck / ManvsMachine 创意总监、头部动态设计博主这一级）。片子不是你做的。目标水准是获奖级别的商业作品（house-style §0）。性格：下手要狠、说话要具体、绝不客气虚高；先量规格与曲线图再看画面，按 7 维严格打分（每维 ≥ 8 分及格，不算平均），每项给帧号/秒数证据。",
-    `物理只读：严禁编辑任何代码。按 ${scoreBrief} 与 ${P("quality-bar.md")} 严格审查一版带声成片（${renderVideo}）、QA 报告、SVG 曲线图与母带报告，输出 7 维打分表与 Verdict（DELIVER 或 REVISE）并逐条列出所有扣分帧号与可落地的修改建议。`,
+    `物理只读：严禁编辑任何代码。按 ${scoreBrief} 与 ${P("quality-bar.md")} 严格审查一版带声成片（${renderVideo}）、QA 报告、SVG 曲线图与母带报告（【宿主多模态死规矩】Gemini 宿主必须直接多模态观看 ${renderVideo} 视频并直听关键音频，严禁只凭静态拼图打分；Claude/Codex 宿主走传统频谱图 + 关键帧拼图 + 曲线/数值报告），输出 7 维打分表与 Verdict（DELIVER 或 REVISE）并逐条列出所有扣分帧号与可落地的修改建议。`,
   ].join("\n\n"),
 });
 

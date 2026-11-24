@@ -32,7 +32,7 @@
 
 严格按 `Chiaki's-video-skill` 完整 13 步推进，所有子代理必须贴入 `references/personas.md` 原话身份与性格、附 `references/crafts.md` 工种卡并锁定 `Model`：
 
-1. **Brief & 音轨/人声分析**：用 `scripts/beats.py` + `scripts/onsets.py` 逐帧实测鼓点；**成曲/歌词 PV 必须先跑 `scripts/vocal_spec.py` 并多模态直听微切片 + 声谱图锁死每句歌词起唱帧（严禁拿鼓点当歌词帧）**。
+1. **Brief & 音轨/人声分析（宿主多模态死规矩）**：用 `scripts/beats.py` + `scripts/onsets.py` 逐帧实测鼓点；**成曲/歌词 PV 严禁拿鼓点当歌词帧 —— Gemini 宿主必须跑 `vocal_spec.py --wav-only` 用多模态 `read_file` 原生直听微切片 WAV 锁每句起唱帧；Claude / Codex 宿主跑 `vocal_spec.py` 查高反差帧号 300Hz–4kHz 声谱图**。
 2. **三方案提案会**（`pitch.js` / `pitch.py`）：每幕由「媒介设计师 / 演出策划 / 摄影指导」交 3 套独立方案 → 「创意总监」拍板 → 「执行制片」统筹全片，杜绝各幕撞型、撞色、撞字。
 3. **分镜表**：落清精确有理数帧范围（`f0 / FPS`）、人声起唱帧、视觉风格、镜头配方、动效 ID、出图来源、`work/cues.csv` 与 `work/art_manifest.json`。
 4. **Gate A（出图前闸门）**：先锁死分镜、节拍/人声帧与出图清单，确认无返工风险再出图。
@@ -57,7 +57,7 @@
 5. **角色与空间感**：
    - 2D 角色优先用局部分层动效（`T3.her.wave` 头发/纱幔、`T3.her.eyes` 眨眼、轻微缓推）；不做力所不及的僵硬全身转身，改用切镜头/对比构图。
    - 展示空间的镜头必须做出真视差：2.5D 浮雕 / 分层多平面 / Blender 相机投影（`projection/`）或实景 3D 搭景（`asset_lib.py`），空间镜头必须通过 `parallax.py` 验收，相邻 3D 镜头机位方向要有变化；所有无头 Chrome 与 `blender -b` 一律经 `scripts/run_queue.py` 排队。
-6. **帧级验收**：每个转场检查前后各 2 帧；定格抽帧段跑 `cadence.py` 确认零全帧噪点泄露；音画重击用 `onsets.py` 落到实测帧。
+6. **帧级与看片验收（宿主分流死规矩）**：**Gemini 宿主（Antigravity）**所有一版看样、三视角终审、复核与 7 维独立评分**必须直接用 `read_file` 原生多模态看带声 720p/1080p `.mp4` 成片/分幕视频并直听音频**（静态拼图仅作单帧像素查错，严禁只看拼图审动态）；**Claude / Codex 宿主**严格走传统频谱图 + 转场前后各 2 帧截图拼图 + SVG 曲线图 + `cadence.py` / `onsets.py` 数值验收。
 
 ---
 

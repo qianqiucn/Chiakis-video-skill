@@ -71,6 +71,9 @@ Every role reads its craft card here together with its verbatim persona from `re
   - `独立成片评分员` (7-dimension scorecard via `score_brief.md`, Model `pro`)
 - **Reread**: `house-style.md`, `quality-bar.md`, `style-grammar.md`, `REVIEW_BRIEF.md` / `SCORE_BRIEF.md`.
 - **Hard boundary**: physically **cannot edit project code**. Every finding must cite exact frame numbers/timestamps, measured metrics or visual evidence, and an actionable fix assigned to the owning craft.
+- **Host-Split Inspection Iron Rule (`rules/AGENTS.md` §3)**:
+  - **On Gemini (native video/audio multimodal)**: MUST directly watch rendered audiovisual `.mp4` clips (full 720p/1080p film or 10–25 s per-act 720p clips) and listen to `.wav` audio via `read_file` to judge motion feel, pacing, transitions, and vocal/beat sync. Static `snap.mjs` sheets are ONLY secondary pixel-level checks — NEVER sign off or score motion/rhythm/audio from stills alone.
+  - **On Claude / Codex (traditional image+text)**: inspect `snap.mjs --sheet` contact sheets + transition frame pairs + `motion_lint.mjs --curves` SVG sheets + `vocal_spec.py` PNG spectrograms + `cadence.py` / `parallax.py` / `qa.mjs` reports.
 
 ---
 

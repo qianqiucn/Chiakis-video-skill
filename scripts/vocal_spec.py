@@ -1,15 +1,17 @@
-"""vocal_spec.py — multimodal vocal & lyric timing helper for Chiaki's-video-skill.
+"""vocal_spec.py — host-aware vocal & lyric timing helper for Chiaki's-video-skill.
 
 Drum/onset trackers (`beats.py`, `onsets.py`) lock percussion transients, NOT human vocal syllables.
-For song PVs / lyric MVs, use this tool BEFORE Gate A to:
-  1. Slice clean 3-6 s mono WAV micro-clips so the director can listen directly via multimodal `read_file`.
-  2. Render high-contrast, frame-numbered vocal spectrograms (300 Hz - 4 kHz formant band highlighted +
-     syllabic vocal-band energy curve) so exact syllable entry frames are readable at a glance.
+Hard Host-Split Rule (rules/AGENTS.md §3):
+  - Gemini hosts (native audio/video multimodal): run with `--wav-only` to slice clean 3-6 s mono WAV
+    clips quickly, then listen directly via multimodal `read_file` on the WAVs (render spectrograms only
+    if double-checking an ambiguous frame boundary).
+  - Claude / Codex hosts (traditional spectrum + image workflow): run without `--wav-only` to render
+    high-contrast, frame-numbered 300 Hz - 4 kHz vocal spectrograms + syllabic energy envelopes (`spec_*.png`).
 
 Usage:
-  python -X utf8 scripts/vocal_spec.py <audio> --out <dir> [--fps 24] [--ranges 0-5,28-34.5] [--max-hz 5000]
-  python -X utf8 scripts/vocal_spec.py <audio> --out <dir> --fps 24 --ranges f672-f816,f816-f960
-  python -X utf8 scripts/vocal_spec.py <audio> --out <dir> --fps 24 --chunk 5.0
+  python -X utf8 scripts/vocal_spec.py <audio> --out <dir> --fps 24 --wav-only               # Gemini fast micro-WAVs
+  python -X utf8 scripts/vocal_spec.py <audio> --out <dir> --fps 24 --ranges 0-5,28-34.5     # Claude/Codex WAV + PNG spec
+  python -X utf8 scripts/vocal_spec.py <audio> --out <dir> --fps 24 --ranges f672-f816
 """
 from __future__ import annotations
 
@@ -234,6 +236,7 @@ def main() -> int:
     ap.add_argument("--ranges", default="", help="Comma-separated sec or frame spans, e.g. '0-5,28-34.5' or 'f672-f816'")
     ap.add_argument("--chunk", type=float, default=5.0, help="Auto-slice window in seconds when --ranges is omitted (default 5.0)")
     ap.add_argument("--max-hz", type=float, default=5000.0, help="Top spectrogram frequency in Hz (default 5000)")
+    ap.add_argument("--wav-only", action="store_true", help="Slice micro-WAV clips only (fast mode for Gemini native audio listening; skips PNG spectrograms)")
     a = ap.parse_args()
 
     ff = _find_ffmpeg()
@@ -255,7 +258,8 @@ def main() -> int:
     if not spans:
         sys.exit("No valid time ranges parsed.")
 
-    print(f"vocal_spec: {Path(a.audio).name} ({total_s:.2f}s @ {a.fps:g} fps) -> {out_dir}")
+    mode_lbl = "wav-only (Gemini native audio)" if a.wav_only else "wav + spectrogram (Claude/Codex traditional)"
+    print(f"vocal_spec [{mode_lbl}]: {Path(a.audio).name} ({total_s:.2f}s @ {a.fps:g} fps) -> {out_dir}")
     for idx, (t0, t1) in enumerate(spans):
         i0 = max(0, int(round(t0 * sr)))
         i1 = min(len(pcm), int(round(t1 * sr)))
@@ -265,12 +269,18 @@ def main() -> int:
         f1 = int(round(t1 * a.fps))
         tag = f"{idx:02d}_f{f0:04d}_f{f1:04d}"
         wav_p = out_dir / f"clip_{tag}.wav"
-        png_p = out_dir / f"spec_{tag}.png"
         _write_wav(wav_p, pcm[i0:i1], sr)
-        _render_spec(x[i0:i1], sr, t0, t1, a.fps, a.max_hz, png_p)
-        print(f"  [{idx:02d}] f{f0:4d}-f{f1:4d} ({t0:6.2f}s-{t1:6.2f}s) -> {wav_p.name} + {png_p.name}")
+        if a.wav_only:
+            print(f"  [{idx:02d}] f{f0:4d}-f{f1:4d} ({t0:6.2f}s-{t1:6.2f}s) -> {wav_p.name}")
+        else:
+            png_p = out_dir / f"spec_{tag}.png"
+            _render_spec(x[i0:i1], sr, t0, t1, a.fps, a.max_hz, png_p)
+            print(f"  [{idx:02d}] f{f0:4d}-f{f1:4d} ({t0:6.2f}s-{t1:6.2f}s) -> {wav_p.name} + {png_p.name}")
 
-    print("Tip: inspect each clip_*.wav via multimodal read_file (direct ear check) alongside spec_*.png before locking Gate A lyric frames.")
+    if a.wav_only:
+        print("Gemini host rule: listen directly to each clip_*.wav via multimodal read_file to lock exact sung lyric frames.")
+    else:
+        print("Claude/Codex host rule: inspect spec_*.png (300-4000 Hz vocal formants + envelope) before locking Gate A lyric frames.")
     return 0
 
 

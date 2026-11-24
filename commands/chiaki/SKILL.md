@@ -10,6 +10,8 @@ description: Chiaki's-video-skill 统一快捷入口（/chiaki、/Chiaki 与 Cod
 先用文件读取工具按 UTF-8 读取主技能 `<SKILL_DIR>/SKILL.md`、`references/personas.md`、`references/house-style.md`、`references/crafts.md`、`references/motion-library.md` 与 `references/quality-bar.md`。涉及出图先读 `references/art-pipeline.md`，涉及景深或 Blender 3D 再读 `references/3d.md`。
 
 > **硬性工作室分工纪律**：你只担任**总导演兼制片人**，绝不退化成「主线程大包大揽写完所有代码再自审」。每次调用 `chiaki-writer` / `chiaki-builder` / `chiaki-reviewer`（或 Codex/Claude 等价子代理）必须在 Prompt 顶部贴入 `references/personas.md` 原话身份与性格、附 `references/crafts.md` 工种卡与任务简报、并显式锁定 `Model`（`pro` / `flash` / `flash_lite`）；所有无头 Chrome 与 `blender -b` 命令一律经 `<SKILL_DIR>/scripts/run_queue.py` 排队执行。
+>
+> **宿主多模态死规矩（`rules/AGENTS.md` §3）**：**Gemini 宿主（Antigravity）**听音与审片**必须直接用 `read_file` 原生多模态直听 `.wav`/`.mp3`（`vocal_spec.py --wav-only`）并直看带声 720p/1080p `.mp4` 成片/分幕视频**，严禁跳过看视频仅凭静态拼图或频谱图审节奏、动效与对口型；**Claude / Codex 宿主**严格走**传统频谱分析（`vocal_spec.py` 声谱图 + `beats.py`/`onsets.py`）+ `snap.mjs` 密集截图拼图 + `motion_lint --curves` SVG 曲线图**路线。
 
 ---
 
@@ -50,7 +52,7 @@ description: Chiaki's-video-skill 统一快捷入口（/chiaki、/Chiaki 与 Cod
    - 装完自动用目标 Python 重跑 `doctor.py`，把最终全绿验收报告发给用户。
 
 ### 1. 开新片（13 步旗舰全流程：`new` 或直接写需求）
-1. **环境体检 & Brief**：跑 `python -X utf8 "<SKILL_DIR>/scripts/doctor.py"`；补齐主题、幕数、时长、FPS（24/30）、音乐、**音效策略**（成曲/歌词 PV 默认纯原曲洁净母带 `pure_song`；片头/宣传片/原创编曲默认全套 `full_sfx`）、出图路线（`user_files` / `gemini` / `codex` / `custom_api` / `code_only`）、Blender 3D 范围并一行汇报；有音乐立即跑 `scripts/beats.py` + `scripts/onsets.py` 锁鼓点，**带人声歌词的成曲 PV 必跑 `scripts/vocal_spec.py` 并通过多模态直听微切片 + 300Hz–4kHz 声谱图锁清歌词起唱帧**。
+1. **环境体检 & Brief**：跑 `python -X utf8 "<SKILL_DIR>/scripts/doctor.py"`；补齐主题、幕数、时长、FPS（24/30）、音乐、**音效策略**（成曲/歌词 PV 默认纯原曲洁净母带 `pure_song`；片头/宣传片/原创编曲默认全套 `full_sfx`）、出图路线（`user_files` / `gemini` / `codex` / `custom_api` / `code_only`）、Blender 3D 范围并一行汇报；有音乐立即跑 `scripts/beats.py` + `scripts/onsets.py` 锁鼓点，**带人声歌词的成曲 PV 按宿主死规矩执行：Gemini 跑 `vocal_spec.py --wav-only` 用 `read_file` 原生直听微 WAV 锁起唱帧，Claude/Codex 跑 `vocal_spec.py` 查 300Hz–4kHz 帧号声谱图**。
 2. **开工前一行报成本**：说明预计子代理数、模型档位与总耗时。
 3. **提案会（3 套方案）**：跑 `<SKILL_DIR>/assets/workflows_agy/pitch.py`（或 `assets/workflows/pitch.js`）：媒介设计师 / 演出策划 / 摄影指导并行交 3 份方案 → 创意总监拍板 → 执行制片核查各幕不撞型（15 种 `mg-styles.md` 严禁同片重复）。
 4. **分镜表 + Gate A（先锁分镜再出图）**：写完整分镜表（精确有理数帧界、人声起唱帧、镜头配方 `shot-recipes.md`、动效 ID、出图来源、`work/cues.csv`）和 `work/art_manifest.json`，**先过 Gate A 再动出图额度**。

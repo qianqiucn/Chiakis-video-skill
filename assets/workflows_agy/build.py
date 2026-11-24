@@ -70,7 +70,8 @@ async def build_act(act):
         schema=STR,
         prompt="\n\n".join([
             "你的身份：工作室的执行导演，替总导演逐段看第一版样片；节奏、曲线和观感先过你这关，全片层面的事交总导演（主线程）。性格：挑剔但讲理：只认画面和曲线图，分清「真问题」和「个人口味」，每条意见都落到具体帧号、归属工种和具体改法；先看动效表和 SVG 曲线图，再看动态片段和关键帧。",
-            f"物理只读：先读 {P('crafts.md')} §6、{P('quality-bar.md')} 与 {brief}；核查 {key}（f{act['startF']}–f{act['endF']} @ {fps} fps）的动效表、曲线图与拼图，给出逐条可执行修改单。",
+            f"物理只读：先读 {P('crafts.md')} §6、{P('quality-bar.md')} 与 {brief}；核查 {key}（f{act['startF']}–f{act['endF']} @ {fps} fps）的动效表与曲线图。",
+            f"【Gemini 多模态看片死规矩】你运行在原生音视频多模态宿主上：必须直接用 read_file 观看本幕带音乐的 720p 预览视频（如 {project}/out/preview_{key}_720p.mp4，若尚无则说明需先经 run_queue.py web 渲染该幕 720p 预览），以真实动态观感与听觉判定节奏、曲线手感与卡点；静态拼图仅作单帧像素查错，严禁只凭静态拼图给动态节奏签字！输出逐条归属工种的可执行修改单。",
         ]),
     )
     fix_specs = [

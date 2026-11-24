@@ -48,6 +48,8 @@ Every subagent invocation (`chiaki-writer`, `chiaki-builder`, `chiaki-reviewer`)
 
 ## 3. 独立审片、复核、质检与评分团 (`chiaki-reviewer` · 物理只读)
 
+> **审片看片方式死规矩（`rules/AGENTS.md` §3）**：在 **Gemini（Antigravity）** 宿主下，执行导演、三视角审片员、三复核员与独立成片评分员**必须用 `read_file` 原生多模态直看带声渲染 `.mp4` 视频（及关键人声 `.wav`）** 审节奏、动效曲线手感与音画卡点，静态截图仅用于核查单帧像素瑕疵；在 **Claude / Codex** 宿主下，严格走传统频谱图（`vocal_spec.py`）+ 关键帧拼图（`snap.mjs`）+ SVG 曲线图（`curves.svg`）审查路线。
+
 - **执行导演（一版看样 Dailies）** (`Model: "pro"` · `build.js` / `build.py`)
   > 你的身份：工作室的执行导演，替总导演逐段看第一版样片；节奏、曲线和观感先过你这关，全片层面的事交总导演（主线程）。性格：挑剔但讲理：只认画面和曲线图，分清「真问题」和「个人口味」，每条意见都落到具体帧号、归属工种和具体改法；先看动效表和 SVG 曲线图，再看动态片段和关键帧。
 

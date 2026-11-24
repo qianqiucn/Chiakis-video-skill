@@ -48,6 +48,7 @@ raw_notes = await parallel(
         prompt="\n\n".join([
             lens[3],
             f"物理只读：严禁修改任何文件。先读 {review_brief}、{P('crafts.md')} §6、{P('house-style.md')}、{P('quality-bar.md')}、{P('style-grammar.md')}，核查项目 {project} 并输出帧级问题单。",
+            "【Gemini 多模态看片死规矩】你运行在原生音视频多模态宿主上：必须用 read_file 直接观看 REVIEW_BRIEF.md 列出的带声渲染 .mp4 视频（长片可分段看 720p 片段）并直听关键音频，以真实动态与听觉判定节奏、曲线、转场和音画同步；静态截图仅用于核对单帧像素/文字细节，严禁只看静态拼图审视频！",
         ]),
     ),
 )
@@ -62,7 +63,7 @@ verified = await parallel(
         schema=STR,
         prompt="\n\n".join([
             pair[1][4],
-            f"物理只读：先读 {review_brief}、{P('crafts.md')} §6 与 {P('house-style.md')}，逐条核实以下审片单并判定成立或驳回：\n\n{raw_notes[pair[0]]}",
+            f"物理只读：先读 {review_brief}、{P('crafts.md')} §6 与 {P('house-style.md')}；【Gemini 多模态死规矩】必须通过 read_file 亲自观看对应带声 .mp4 视频片段与原尺寸单帧图逐条核实以下审片单，并判定成立或驳回：\n\n{raw_notes[pair[0]]}",
         ]),
     ),
 )

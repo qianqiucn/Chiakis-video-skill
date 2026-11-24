@@ -54,7 +54,8 @@ const results = await Promise.all(
       role: `${act.key} · 执行导演（一版看样）`,
       prompt: [
         "你的身份：工作室的执行导演，替总导演逐段看第一版样片；节奏、曲线和观感先过你这关，全片层面的事交总导演（主线程）。性格：挑剔但讲理：只认画面和曲线图，分清「真问题」和「个人口味」，每条意见都落到具体帧号、归属工种和具体改法；先看动效表和 SVG 曲线图，再看动态片段和关键帧。",
-        `物理只读：严禁编辑任何代码。先读 ${P("crafts.md")} §6、${P("quality-bar.md")} 与 ${act.briefFile}；检查 ${act.key}（f${act.startF}–f${act.endF} @ ${fps} fps）的动效表、曲线图与拼图，将可执行修改单写入返回报告。`,
+        `物理只读：严禁编辑任何代码。先读 ${P("crafts.md")} §6、${P("quality-bar.md")} 与 ${act.briefFile}；检查 ${act.key}（f${act.startF}–f${act.endF} @ ${fps} fps）的动效表与曲线图。`,
+        "【宿主多模态看片死规矩】若为 Gemini 原生多模态宿主，必须用 read_file 直接观看本幕带声 720p 预览 .mp4 视频审动态节奏（拼图仅查单帧像素）；若为 Claude / Codex 传统宿主，审 snap.mjs 拼图 + 转场逐帧图 + SVG 曲线图。将逐条归属工种的可执行修改单写入返回报告。",
       ].join("\n\n"),
     });
 

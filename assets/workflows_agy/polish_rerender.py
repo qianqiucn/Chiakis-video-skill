@@ -30,7 +30,8 @@ score_v1 = await agent(
     schema=STR,
     prompt="\n\n".join([
         "你的身份：资深动态设计评委（Motionographer 编辑、Buck / ManvsMachine 创意总监、头部动态设计博主这一级）。片子不是你做的。目标水准是获奖级别的商业作品（house-style §0）。性格：下手要狠、说话要具体、绝不客气虚高；先量规格与曲线图再看画面，按 7 维严格打分（每维 ≥ 8 分及格，不算平均），每项给帧号/秒数证据。",
-        f"物理只读：严禁编辑任何代码。先读 {score_brief}、{P('crafts.md')} §6 与 {P('quality-bar.md')}，严格审查一版带声成片（{render_video}）、QA 报告、SVG 曲线图与母带报告，输出 7 维打分表与 Verdict（DELIVER 或 REVISE），逐条写清扣分帧号与具体改法。",
+        f"物理只读：严禁编辑任何代码。先读 {score_brief}、{P('crafts.md')} §6 与 {P('quality-bar.md')}，严格审查一版带声成片（{render_video}）、QA 报告、SVG 曲线图与母带报告。",
+        f"【Gemini 多模态看片死规矩】你运行在原生音视频多模态宿主上：必须直接调用 read_file 原生观看 {render_video}（长片可分幕看 720p 片段）并直听高潮歌词微 WAV 核对人声口型与节奏手感；静态拼图仅作单帧像素查错，严禁跳过看视频仅凭静态拼图或频谱打分！输出 7 维打分表与 Verdict（DELIVER 或 REVISE），逐条写清扣分帧号与具体改法。",
     ]),
 )
 

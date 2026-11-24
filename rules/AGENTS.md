@@ -23,3 +23,12 @@ Every `invoke_subagent` call to `chiaki-writer`, `chiaki-builder`, or `chiaki-re
 4. **Respect tool-scoped types**: never dispatch `chiaki-builder` to review, verify, QC, or score.
 
 > Harness enforcement: `hooks.json` (`hooks/chiaki_guard.py`) blocks naked `chiaki-*` subagent calls missing persona injection / craft card / explicit `Model`, and blocks unqueued headless-Chrome or headless-Blender CLI runs (`snap.mjs`, `render_fast.mjs`, `qa.mjs`, `motion_lint.mjs --curves`, `blender -b`).
+
+## 3. 宿主多模态死规矩（Hard Rule: Gemini Native Multimodal vs Claude / Codex Traditional）
+
+**铁律（不可违背）**：根据当前运行的宿主模型能力严格分流看视频与听音频方式，绝不把非多模态宿主的妥协手段套在原生多模态宿主上：
+
+| 宿主 / 模型家族 | 听音与人声对齐（Stage 1 / Gate A / 声画核对） | 看样、终审、复核与成片评分（Stage 6 / 9 / 11–13） |
+|---|---|---|
+| **Gemini（Antigravity 等原生音视频多模态宿主）** | **必须原生多模态直听音频**：用 `read_file` 直接听原曲与 `vocal_spec.py --wav-only` 切出的微切片 `.wav`/`.mp3`，靠真实听觉锁清歌词起唱、呼吸与情绪落点；`beats.py`/`onsets.py` 仅作帧号交叉复核，**严禁跳过直听只凭频谱图盲猜**。 | **必须原生多模态直看带声渲染视频**：先渲染 720p/1080p 带声 `.mp4`（长片按幕切 10–25 s 720p 片段），由执行导演、审片员、复核员与评分员**直接用 `read_file` 看完整带声 `.mp4`** 判定节奏呼吸、运动手感、转场衔接与人声对口型；`snap.mjs` 拼图仅用于查单帧像素瑕疵（缺字、露边、纸纹），**严禁在 Gemini 上只看静态拼图就给视频动效、节奏或音画同步签字/打分**！ |
+| **Claude / Codex（图像 + 文本为主的传统宿主）** | **传统频谱 + 数字分析路线**：`beats.py` + `onsets.py` + `vocal_spec.py` 生成帧号 300 Hz–4 kHz 人声声谱图 `spec_*.png` 与能量包络，看图锁帧。 | **传统截图 + 曲线/数值路线**：`snap.mjs --sheet` 关键帧拼图 + 转场前后逐帧图 + `motion_lint.mjs --curves` SVG 曲线图 + `cadence.py` / `parallax.py` / `qa.mjs` 数值报告。 |
