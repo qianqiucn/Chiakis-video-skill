@@ -48,6 +48,7 @@ A flagship deterministic **2D + 2.5D + Blender 3D** motion-graphics and fast-cut
 | `references/mg-styles.md` | 15 motion-design visual forms (2D + 2.5D + 3D Render) with checkable signature techniques (from `mg-styles-15`, MIT) |
 | `references/graphic-design.md` | typography & layout: titles, per-glyph kinetic typography, bundled local font selection, colour arcs, 5-layer framing, tagline cards, code helpers |
 | `references/quality-bar.md` | Gate A (pre-build), Gate B1 (pre-final-review), Gate B2 (pre-delivery), 7-dimension independent scorecard, 2D symptom → fix table |
+| `references/benchmark-quality.md` | **objective flagship quality yardstick** (content-free telemetry bands): `Q1` curve range, 5-act cut/energy bell curve, `≥ 92%` living-motion ratio, contrast/edge-density sweet spots, cutout ratios, and `−14.0 LUFS` mastering baseline |
 | `references/build-brief.md` | briefing builder subagents (copy & fill into project before build) |
 | `assets/workflows/` & `assets/workflows_agy/` | `pitch`, `build`, `review_fix`, `polish_rerender`, `review_brief.md`, `score_brief.md` (JS workflows + Antigravity Python `run_workflow` equivalents) |
 

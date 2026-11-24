@@ -77,7 +77,7 @@
 
 > **Flagship Scope / 旗舰定位说明**：面向 **原创 2D/2.5D/3D 动效、快剪 PV/MV、动态歌词排版、品牌片头、MAD 与复刻学习** 的全流程制片技能。无需私有榜单模板或付费生图 API，开箱即享完整 2D 引擎 + 可选满血 Blender 3D 渲染与 MCP 实时调光。
 >
-> **✨ What's New in `v1.5.1`（宿主多模态分流死规矩 + 5 小时旗舰实战升级）**：确立 **`rules/AGENTS.md` §3 宿主多模态死规矩** —— **Gemini（Antigravity）**原生多模态 `read_file` 直听音频（`vocal_spec.py --wav-only`）并直看带声 `.mp4` 审节奏/曲线/口型，**Claude / Codex** 严格走传统 300Hz–4kHz 频谱图 + `snap.mjs` 密集截图 + SVG 曲线图；同步集成 **`prep_texture.py`** + **`render_fast.mjs --grain`**、**`art_gen.py`** 多参考图 `refs` 并发重试、**`vision/{segment,pasteback}.py`**、**`pure_song` vs `full_sfx`** 分流、**并行分专业修改员**与 `Q1 > 0.90` 悬崖曲线检测。
+> **✨ What's New in `v1.6.0`（旗舰质量量化标杆 + 宿主多模态分流死规矩）**：新增去内容化旗舰量化质量基线 **`references/benchmark-quality.md`**（从完整 30fps/2K FLAC 旗舰商业级 PV 实测提炼的曲线 `Q1` 黄金区间、5 幕剪辑密度钟形弧、≥ 92% 活帧率、光流分层、对比度/边缘细节密度、透明抠图占比与 `−14.0 LUFS` 母带标准）；同步执行 **`rules/AGENTS.md` §3 宿主多模态死规矩**（**Gemini** 原生多模态 `read_file` 直听音频与直看带声 `.mp4`，**Claude / Codex** 走传统 300Hz–4kHz 频谱图 + 密集截图 + SVG 曲线图），以及 `vocal_spec.py --wav-only`、`prep_texture.py`、`render_fast.mjs --grain`、`art_gen.py` 多参考图并发重试与并行分专业修改员。
 
 ---
 
