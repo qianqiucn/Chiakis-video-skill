@@ -1,8 +1,44 @@
-// polish_rerender.js — Stages 10–12 Closed Loop: Independent 7-Dim Scorecard (on V1 render) -> Targeted Polish Round -> Read-Only QC.
-// After this workflow finishes, the director re-renders the final 1080p + 2K FLAC master and verifies Gate B2.
-// Args: { project, skill, scoreBrief, renderVideo, filesByOwner: [{ owner, files }], skipFixIfPass = true }
-const { project, skill, scoreBrief, renderVideo, filesByOwner = [], skipFixIfPass = true } = args;
+// polish_rerender.js — Stages 11–12 Closed Loop: Independent 7-Dim Scorecard -> Targeted Polish Round -> Read-Only QC.
+// Validates truncation-safe structured scorecard JSON + `<!-- SCORE_COMPLETE -->` sentinel; flags INCOMPLETE_REVIEW if missing.
+// Args: { project, skill, scoreBrief, renderVideo, filesByOwner: [{ owner, files }], taskId = "v1", skipFixIfPass = true }
+const { project, skill, scoreBrief, renderVideo, filesByOwner = [], taskId = "v1", skipFixIfPass = true } = args;
 const P = (f) => `${skill}/references/${f}`;
+const DIMS = ["concept", "motion", "rhythm", "typography", "depth", "sound", "technical"];
+
+function parseScorecard(rawText) {
+  const txt = String(rawText || "");
+  const hasSentinel = txt.includes("<!-- SCORE_COMPLETE -->");
+  let parsed = null;
+  const m = txt.match(/```(?:scorecard-json|json)\s*(\{[\s\S]*?\})\s*```/i);
+  if (m) { try { parsed = JSON.parse(m[1]); } catch {} }
+  const dims = {};
+  if (parsed && parsed.dimensions && typeof parsed.dimensions === "object") {
+    for (const k of DIMS) {
+      const v = parsed.dimensions[k];
+      if (typeof v === "number" && v >= 1 && v <= 10) dims[k] = Math.round(v);
+    }
+  }
+  let verdict = String((parsed && parsed.verdict) || "").toUpperCase();
+  if (verdict !== "DELIVER" && verdict !== "REVISE") {
+    const mv = txt.match(/Verdict:\s*(DELIVER|REVISE)\b/i);
+    verdict = mv ? mv[1].toUpperCase() : "";
+  }
+  const missing = DIMS.filter((k) => !(k in dims));
+  const complete = missing.length === 0 && (verdict === "DELIVER" || verdict === "REVISE") && hasSentinel;
+  const allGe8 = complete && DIMS.every((k) => dims[k] >= 8);
+  if (complete && !allGe8 && verdict === "DELIVER") verdict = "REVISE";
+  return {
+    task_id: taskId,
+    status: complete ? verdict : "INCOMPLETE_REVIEW",
+    complete,
+    has_sentinel: hasSentinel,
+    missing_dimensions: missing,
+    host_review_mode: (parsed && parsed.host_review_mode) || "unknown",
+    verdict: verdict || "INCOMPLETE",
+    dimensions: dims,
+    blocking_issues: (parsed && parsed.blocking_issues) || [],
+  };
+}
 
 // 1. Physically read-only Independent 7-Dim Scorecard on the V1 audiovisual render
 const scoreV1 = await agent({
@@ -10,13 +46,17 @@ const scoreV1 = await agent({
   role: "独立成片评分员（一版打分）",
   prompt: [
     "你的身份：资深动态设计评委（Motionographer 编辑、Buck / ManvsMachine 创意总监、头部动态设计博主这一级）。片子不是你做的。目标水准是获奖级别的商业作品（house-style §0）。性格：下手要狠、说话要具体、绝不客气虚高；先量规格与曲线图再看画面，按 7 维严格打分（每维 ≥ 8 分及格，不算平均），每项给帧号/秒数证据。",
-    `物理只读：严禁编辑任何代码。按 ${scoreBrief} 与 ${P("quality-bar.md")} 严格审查一版带声成片（${renderVideo}）、QA 报告、SVG 曲线图与母带报告（【宿主多模态死规矩】Gemini 宿主必须直接多模态观看 ${renderVideo} 视频并直听关键音频，严禁只凭静态拼图打分；Claude/Codex 宿主走传统频谱图 + 关键帧拼图 + 曲线/数值报告），输出 7 维打分表与 Verdict（DELIVER 或 REVISE）并逐条列出所有扣分帧号与可落地的修改建议。`,
+    `物理只读：严禁编辑任何代码。按 ${scoreBrief} 与 ${P("quality-bar.md")} 严格审查一版带声成片（${renderVideo}）、QA 报告、SVG 曲线图与母带报告（先声明本宿主审片通道 playback/stills/metrics；Gemini 宿主必须直接多模态观看 ${renderVideo} 并直听关键音频，Claude/Codex/WorkBuddy 宿主走传统频谱图 + 转场帧对/关键帧拼图 + 曲线/数值报告）。`,
+    `【防截断输出要求】必须在回复最顶部（前 25 行）先输出 \`\`\`scorecard-json\`\`\`（含 task_id='${taskId}'、host_review_mode、verdict 与全部 7 维整数分）、Verdict 行与 7 维总表，其后再写逐帧建议，末尾附 \`<!-- SCORE_COMPLETE -->\`。`,
   ].join("\n\n"),
 });
 
-const passedV1 = /Verdict:\s*DELIVER\b/i.test(String(scoreV1)) && skipFixIfPass;
-if (passedV1 || !filesByOwner.length) {
-  return { scoreV1, skippedPolish: true, fixes: [], qc: null };
+const scoreMeta = parseScorecard(scoreV1);
+if (!scoreMeta.complete) {
+  return { status: "INCOMPLETE_REVIEW", scoreMeta, scoreV1, skippedPolish: true, fixes: [], qc: null };
+}
+if ((scoreMeta.verdict === "DELIVER" && skipFixIfPass) || !filesByOwner.length) {
+  return { status: scoreMeta.verdict, scoreMeta, scoreV1, skippedPolish: true, fixes: [], qc: null };
 }
 
 // 2. Targeted Polish Round per owning craft/file group (minimal surgical fixes)
@@ -44,4 +84,4 @@ const qc = await agent({
   ].join("\n\n"),
 });
 
-return { scoreV1, skippedPolish: false, fixes, qc };
+return { status: "REVISED", scoreMeta, scoreV1, skippedPolish: false, fixes, qc };

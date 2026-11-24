@@ -13,11 +13,44 @@ from . import fx as FX
 from . import _dsp
 
 
+def _lufs_bs1770_scipy(x):
+    """Exact 48 kHz ITU-R BS.1770-4 K-weighted integrated loudness fallback (zero pyloudnorm dep)."""
+    from scipy.signal import lfilter
+    # Standard 48 kHz Stage 1 (pre-filter high-shelf) + Stage 2 (RLB high-pass) coefficients
+    b1 = np.array([1.53512485958697, -2.69169618940638, 1.19839281085285], dtype=np.float64)
+    a1 = np.array([1.0, -1.69065929318241, 0.73248077421585], dtype=np.float64)
+    b2 = np.array([1.0, -2.0, 1.0], dtype=np.float64)
+    a2 = np.array([1.0, -1.99004745483398, 0.99007225036621], dtype=np.float64)
+    y = lfilter(b2, a2, lfilter(b1, a1, x, axis=1), axis=1)
+    blk = int(round(0.4 * SR))
+    hop = int(round(0.1 * SR))
+    if y.shape[1] < blk:
+        y = np.pad(y, ((0, 0), (0, blk - y.shape[1])))
+    n_blk = 1 + (y.shape[1] - blk) // hop
+    if n_blk <= 0:
+        return -120.0
+    powers = np.empty(n_blk, dtype=np.float64)
+    for i in range(n_blk):
+        seg = y[:, i * hop : i * hop + blk]
+        powers[i] = float(np.mean(seg[0] ** 2) + np.mean(seg[1] ** 2))
+    loud = -0.691 + 10.0 * np.log10(np.maximum(powers, 1e-18))
+    g1 = powers[loud > -70.0]
+    if g1.size == 0:
+        return -120.0
+    rel = -0.691 + 10.0 * np.log10(max(float(np.mean(g1)), 1e-18)) - 10.0
+    g2 = powers[(loud > -70.0) & (loud > rel)]
+    if g2.size == 0:
+        return -120.0
+    return float(-0.691 + 10.0 * np.log10(max(float(np.mean(g2)), 1e-18)))
+
+
 def lufs(x):
-    import pyloudnorm as pyln
     x = to_stereo(as_array(x))
     try:
+        import pyloudnorm as pyln
         L = pyln.Meter(SR).integrated_loudness(x.T)
+    except ImportError:
+        L = _lufs_bs1770_scipy(x)
     except Exception:
         return -120.0
     return float(L) if np.isfinite(L) else -120.0

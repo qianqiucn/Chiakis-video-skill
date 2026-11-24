@@ -79,7 +79,7 @@ def install_antigravity(dest_override: str | None, dry: bool):
         "chiaki-video-guard": {
             "PreToolUse": [
                 {
-                    "matcher": "invoke_subagent|run_command",
+                    "matcher": "invoke_subagent|swarm|run_command",
                     "hooks": [{"type": "command", "command": hook_cmd}],
                 }
             ]

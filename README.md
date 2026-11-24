@@ -77,6 +77,12 @@
 
 > **Flagship Scope / 旗舰定位说明**：面向 **原创 2D/2.5D/3D 动效、快剪 PV/MV、动态歌词排版、品牌片头、MAD 与复刻学习** 的全流程制片技能。无需私有榜单模板或付费生图 API，开箱即享完整 2D 引擎 + 可选满血 Blender 3D 渲染与 MCP 实时调光。
 >
+> **✨ What's New in `v1.7.1`（长序列渲染防卡死 & 质检提速 + 评审防截断 + Antigravity Swarm 混合编排）**：
+> - **渲染与 CDP 防停滞内核（`scripts/_cdp.mjs`、`scripts/render_fast.mjs`）**：给 CDP 全链路补上超时/断连立即失败与双 `rAF` 兜底；新增分 worker 实时阶段心跳、单帧超时自动重启 Chrome 并回落软件绘制、无进度看门狗（`--stall-timeout`）自动释放队列槽位、`.part.mp4` 原子落盘防毁旧片，以及 **`--patch-frames` / `--encode-only`** 局部重渲免全片重导出。
+> - **质检秒级提速与增量落盘（`scripts/qa.mjs`）**：移除文本审计阶段冗余的 120 次全屏截屏改用纯 `seekOnly`，拆成 5 个带计时日志阶段并逐阶段增量刷写 `qa_report.txt` + `qa_state.json`，彻底解决长序列 500s 超时与丢指标问题。
+> - **独立评审防截断 / 503 恢复（`score_brief.md`、`polish_rerender`）**：结构化 7 维 JSON 评分块 + `Verdict` 前置回复顶部，末尾强制 `<!-- SCORE_COMPLETE -->`，按 `taskId` 拆分落盘 `work/score_<id>.json/.md`，缺失维度或遭截断时显式标 `INCOMPLETE_REVIEW` 阻断误通过。
+> - **零缺包音频导出 & 工具防呆（`mgaudio`、`snap_clean.mjs`、`look.py`、`doctor.py`）**：`mgaudio` 内置纯 `scipy` BS.1770-4 LUFS 与纯 Pillow 声谱图兜底（缺 `pyloudnorm`/`matplotlib` 亦不中断导出，并补全 `requirements.txt`）；`snap_clean.mjs` 兼容单帧/帧列表与 `--fps` 并附三模式示例；修复 `look.py video` 缺失 `import glob`；`doctor.py` 清晰区分 `[REQ]` / `[OPT]`；新增 **Antigravity Swarm（`/teamwork`）混合编排规范与钩子护栏**及全宿主审片能力声明。
+>
 > **✨ What's New in `v1.7.0`（工作室自迭代记忆 + 在线免 Key 质感/实拍素材库 + 19 类二次元部位 2K 精拆）**：
 > - **外置自迭代记忆系统（`scripts/memory.py`）**：默认存 `~/.chiaki-studio/`（独立于 Skill 仓库、升级永不丢失且三端共享），支持四态开关 **`ask` / `auto` / `readonly` / `off`** 与 `/chiaki memory`，沉淀长期审美偏好、去重避坑规矩（复发 `hits >= 2` 自动标星提示升级 Skill 本体）与作品履历（提案会跨片防撞型）；`docs/PROMPT_TEMPLATE.md` 同步新增**自查精修轮数**（0 / 1 / 2+ 轮）与**自迭代记忆开关**。
 > - **在线免 Key 质感层 & 实拍素材库（`scripts/media_lib.py`）**：装上即可免 Key 自动搜索挑拣并下载 **ambientCG（2,000+ CC0 2K 纸纹/划痕/表面瑕疵）+ Poly Haven（870+ CC0 质感贴图）+ Internet Archive（4K 水墨/烟雾/烧片/延时实拍）+ NASA 实拍**（并支持可选免费 `PEXELS_API_KEY` / `PIXABAY_API_KEY` 与本地库 `CHIAKI_FOOTAGE_DIR`），自动联动 `prep_texture.py` 拉伸纤维、自动用 FFmpeg 拆成 `T3.sequence` 序列帧并输出版权鸣谢。

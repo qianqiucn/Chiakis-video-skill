@@ -1,6 +1,6 @@
 {
   "name": "chiakis-video-skill",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "private": true,
   "description": "Chiaki's-video-skill: Flagship deterministic 2D + 2.5D + Blender 3D motion graphics, fast-cut PV/MV, and kinetic typography studio skill for AI coding agents.",
   "license": "MIT",

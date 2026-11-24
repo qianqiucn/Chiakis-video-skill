@@ -286,15 +286,12 @@ class Track:
 
 
 def _lufs(buf):
-    import pyloudnorm as pyln
+    from .master import lufs as _master_lufs
     x = to_stereo(buf)
     if x.shape[1] < ns(0.45):
         x = np.pad(x, ((0, 0), (0, ns(0.45) - x.shape[1])))
-    try:
-        L = pyln.Meter(SR).integrated_loudness(x.T)
-    except Exception:
-        L = -120.0
-    if not np.isfinite(L):
+    L = _master_lufs(x)
+    if not np.isfinite(L) or L <= -119.0:
         r = np.sqrt(np.mean(x ** 2) + 1e-20)
         L = 20 * np.log10(r + 1e-12) - 0.7 if r > 1e-7 else -120.0
     return float(L)

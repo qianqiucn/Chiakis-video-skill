@@ -30,22 +30,23 @@ checks: list[dict[str, str]] = []
 JSON_MODE = False
 
 
-def _emit(status: str, label: str, detail: str):
-    checks.append({"status": status, "label": label, "detail": detail})
+def _emit(status: str, label: str, detail: str, tier: str = "required"):
+    checks.append({"tier": tier, "status": status, "label": label, "detail": detail})
     if not JSON_MODE:
-        print(f"  [{status:4s}] {label:26s} {detail}")
+        tag = "REQ" if tier == "required" else "OPT"
+        print(f"  [{tag}|{status:4s}] {label:26s} {detail}")
 
 
-def ok(label: str, detail: str):
-    _emit("OK", label, detail)
+def ok(label: str, detail: str, tier: str = "required"):
+    _emit("OK", label, detail, tier)
 
 
-def warn(label: str, detail: str):
-    _emit("WARN", label, detail)
+def warn(label: str, detail: str, tier: str = "required"):
+    _emit("WARN", label, detail, tier)
 
 
-def fail(label: str, detail: str):
-    _emit("FAIL", label, detail)
+def fail(label: str, detail: str, tier: str = "required"):
+    _emit("FAIL", label, detail, tier)
 
 
 def check_python():
@@ -156,28 +157,28 @@ def check_blender():
                     found = str(p)
                     break
     if found:
-        ok("Blender (2.5D / 3D)", found)
+        ok("Blender (2.5D / 3D)", found, tier="optional")
     else:
-        warn("Blender (2.5D / 3D)", "not found — optional, for depth_relief.py, projection/ & built sets (set CHIAKI_BLENDER or install Blender 4.2+/5.x)")
+        warn("Blender (2.5D / 3D)", "not found — optional, for depth_relief.py, projection/ & built sets (set CHIAKI_BLENDER or install Blender 4.2+/5.x)", tier="optional")
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.settimeout(0.25)
     try:
         s.connect(("127.0.0.1", 9876))
-        ok("Blender MCP (live)", "listening on 127.0.0.1:9876 (interactive look-dev ready)")
+        ok("Blender MCP (live)", "listening on 127.0.0.1:9876 (interactive look-dev ready)", tier="optional")
     except Exception:
-        warn("Blender MCP (live)", "not running on 127.0.0.1:9876 — optional; headless Blender CLI works without MCP (see README)")
+        warn("Blender MCP (live)", "not running on 127.0.0.1:9876 — optional; headless Blender CLI works without MCP (see README)", tier="optional")
     finally:
         s.close()
 
 
 def check_py_pkgs():
     groups = [
-        ("Fonts (fontTools/brotli/PIL/pathops)", ["fontTools", "brotli", "PIL", "pathops"]),
-        ("Video/Beat (numpy/cv2)", ["numpy", "cv2"]),
-        ("Audio (mgaudio deps)", ["scipy", "numba", "soundfile", "pedalboard"]),
+        ("Fonts (fontTools/brotli/PIL/pathops)", ["fontTools", "brotli", "PIL", "pathops"], "required"),
+        ("Video/Beat (numpy/cv2)", ["numpy", "cv2"], "required"),
+        ("Audio (mgaudio deps)", ["scipy", "numba", "soundfile", "pedalboard", "pyloudnorm"], "required"),
     ]
-    for label, mods in groups:
+    for label, mods, tier in groups:
         miss = []
         for m in mods:
             try:
@@ -185,9 +186,9 @@ def check_py_pkgs():
             except Exception:
                 miss.append(m)
         if not miss:
-            ok(label, "all installed")
+            ok(label, "all installed", tier=tier)
         else:
-            warn(label, f"missing: {', '.join(miss)}")
+            warn(label, f"missing: {', '.join(miss)}", tier=tier)
             opt_missing.extend(miss)
     dmiss = []
     for m in ("torch", "torchvision", "transformers", "timm", "einops", "kornia"):
@@ -205,30 +206,42 @@ def check_py_pkgs():
                 accel = "Apple MPS"
         except Exception:
             pass
-        ok("Vision/Depth AI (optional)", f"vision stack ready ({accel}; cutout.py, part_cutout.py & depth.py)")
+        ok("Vision/Depth AI (optional)", f"vision stack ready ({accel}; cutout.py, part_cutout.py & depth.py)", tier="optional")
     else:
-        warn("Vision/Depth AI (optional)", f"missing {', '.join(dmiss)} — optional, for vision/cutout.py, part_cutout.py & depth.py (`setup_env.py --profile full` auto-detects NVIDIA CUDA)")
+        warn("Vision/Depth AI (optional)", f"missing {', '.join(dmiss)} — optional, for vision/cutout.py, part_cutout.py & depth.py (`setup_env.py --profile full` auto-detects NVIDIA CUDA)", tier="optional")
 
 
 def check_bundled():
     cat = ROOT / "assets" / "fonts" / "catalog.json"
     if cat.exists():
         n = len(json.loads(cat.read_text(encoding="utf-8")).get("families", {}))
-        ok("Bundled Fonts", f"{n} open-source families ready in assets/fonts/")
+        ok("Bundled Fonts", f"{n} open-source families ready in assets/fonts/", tier="required")
     else:
-        warn("Bundled Fonts", "catalog.json missing (lite install? Run `python scripts/fonts.py get starter`)")
+        warn("Bundled Fonts", "catalog.json missing (lite install? Run `python scripts/fonts.py get starter`)", tier="optional")
     gsap = ROOT / "assets" / "template" / "lib" / "gsap" / "gsap.min.js"
     ez = ROOT / "assets" / "template" / "lib" / "motion" / "ez.js"
     mg = ROOT / "assets" / "mgaudio" / "mgaudio" / "__init__.py"
     if gsap.exists() and ez.exists():
-        ok("2D Motion + GSAP", "assets/template/lib/motion/ + GSAP 3.15.1 present")
+        ok("2D Motion + GSAP", "assets/template/lib/motion/ + GSAP 3.15.1 present", tier="required")
     else:
-        fail("2D Motion + GSAP", "missing template motion libraries")
+        fail("2D Motion + GSAP", "missing template motion libraries", tier="required")
         req_missing.append("assets/template/lib/motion")
     if mg.exists():
-        ok("Bundled mgaudio", "assets/mgaudio/ present (pure-synth ready)")
+        mg_root = str(ROOT / "assets" / "mgaudio")
+        if mg_root not in sys.path:
+            sys.path.insert(0, mg_root)
+        try:
+            importlib.import_module("mgaudio")
+            try:
+                importlib.import_module("matplotlib")
+                spec_backend = "matplotlib"
+            except Exception:
+                spec_backend = "PIL fallback (no matplotlib needed)"
+            ok("Bundled mgaudio", f"import OK; spectrogram={spec_backend}", tier="required")
+        except Exception as e:
+            warn("Bundled mgaudio", f"present but import failed ({e}) — install requirements.txt and add {mg_root} to sys.path", tier="required")
     else:
-        warn("Bundled mgaudio", "assets/mgaudio/ not found")
+        warn("Bundled mgaudio", "assets/mgaudio/ not found", tier="required")
     # Studio self-iteration memory (optional, stored outside repo)
     mem_dir = Path(os.environ.get("CHIAKI_MEMORY_DIR", "") or (Path.home() / ".chiaki-studio")).expanduser().resolve()
     mem_cfg = mem_dir / "config.json"
@@ -239,13 +252,13 @@ def check_bundled():
             mode = json.loads(mem_cfg.read_text(encoding="utf-8")).get("mode", "ask")
         except Exception:
             pass
-        ok("Studio Memory", f"mode={mode} ({mem_dir})")
+        ok("Studio Memory", f"mode={mode} ({mem_dir})", tier="optional")
     else:
-        warn("Studio Memory", f"not configured yet (default mode=ask @ {mem_dir} — ask user once on first setup)")
+        warn("Studio Memory", f"not configured yet (default mode=ask @ {mem_dir} — ask user once on first setup)", tier="optional")
     # Online tactile textures & live-action stock footage (scripts/media_lib.py)
     pro_media = [k for k in ("PEXELS_API_KEY", "PIXABAY_API_KEY", "CHIAKI_FOOTAGE_DIR") if os.environ.get(k, "").strip()]
     extra_m = f" + {', '.join(pro_media)}" if pro_media else " (+ optional PEXELS_API_KEY / PIXABAY_API_KEY / CHIAKI_FOOTAGE_DIR)"
-    ok("Online Textures & Footage", f"zero-key ambientCG + PolyHaven + Archive.org + NASA ready{extra_m}")
+    ok("Online Textures & Footage", f"zero-key ambientCG + PolyHaven + Archive.org + NASA ready{extra_m}", tier="optional")
 
 
 def main() -> int:

@@ -14,3 +14,4 @@ scipy>=1.12.0
 numba>=0.59.0
 soundfile>=0.12.1
 pedalboard>=0.9.0
+pyloudnorm>=0.1.1

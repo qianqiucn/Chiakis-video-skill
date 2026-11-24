@@ -11,7 +11,7 @@ Run with Python: python -X utf8 scripts/look.py ...
 Boxes are in the source's own pixels. Each tile is labelled with its source (file name or frame) and box.
 Default scale: 1 for crops (full size: what the eye checks), 0.33 for whole 1080p frames.
 """
-import argparse, os, shutil, subprocess, sys, tempfile
+import argparse, glob, os, shutil, subprocess, sys, tempfile
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 

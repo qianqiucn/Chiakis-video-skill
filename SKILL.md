@@ -27,9 +27,10 @@ A flagship deterministic **2D + 2.5D + Blender 3D** motion-graphics and fast-cut
 - **When a method hits its limit, switch methods** instead of turning the same knob: a flat 2D frame needs foreground/midground/background parallax layers, texture, or per-glyph choreography — not louder flashes.
 - **Never act as your own final reviewer or independent scorer.** Always dispatch read-only reviewer/verifier/scorer roles (`references/personas.md` §3).
 
-### 宿主多模态死规矩（Hard Rule: Gemini Native Multimodal vs Claude / Codex Traditional）
-- **Gemini 宿主（Antigravity 等原生音视频多模态模型）**：**必须直接用 `read_file` 原生多模态直听音频（原曲 / `vocal_spec.py --wav-only` 微切片 `.wav`）并直看带声渲染视频（720p/1080p `.mp4` 或分幕 10–25 s 片段）** 来锁人声起唱、审一版看样、三视角终审、复核与独立 7 维评分；`beats.py`/`onsets.py` 与 `snap.mjs` 仅作帧号校验与单帧像素查错，**严禁在 Gemini 上跳过直看带声视频、只靠静态拼图或频谱图打分/签字**！
-- **Claude / Codex 宿主（图像 + 文本为主的传统模型）**：走**传统频谱分析 + 密集截图 + 曲线/数值路线** —— 用 `beats.py` + `onsets.py` + `vocal_spec.py`（高反差帧号 300 Hz–4 kHz 人声声谱图 `spec_*.png`）锁音轨，用 `snap.mjs --sheet` + 转场前后逐帧图 + `motion_lint.mjs --curves` SVG 曲线图 + `cadence.py` / `parallax.py` / `qa.mjs` 审片与评分。
+### 宿主多模态死规矩与能力声明（Hard Rule: Host Capability Declaration & Multimodal Split）
+- **启动时显式声明本宿主审片通道**：每个工程启动及每份审片/交付报告顶部，必须注明本宿主实际支持的审片能力（`playback` 原生带声视频播放 / `stills` 抽帧与接触表 / `metrics` 曲线·响度·频谱数值），并在结论旁标注证据来源，方便 Antigravity / Claude Code / Codex / WorkBuddy 等任意宿主透明对齐。
+- **Gemini 宿主（Antigravity 等原生音视频多模态模型 · `playback+stills+metrics`）**：**必须直接用 `read_file` 原生多模态直听音频（原曲 / `vocal_spec.py --wav-only` 微切片 `.wav`）并直看带声渲染视频（720p/1080p `.mp4` 或分幕 10–25 s 片段）** 来锁人声起唱、审一版看样、三视角终审、复核与独立 7 维评分；`beats.py`/`onsets.py` 与 `snap.mjs` 仅作帧号校验与单帧像素查错，**严禁在 Gemini 上跳过直看带声视频、只靠静态拼图或频谱图打分/签字**！
+- **Claude / Codex / WorkBuddy 等图像+文本宿主（`stills+metrics`）**：走**传统频谱分析 + 密集截图 + 曲线/数值路线** —— 用 `beats.py` + `onsets.py` + `vocal_spec.py`（高反差帧号 300 Hz–4 kHz 人声声谱图 `spec_*.png`）锁音轨，用 `snap.mjs --sheet`（含每个转场 `cut-1/cut/cut+1` 帧对与字幕停留中帧）+ `motion_lint.mjs --curves` SVG 曲线图 + `cadence.py` / `parallax.py` / `qa.mjs` 审片与评分。
 
 ## Read this when (top to bottom for a new video)
 

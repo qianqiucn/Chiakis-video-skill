@@ -41,6 +41,6 @@ Copy this template into `<project>/work/brief_<key>.md` and fill in the brackete
 Before reporting done:
 1. Run static `motion_lint.mjs` → **0 FAIL**.
 2. Generate SVG curve sheet (`--curves`) and inspect `curves.svg` + `lint.txt`.
-3. Capture contact sheet via `snap.mjs --sheet` → **0 render errors, 0 page errors**, visually inspect key frames.
+3. Capture contact sheet via `snap.mjs --sheet` covering **every transition frame pair (`cut-1, cut, cut+1`) AND every subtitle/caption hold midpoint** → **0 render errors, 0 page errors**, visually confirm no black wipe corners, no subtitle-over-foreground collisions, legible emblem contrast, and balanced peak brightness before handing in.
 4. Report back with: files touched, motion sheet path, curve sheet path, contact sheet path, any declared departures, and any open issues.
 ```

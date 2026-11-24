@@ -32,3 +32,20 @@ Every `invoke_subagent` call to `chiaki-writer`, `chiaki-builder`, or `chiaki-re
 |---|---|---|
 | **Gemini（Antigravity 等原生音视频多模态宿主）** | **必须原生多模态直听音频**：用 `read_file` 直接听原曲与 `vocal_spec.py --wav-only` 切出的微切片 `.wav`/`.mp3`，靠真实听觉锁清歌词起唱、呼吸与情绪落点；`beats.py`/`onsets.py` 仅作帧号交叉复核，**严禁跳过直听只凭频谱图盲猜**。 | **必须原生多模态直看带声渲染视频**：先渲染 720p/1080p 带声 `.mp4`（长片按幕切 10–25 s 720p 片段），由执行导演、审片员、复核员与评分员**直接用 `read_file` 看完整带声 `.mp4`** 判定节奏呼吸、运动手感、转场衔接与人声对口型；`snap.mjs` 拼图仅用于查单帧像素瑕疵（缺字、露边、纸纹），**严禁在 Gemini 上只看静态拼图就给视频动效、节奏或音画同步签字/打分**！ |
 | **Claude / Codex（图像 + 文本为主的传统宿主）** | **传统频谱 + 数字分析路线**：`beats.py` + `onsets.py` + `vocal_spec.py` 生成帧号 300 Hz–4 kHz 人声声谱图 `spec_*.png` 与能量包络，看图锁帧。 | **传统截图 + 曲线/数值路线**：`snap.mjs --sheet` 关键帧拼图 + 转场前后逐帧图 + `motion_lint.mjs --curves` SVG 曲线图 + `cadence.py` / `parallax.py` / `qa.mjs` 数值报告。 |
+
+## 4. Antigravity Swarm（`/teamwork`）混合编排规范（Hybrid Swarm Protocol）
+
+当用户在 Antigravity 中使用 Swarm / `/teamwork` 做片时，**必须按阶段混用，严禁全流程一把梭塞进 Swarm**：
+
+| 阶段 | 强制调度方式 | 硬边界原因 |
+|---|---|---|
+| **Stage 2 提案会（Pitch）** | `invoke_subagent(chiaki-writer)` / `pitch.py` | Swarm 公屏全员可见会破坏 3 路编剧背靠背盲写 |
+| **Stage 5 批处理出图 / 拆层** | 主线程后台跑 `art_gen.py` / `cutout.py` / `part_cutout.py` / `media_lib.py` | 纯批处理 CLI，不占 Swarm 名额 |
+| **Stage 6 三工种 Build · Stage 8 声音 · Stage 12 修一轮** | **推荐 Antigravity Swarm（`/teamwork`）** | 同幕 `3d-*` / `edit-*` / `design-*` / `sound` 公屏 `@` 对齐帧号与 `handoff`、保留对话上下文热返修、配额不足用 `swarm(action="model")` 原地热切模型 |
+| **Stage 9 终审/复核 · Stage 11 独立评分** | `invoke_subagent(chiaki-reviewer)` / `review_fix.py` | Swarm 工人拥有写工具，无物理只读隔离；终审与评分必须留给物理只读 `chiaki-reviewer` |
+
+**Swarm 制作期硬规矩**（`hooks/chiaki_guard.py` 自动拦截违规 `swarm(action="add")`）：
+1. **强制 `workspace: "inherit"`**：严禁在视频项目开启 `share` / `branch`（数百 MB 序列帧/PNG/WAV 合并极易漏素材），改由工种正交文件归属防冲突（`seg_*.js` / `*_design.js` / `*_handoff.js` / `assets/rel/`）。
+2. **并发上限 3–5 名活跃工人**：配合 `run_queue.py`（全机 1 浏览器槽 / 2 Blender 槽），写代码并行、预览与渲染错峰进队列。
+3. **强制人格与工种卡注入**：每个 `swarm(action="add")` 的 `brief` 顶部必须粘贴 `references/personas.md` 原话身份+性格，并附 `references/crafts.md` 与归属文件清单；指定具体模型时先查 `swarm(action="models")`，严禁传 `model="inherit"`。
+4. **Swarm UI 看板**：开建前读 `swarm_pane` 技能，把任务按幕分组写入 `plan.json` 的 `threads`，并要求视觉工人按 `Screenshot: <abs_path> | <≤10词变化>` 上报关键帧时间线（具体配方见 `references/production.md` §7）。

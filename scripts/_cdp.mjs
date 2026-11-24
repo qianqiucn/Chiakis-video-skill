@@ -232,12 +232,12 @@ async function motionStatus(pageFile, quietEval) {
   return { res, rt, line };
 }
 
-export async function openPage(pageFile, { query = '', settle = 1200, width = 1920, height = 1080, onRenderError = null, motion = true } = {}) {
+export async function openPage(pageFile, { query = '', settle = 1200, width = 1920, height = 1080, onRenderError = null, motion = true, callTimeout = +(process.env.CHIAKI_CDP_TIMEOUT_MS || 25000), cpu = null } = {}) {
   const held = process.env.CHIAKI_QUEUE_HELD || process.env.QCRV_QUEUE_HELD || '';
   if (!/(^|,)web:/.test(held)) console.error('[_cdp] headless Chrome started outside scripts/run_queue.py web: run the command through it (references/production.md §2)');
   const prof = fs.mkdtempSync(path.join(os.tmpdir(), 'chiaki-cdp-'));
-  // GPU raster/compositing by default (D3D11 ANGLE on Windows); CHIAKI_CPU=1 forces software (--disable-gpu).
-  const useCpu = process.env.CHIAKI_CPU === '1' || process.env.QCRV_CPU === '1';
+  // GPU raster/compositing by default (D3D11 ANGLE on Windows); CHIAKI_CPU=1 or { cpu: true } forces software (--disable-gpu).
+  const useCpu = cpu !== null ? !!cpu : (process.env.CHIAKI_CPU === '1' || process.env.QCRV_CPU === '1');
   const gpu = useCpu ? ['--disable-gpu']
     : process.platform === 'win32'
     ? ['--use-angle=d3d11', '--enable-gpu-rasterization', '--ignore-gpu-blocklist']
@@ -247,27 +247,59 @@ export async function openPage(pageFile, { query = '', settle = 1200, width = 19
     `--window-size=${width},${height}`, 'about:blank'], { stdio: 'ignore' });
   let port = 0;
   for (let i = 0; i < 150 && !port; i++) {
+    if (proc.exitCode !== null) break;
     try { port = +fs.readFileSync(path.join(prof, 'DevToolsActivePort'), 'utf8').split('\n')[0]; } catch {}
     if (!port) await sleep(100);
   }
-  if (!port) { proc.kill(); throw new Error('Chrome did not start'); }
+  if (!port) { try { proc.kill(); } catch {} try { fs.rmSync(prof, { recursive: true, force: true }); } catch {} throw new Error('Chrome did not start'); }
   let wsUrl = null;
   for (let i = 0; i < 100 && !wsUrl; i++) {
+    if (proc.exitCode !== null) break;
     try { const j = await (await fetch(`http://127.0.0.1:${port}/json`)).json(); const p = j.find((x) => x.type === 'page'); if (p) wsUrl = p.webSocketDebuggerUrl; } catch {}
     if (!wsUrl) await sleep(100);
   }
+  if (!wsUrl) { try { proc.kill(); } catch {} try { fs.rmSync(prof, { recursive: true, force: true }); } catch {} throw new Error('Chrome CDP endpoint did not appear'); }
   const ws = new WebSocket(wsUrl);
-  await new Promise((res, rej) => { ws.onopen = res; ws.onerror = rej; });
-  let id = 0; const pend = new Map(); const errors = [];
+  await new Promise((res, rej) => {
+    const t = setTimeout(() => rej(new Error('Chrome CDP WebSocket open timeout')), 15000);
+    ws.onopen = () => { clearTimeout(t); res(); };
+    ws.onerror = (e) => { clearTimeout(t); rej(new Error('Chrome CDP WebSocket error: ' + (e?.message || 'failed'))); };
+  });
+  let id = 0, dead = null, stage = 'boot', closing = false;
+  const pend = new Map(); const errors = [];
   const renderErrors = [], renderLines = new Set(), seenKinds = new Set();
+  const failAll = (reason) => {
+    if (dead) return;
+    dead = reason;
+    for (const [k, p] of pend) { clearTimeout(p.timer); p.rej(new Error(reason)); }
+    pend.clear();
+  };
+  ws.onclose = () => { if (!closing) failAll(`Chrome CDP socket closed unexpectedly during ${stage}`); };
+  ws.onerror = () => { if (!closing) failAll(`Chrome CDP socket error during ${stage}`); };
+  proc.on('exit', (code, sig) => { if (!closing) failAll(`Chrome process exited (${code ?? sig}) during ${stage}`); });
   ws.onmessage = (ev) => {
     const m = JSON.parse(ev.data);
-    if (m.id && pend.has(m.id)) { const p = pend.get(m.id); pend.delete(m.id); m.error ? p.rej(new Error(m.error.message)) : p.res(m.result); return; }
+    if (m.id && pend.has(m.id)) {
+      const p = pend.get(m.id); pend.delete(m.id); clearTimeout(p.timer);
+      m.error ? p.rej(new Error(m.error.message)) : p.res(m.result);
+      return;
+    }
+    if (m.method === 'Inspector.targetCrashed') failAll(`Chrome target crashed during ${stage}`);
     if (m.method === 'Runtime.exceptionThrown') errors.push(m.params.exceptionDetails.exception?.description || m.params.exceptionDetails.text);
     if (m.method === 'Runtime.consoleAPICalled' && m.params.type === 'error') errors.push(m.params.args.map((a) => a.value ?? a.description).join(' '));
   };
-  const send = (method, params = {}) => new Promise((res, rej) => { const i = ++id; pend.set(i, { res, rej }); ws.send(JSON.stringify({ id: i, method, params })); });
-  const rawEval = (expression) => send('Runtime.evaluate', { expression, awaitPromise: true, returnByValue: true });
+  const send = (method, params = {}, timeoutMs = callTimeout) => new Promise((res, rej) => {
+    if (dead) return rej(new Error(dead));
+    if (ws.readyState !== 1) return rej(new Error(`Chrome CDP socket not open (state=${ws.readyState}) during ${stage}`));
+    const i = ++id;
+    const timer = timeoutMs > 0 ? setTimeout(() => {
+      if (pend.has(i)) { pend.delete(i); rej(new Error(`CDP timeout after ${timeoutMs}ms during ${stage} (${method})`)); }
+    }, timeoutMs) : null;
+    pend.set(i, { res, rej, timer });
+    try { ws.send(JSON.stringify({ id: i, method, params })); }
+    catch (e) { pend.delete(i); if (timer) clearTimeout(timer); rej(e); }
+  });
+  const rawEval = (expression, timeoutMs = callTimeout) => send('Runtime.evaluate', { expression, awaitPromise: true, returnByValue: true }, timeoutMs);
   function addFails(list) {
     for (const r of Array.isArray(list) ? list : []) {
       renderErrors.push(r);
@@ -281,8 +313,8 @@ export async function openPage(pageFile, { query = '', settle = 1200, width = 19
   const drain = async () => addFails((await rawEval('window.__cv ? window.__cv.drain() : []')).result?.value);
   // an exception inside the expression comes back in the reply, never as an event: record it (with the segment
   // records it produced, when it came from a seek) instead of returning undefined in silence
-  const evaluate = async (expression) => {
-    const r = await rawEval(expression);
+  const evaluate = async (expression, timeoutMs = callTimeout) => {
+    const r = await rawEval(expression, timeoutMs);
     if (r.exceptionDetails) {
       const before = renderErrors.length;
       await drain();
@@ -296,37 +328,65 @@ export async function openPage(pageFile, { query = '', settle = 1200, width = 19
   await send('Page.addScriptToEvaluateOnNewDocument', { source: `(${pageHook})();` });
   await send('Emulation.setDeviceMetricsOverride', { width, height, deviceScaleFactor: 1, mobile: false });
   const url = 'file:///' + path.resolve(pageFile).replace(/\\/g, '/') + '?still=1&bare=1' + query;
+  stage = 'navigate';
   await send('Page.navigate', { url });
+  stage = 'ready-wait';
   let ready = false;
   for (let i = 0; i < 300; i++) { if (await evaluate('window.T3_READY===true && document.readyState==="complete"')) { ready = true; break; } await sleep(50); }
   // DOM images + fonts; images created in code (new Image(), textures) get the settle time
+  stage = 'assets-wait';
   await evaluate('Promise.all([...document.images].map(i=>i.complete?0:new Promise(r=>{i.addEventListener("load",r);i.addEventListener("error",r);}))).then(()=>document.fonts.ready).then(()=>1)');
   await sleep(settle);
   await drain();                                        // init() and the first draw at boot
   // the motion line: rawEval, so nothing it asks can land in errors (which would change snap's or render_fast's exit code)
   let motionInfo = null;
   if (motion !== false) {
+    stage = 'motion-status';
     const quietEval = async (x) => { try { const r = await rawEval(x); return r.exceptionDetails ? undefined : r.result?.value; } catch { return undefined; } };
     const key = path.resolve(pageFile).toLowerCase();
     if (!motionOnce.has(key)) motionOnce.set(key, motionStatus(pageFile, quietEval).catch(() => null));
     motionInfo = await motionOnce.get(key);
   }
+  stage = 'idle';
 
-  async function shot(t, { format = 'jpeg', quality = 95, scale = 1, label = null } = {}) {
+  /** seek to time t without taking a screenshot (fast, zero rAF/readback overhead — used by qa.mjs text audit) */
+  async function seekOnly(t, timeoutMs = callTimeout) {
+    stage = 'seek';
+    addFails(await evaluate(`(window.__cv?window.__cv.seek(${t}):T3.seek(${t}));window.__cv?window.__cv.drain():[]`, timeoutMs));
+    stage = 'idle';
+  }
+
+  async function shot(t, { format = 'jpeg', quality = 95, scale = 1, label = null, rafTimeout = 200, timeoutMs = callTimeout } = {}) {
     const lab = label == null ? '' : `;(function(){let d=document.getElementById('qcrv-label');if(!d){d=document.createElement('div');d.id='qcrv-label';d.style.cssText='position:fixed;left:8px;top:6px;z-index:99999;font:700 30px Consolas,monospace;color:#ff0;background:rgba(0,0,0,.6);padding:2px 8px';document.body.appendChild(d);}d.textContent=${JSON.stringify(String(label))};})()`;
-    addFails(await evaluate(`(window.__cv?window.__cv.seek(${t}):T3.seek(${t}))${lab};new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(()=>r(window.__cv?window.__cv.drain():[]))))`));
+    stage = 'seek+raf';
+    // Race double-rAF against a bounded fallback timer so headless Windows Chrome D3D11/compositor throttling can never deadlock shot().
+    addFails(await evaluate(`(window.__cv?window.__cv.seek(${t}):T3.seek(${t}))${lab};new Promise(r=>{let done=false;const fin=()=>{if(!done){done=true;r(window.__cv?window.__cv.drain():[]);}};setTimeout(fin,${Math.max(50, rafTimeout)});requestAnimationFrame(()=>requestAnimationFrame(fin));})`, timeoutMs));
     const p = { format, captureBeyondViewport: false };
     if (format === 'jpeg') p.quality = quality;
     if (scale !== 1) p.clip = { x: 0, y: 0, width, height, scale };
-    return Buffer.from((await send('Page.captureScreenshot', p)).data, 'base64');
+    stage = 'capture';
+    const data = (await send('Page.captureScreenshot', p, timeoutMs)).data;
+    stage = 'idle';
+    return Buffer.from(data, 'base64');
   }
   /** seek every frame f0..f1 (no paint, no screenshot) and collect render errors; returns the frame count */
-  async function scan(f0, f1, fps = 24, chunk = 240) {
-    for (let a = f0; a <= f1; a += chunk) addFails(await evaluate(`window.__cv.scan(${a}, ${Math.min(f1, a + chunk - 1)}, ${fps})`));
+  async function scan(f0, f1, fps = 24, chunk = 240, timeoutMs = Math.max(callTimeout, 60000)) {
+    stage = 'scan';
+    for (let a = f0; a <= f1; a += chunk) addFails(await evaluate(`window.__cv.scan(${a}, ${Math.min(f1, a + chunk - 1)}, ${fps})`, timeoutMs));
+    stage = 'idle';
     return Math.max(0, f1 - f0 + 1);
   }
-  async function close() { try { ws.close(); } catch {} proc.kill(); await sleep(300); try { fs.rmSync(prof, { recursive: true, force: true }); } catch {} }
+  async function close() {
+    closing = true;
+    for (const [, p] of pend) { clearTimeout(p.timer); }
+    pend.clear();
+    try { ws.close(); } catch {}
+    try { proc.kill(); } catch {}
+    await sleep(300);
+    if (proc.exitCode === null) { try { proc.kill('SIGKILL'); } catch {} await sleep(150); }
+    try { fs.rmSync(prof, { recursive: true, force: true }); } catch {}
+  }
   const hooked = !!(await evaluate('!!(window.__cv && window.__cv.hooked)'));
   if (ready && !hooked) errors.push('render-error hook not installed (T3.register not seen): render errors are reported without their segment');
-  return { send, evaluate, shot, scan, drain, errors, renderErrors, renderLines, ready, hooked, close, motion: motionInfo };
+  return { send, evaluate, seekOnly, shot, scan, drain, errors, renderErrors, renderLines, ready, hooked, close, motion: motionInfo, getStage: () => stage, isDead: () => !!dead, cpu: useCpu };
 }

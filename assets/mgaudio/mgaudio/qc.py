@@ -201,14 +201,115 @@ def hit_alignment(src, hits, tol=0.04):
     return out
 
 
+def _magma_lut():
+    stops = np.array([
+        [0.00,   8,   6,  18],
+        [0.20,  58,  15,  96],
+        [0.45, 165,  38, 102],
+        [0.70, 238, 108,  45],
+        [0.88, 252, 198,  58],
+        [1.00, 255, 252, 210],
+    ], dtype=np.float64)
+    idx = np.linspace(0.0, 1.0, 256)
+    lut = np.zeros((256, 3), dtype=np.uint8)
+    for c in range(3):
+        lut[:, c] = np.clip(np.interp(idx, stops[:, 0], stops[:, c + 1]), 0, 255).astype(np.uint8)
+    return lut
+
+
+def _spectrogram_pil(x, png, title=None, marks=None, sections=None, fmax=20000):
+    """Pure numpy + scipy + Pillow fallback spectrogram when optional matplotlib is not installed."""
+    from PIL import Image, ImageDraw
+    from scipy.signal import stft
+
+    m = 0.5 * (x[0] + x[1])
+    dur = max(1e-3, m.shape[0] / SR)
+    f, t, Z = stft(m, SR, nperseg=2048, noverlap=2048 - 256)
+    S = 20.0 * np.log10(np.abs(Z) + 1e-9)
+    S -= float(S.max())
+    # Resample to log-frequency rows [30 Hz .. fmax]
+    W_plot, H_env, H_spec = 1200, 110, 420
+    pad_l, pad_r, pad_t, pad_gap, pad_b = 56, 20, 34, 12, 30
+    f_pos = f[1:]
+    S_pos = S[1:]
+    log_grid = np.geomspace(30.0, min(float(fmax), float(f_pos[-1])), H_spec)
+    row_idx = np.clip(np.searchsorted(f_pos, log_grid), 0, len(f_pos) - 1)
+    S_log = S_pos[row_idx[::-1], :]
+    norm = np.clip((S_log + 90.0) / 90.0, 0.0, 1.0)
+    lut = _magma_lut()
+    spec_rgb = lut[np.clip((norm * 255.0).round(), 0, 255).astype(np.uint8)]
+    spec_img = Image.fromarray(spec_rgb, mode='RGB').resize((W_plot, H_spec), Image.BILINEAR)
+
+    W = pad_l + W_plot + pad_r
+    H = pad_t + H_env + pad_gap + H_spec + pad_b
+    canvas = Image.new('RGB', (W, H), (16, 18, 24))
+    spec_y0 = pad_t + H_env + pad_gap
+    canvas.paste(spec_img, (pad_l, spec_y0))
+    dr = ImageDraw.Draw(canvas)
+    dr.rectangle([pad_l, pad_t, pad_l + W_plot, pad_t + H_env], fill=(20, 24, 34), outline=(65, 74, 92))
+    dr.rectangle([pad_l, spec_y0, pad_l + W_plot, spec_y0 + H_spec], outline=(80, 90, 110))
+
+    # L/R peak envelope
+    hop = max(1, x.shape[1] // W_plot)
+    k = min(W_plot, x.shape[1] // hop)
+    if k > 0:
+        env = np.abs(x[:, :k * hop]).reshape(2, k, hop).max(axis=2)
+        mid_y = pad_t + H_env // 2
+        half_h = (H_env // 2) - 4
+        for i in range(k):
+            xx = pad_l + int(round(i * (W_plot / k)))
+            y_hi = mid_y - int(round(min(1.0, float(env[0, i])) * half_h))
+            y_lo = mid_y + int(round(min(1.0, float(env[1, i])) * half_h))
+            dr.line([(xx, y_hi), (xx, y_lo)], fill=(58, 123, 213), width=1)
+
+    x_of = lambda sec: pad_l + int(round(np.clip(sec / dur, 0.0, 1.0) * W_plot))
+    for h in (marks or []):
+        xx = x_of(h)
+        dr.line([(xx, pad_t), (xx, spec_y0 + H_spec)], fill=(46, 204, 113), width=1)
+    for name, tv in (sections or {}).items():
+        xx = x_of(tv)
+        dr.line([(xx, spec_y0), (xx, spec_y0 + H_spec)], fill=(0, 210, 255), width=2)
+        dr.text((min(W - 80, xx + 4), spec_y0 + 4), str(name), fill=(0, 210, 255))
+    for hz in (50, 100, 250, 500, 1000, 2000, 5000, 10000, 20000):
+        if hz > fmax:
+            continue
+        frac = (np.log10(hz) - np.log10(30.0)) / max(1e-6, np.log10(min(float(fmax), float(f_pos[-1]))) - np.log10(30.0))
+        yy = spec_y0 + int(round((1.0 - frac) * H_spec))
+        lbl = f"{hz // 1000}k" if hz >= 1000 else str(hz)
+        dr.text((8, yy - 6), lbl, fill=(170, 182, 205))
+    step = 1.0 if dur <= 15 else (2.0 if dur <= 45 else 5.0)
+    sec = 0.0
+    while sec <= dur + 1e-6:
+        xx = x_of(sec)
+        dr.line([(xx, spec_y0 + H_spec), (xx, spec_y0 + H_spec + 4)], fill=(150, 160, 180))
+        dr.text((xx - 10, spec_y0 + H_spec + 8), f"{sec:.0f}s", fill=(175, 185, 205))
+        sec += step
+
+    dr.text((pad_l, 8), (title or 'mgaudio spectrogram') + '  [PIL fallback]', fill=(235, 240, 248))
+    os.makedirs(os.path.dirname(os.path.abspath(png)), exist_ok=True)
+    canvas.save(png)
+    return png
+
+
 def spectrogram(src, png, title=None, marks=None, sections=None, fmax=20000):
     """Save a log-frequency spectrogram PNG (with waveform envelope, onsets, optional hit marks
-    [t...] and sections {'drop': 4.0, ...}).  Read it with an image viewer to check structure."""
-    import matplotlib
-    matplotlib.use('Agg')
-    import matplotlib.pyplot as plt
-    from scipy.signal import stft
+    [t...] and sections {'drop': 4.0, ...}). Falls back cleanly to Pillow when matplotlib is absent."""
     x, _ = _load(src)
+    if title is None and isinstance(src, (str, os.PathLike)):
+        title = os.path.basename(str(src))
+    try:
+        r = analyze(x, expected=None, onsets=False)
+        title = f"{title or ''}   LUFS {r['lufs']:.1f}  TP {r['true_peak']:.1f}  " \
+                f"sub {r['bands']['sub']:.0f}% pres {r['bands']['presence']:.1f}%"
+    except Exception:
+        pass
+    try:
+        import matplotlib
+        matplotlib.use('Agg')
+        import matplotlib.pyplot as plt
+    except ImportError:
+        return _spectrogram_pil(x, png, title=title, marks=marks, sections=sections, fmax=fmax)
+    from scipy.signal import stft
     m = 0.5 * (x[0] + x[1])
     dur = m.shape[0] / SR
     f, t, Z = stft(m, SR, nperseg=2048, noverlap=2048 - 256)
@@ -249,14 +350,6 @@ def spectrogram(src, png, title=None, marks=None, sections=None, fmax=20000):
     for name, tv in (sections or {}).items():
         a1.axvline(tv, color='#00d2ff', lw=1.5, alpha=0.9)
         a1.text(tv + 0.03, 22000 if fmax >= 20000 else fmax * 0.9, name, color='#00d2ff', fontsize=9, va='top')
-    if title is None and isinstance(src, (str, os.PathLike)):
-        title = os.path.basename(str(src))
-    try:
-        r = analyze(x, expected=None, onsets=False)
-        title = f"{title or ''}   LUFS {r['lufs']:.1f}  TP {r['true_peak']:.1f}  " \
-                f"sub {r['bands']['sub']:.0f}% pres {r['bands']['presence']:.1f}%"
-    except Exception:
-        pass
     a0.set_title(title or '')
     fig.tight_layout()
     os.makedirs(os.path.dirname(os.path.abspath(png)), exist_ok=True)

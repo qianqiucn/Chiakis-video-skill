@@ -23,13 +23,16 @@ python -X utf8 <sk>/scripts/run_queue.py --status
 ## 3. CLI Toolkit Quick Reference
 
 ### Preview, QA, Lint & Rendering
-- **Contact sheet screenshots** (`snap.mjs`):
+- **Labelled contact sheet & frame list** (`snap.mjs`):
   ```bash
   python -X utf8 <sk>/scripts/run_queue.py web --lane preview -- node <sk>/scripts/snap.mjs web/index.html out/snaps "0-240:8" --sheet s1 --cols 6 --scale 0.5 --fps 24
   ```
-- **Clean full-res stills (no burned-in frame label)** (`snap_clean.mjs`):
+- **Clean full-res stills — single frame OR frame list (no burned-in frame label)** (`snap_clean.mjs`):
   ```bash
-  python -X utf8 <sk>/scripts/run_queue.py web --lane stills -- node <sk>/scripts/snap_clean.mjs web/index.html out/stills "0,48,120" --png
+  # Single clean still (file path + single frame index)
+  python -X utf8 <sk>/scripts/run_queue.py web --lane stills -- node <sk>/scripts/snap_clean.mjs web/index.html out/f048.png 48 --fps 24
+  # Multiple clean stills into a directory (directory path + frame list)
+  python -X utf8 <sk>/scripts/run_queue.py web --lane stills -- node <sk>/scripts/snap_clean.mjs web/index.html out/stills "0,48,120" --fps 24 --png
   ```
 - **Static motion lint (no browser, ~10 ms)** (`motion_lint.mjs`):
   ```bash
@@ -39,20 +42,24 @@ python -X utf8 <sk>/scripts/run_queue.py --status
   ```bash
   python -X utf8 <sk>/scripts/run_queue.py web --lane lint -- node <sk>/scripts/motion_lint.mjs web/index.html --curves --out work/motion_check
   ```
-- **Automated Gate B1 QA** (`qa.mjs`):
+- **Automated Gate B1 QA — 5 timed stages with incremental `qa_report.txt` + `qa_state.json`** (`qa.mjs`):
   ```bash
-  python -X utf8 <sk>/scripts/run_queue.py web --lane qa -- node <sk>/scripts/qa.mjs web/index.html --from 0 --to 30
+  python -X utf8 <sk>/scripts/run_queue.py web --lane qa -- node <sk>/scripts/qa.mjs web/index.html --from 0 --to 30 [--draft out/preview_720p.mp4] [--stage-timeout 120]
   ```
-- **Fast MP4 / 2K Render** (`render_fast.mjs`):
+- **Fast MP4 / 2K Render — per-worker heartbeat, auto GPU→CPU retry, stall watchdog & atomic `.part.mp4`** (`render_fast.mjs`):
   ```bash
-  # 1080p + 720p web outputs in one piped pass
-  python -X utf8 <sk>/scripts/run_queue.py web --lane render -- node <sk>/scripts/render_fast.mjs web/index.html 0 30 out/film.mp4 --audio work/master.wav --fps 24
+  # 1080p + 720p web outputs in one piped pass (atomic commit; auto-retries stalled frames)
+  python -X utf8 <sk>/scripts/run_queue.py web --lane render -- node <sk>/scripts/render_fast.mjs web/index.html 0 30 out/film.mp4 --audio work/master.wav --fps 24 [--frame-timeout 30 --stall-timeout 60]
 
   # 720p fast preview clip
   python -X utf8 <sk>/scripts/run_queue.py web --lane preview -- node <sk>/scripts/render_fast.mjs web/index.html 0 10 out/preview.mp4 --audio work/master.wav --fps 24 --scale 0.6667
 
-  # 2K master (2560x1440)
-  python -X utf8 <sk>/scripts/run_queue.py web --lane master -- node <sk>/scripts/render_fast.mjs web/index.html 0 30 out/film.mp4 --audio work/master.wav --fps 24 --2k
+  # 2K master (2560x1440; add --grain for tactile paper/35mm films)
+  python -X utf8 <sk>/scripts/run_queue.py web --lane master -- node <sk>/scripts/render_fast.mjs web/index.html 0 30 out/film.mp4 --audio work/master.wav --fps 24 --2k --grain
+
+  # Local revision without full re-render (--disk --keep cache + --patch-frames or --encode-only)
+  python -X utf8 <sk>/scripts/run_queue.py web --lane patch -- node <sk>/scripts/render_fast.mjs web/index.html 0 30 out/film.mp4 --audio work/master.wav --fps 24 --patch-frames "120-180,500-540"
+  python -X utf8 <sk>/scripts/run_queue.py web --lane remux -- node <sk>/scripts/render_fast.mjs web/index.html 0 30 out/film.mp4 --audio work/master_v2.wav --fps 24 --encode-only
   ```
 
 ### Bundled Fonts (`scripts/fonts.py`)
@@ -106,13 +113,16 @@ python -X utf8 <sk>/scripts/run_queue.py --status
 - **Gate B2 retrospective commit**: `python -X utf8 <sk>/scripts/memory.py apply work/memory_proposal.json [--confirm]` (`ask` prints ≤ 5-line confirmation card first; `auto` writes directly and flags `hits >= 2` skill-upgrade candidates; `readonly`/`off` skips writing).
 
 ### Audio (`mgaudio` & Freesound)
+Always insert `<sk>/assets/mgaudio` onto `sys.path` inside each audio script (so fresh shells never fail `ModuleNotFoundError`):
 ```python
 import sys
-sys.path.insert(0, "<sk>/assets/mgaudio")
+from pathlib import Path
+sys.path.insert(0, str(Path(r"<sk>") / "assets" / "mgaudio"))
 import mgaudio as mg
 from mgaudio import recipes, sfx, drums, synth
 ```
 - Procedural SFX (`sfx.whoosh`, `sfx.impact`, `sfx.riser`, `sfx.text_hit`, `sfx.glitch`, `sfx.paper`, `sfx.ui`, ...) and 15 musical recipes (`recipes.for_style(...)`) work out of the box with zero large sample downloads.
+- `m.export(..., spectrogram="work/audio_spec.png")` automatically falls back to a built-in pure `numpy + scipy + Pillow` renderer when optional `matplotlib` is not installed (never aborts mastering).
 - Optional recorded real-world SFX: set `FREESOUND_API_KEY` and use `python -X utf8 <sk>/scripts/freesound.py search "camera shutter"` / `get <id> --project <proj>`.
 
 ## 4. 2K Lossless Master Delivery
@@ -138,3 +148,20 @@ ffmpeg -hide_banner -y -i out/film_2k.mp4 -i work/master.wav -map 0:v:0 -map 1:a
 | Production Assistant (`chiaki-builder`) | `flash_lite` | `haiku` | Low / mini | Mechanical beat tables, asset copying & batch contact sheets |
 | Dailies Executive Director, 3 Final Review Lenses, 3 Verifiers, Independent Scorer (`chiaki-reviewer`, read-only) | `pro` | `opus` | High reasoning / flagship | Strict adversarial critique, frame-level evidence & 7-dim scoring |
 | QC Recheck (`chiaki-reviewer`, read-only) | `flash` | `sonnet` | Medium / standard | Fast visual verification of scoped fix checklist |
+
+## 7. Antigravity Swarm (`/teamwork`) Hybrid Playbook
+
+Use Antigravity's native `swarm` board for **collaborative production stages (Stage 6 Build, Stage 8 Sound, Stage 12 Polish)** where multiple crafts align frame numbers, `layout.js` coordinates, and cut hand-offs live — while keeping **Stage 2 Blind Pitch** (`chiaki-writer`) and **Stage 9 / 11 Read-Only Review & Independent Scoring** (`chiaki-reviewer`) on isolated `invoke_subagent` / `run_workflow`.
+
+### Recommended Roster Pattern (`workspace: "inherit"`, 3–5 active workers)
+- **Before adding workers**: load `swarm_pane` and prepare `.system_generated/swarm/plan.json` grouping `threads` by film outcome/act (e.g. `act-a`, `act-b`, `audio-master`), never by agent name.
+- **Concrete model pinning**: call `swarm(action="models")` once; omit `model` to inherit coordinator's flagship model for `edit-*` leads, or pin a fast concrete model for scoped `design-*` / `3d-*` / `sound` workers. If any worker hits quota mid-act, switch it in place with `swarm(action="model", name="...", model="...")` — **never kill & re-add** (keeps full act context).
+- **Disjoint file ownership (replaces git branches)**:
+  - `3d-a`: owns `blender/act_a/`, `web/assets/rel/<ID>/`, `web/assets/b3d/<ID>/` (posts exact frame counts & SINE range to board when done)
+  - `edit-a`: owns `web/segments/seg_a.js`, `web/segments/a_handoff.js`, `work/motion_a.md` (`z=10/60`)
+  - `design-a`: owns `design/board_a.md`, `web/segments/seg_a_design.js`, `work/motion_a_design.md` (`z=20`; reads `edit-a`'s posted focal boxes & safe margins on the board)
+  - `sound`: owns `work/make_audio.py`, `work/master.wav` (reads `work/cues.csv` + board hand-off updates)
+- **Queue & timeline discipline**:
+  - Keep **≤ 5 active build workers** at once so `scripts/run_queue.py` (1 headless Chrome / 2 Blender slots) stays responsive; code in parallel, queue `snap.mjs` / `motion_lint.mjs --curves` / `depth_relief.py` staggered.
+  - Instruct visual workers in their brief to save milestone full-window renders/snaps under their own conversation brain folder and post `Screenshot: <absolute path> | <≤10-word visual change>` so the Swarm UI renders a live visual timeline.
+  - When a craft finishes and its files are verified, leave it `waiting` (0 cost) until final delivery so Stage 12 Polish can `@mention` the exact original author with full memory; `kill` workers only after Gate B2 sign-off.
