@@ -223,13 +223,16 @@ def check_bundled():
     # Studio self-iteration memory (optional, stored outside repo)
     mem_dir = Path(os.environ.get("CHIAKI_MEMORY_DIR", "") or (Path.home() / ".chiaki-studio")).expanduser().resolve()
     mem_cfg = mem_dir / "config.json"
+    mem_initialized = mem_cfg.exists()
     mode = "ask"
-    if mem_cfg.exists():
+    if mem_initialized:
         try:
             mode = json.loads(mem_cfg.read_text(encoding="utf-8")).get("mode", "ask")
         except Exception:
             pass
-    ok("Studio Memory", f"mode={mode} ({mem_dir})")
+        ok("Studio Memory", f"mode={mode} ({mem_dir})")
+    else:
+        warn("Studio Memory", f"not configured yet (default mode=ask @ {mem_dir} — ask user once on first setup)")
 
 
 def main() -> int:
@@ -250,6 +253,15 @@ def main() -> int:
     check_bundled()
 
     if JSON_MODE:
+        mem_dir = Path(os.environ.get("CHIAKI_MEMORY_DIR", "") or (Path.home() / ".chiaki-studio")).expanduser().resolve()
+        mem_cfg = mem_dir / "config.json"
+        mem_init = mem_cfg.exists()
+        mem_mode = "ask"
+        if mem_init:
+            try:
+                mem_mode = json.loads(mem_cfg.read_text(encoding="utf-8")).get("mode", "ask")
+            except Exception:
+                pass
         payload = {
             "skill_root": str(ROOT),
             "platform": sys.platform,
@@ -261,6 +273,11 @@ def main() -> int:
                 "CHIAKI_ASSETS3D": os.environ.get("CHIAKI_ASSETS3D", ""),
                 "CHIAKI_FONTS": os.environ.get("CHIAKI_FONTS", ""),
                 "CHIAKI_MEMORY_DIR": os.environ.get("CHIAKI_MEMORY_DIR", ""),
+            },
+            "studio_memory": {
+                "initialized": mem_init,
+                "mode": mem_mode,
+                "dir": str(mem_dir),
             },
             "checks": checks,
             "required_missing": req_missing,

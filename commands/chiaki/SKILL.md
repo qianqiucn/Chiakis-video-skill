@@ -38,22 +38,25 @@ description: Chiaki's-video-skill 统一快捷入口（/chiaki、/Chiaki 与 Cod
 ### 0. 交互式依赖体检与安装向导（`setup` / `检查依赖` / `安装依赖` / `doctor`）
 **原则：先只读体检，再询问用户「要装什么」和「想装在哪里」，绝不未经确认私自往系统盘塞大包。**
 1. **只读全盘体检**：运行 `python -X utf8 "<SKILL_DIR>/scripts/doctor.py" --json`，把结果整理成一张简明中文状态表发给用户（区分「核心 2D 必选」「Blender 3D / MCP 可选」「2.5D AI 深度图可选」）。
-2. **向用户确认两件事**（如果一切已全绿，直接告知已就绪无需安装；如有缺项或用户想补齐可选功能，则一次问清）：
+2. **向用户确认三件事**（若核心依赖已全绿且 `studio_memory.initialized` 为 `true`，直接告知已就绪无需配置；否则把未配项一次问清）：
    - **① 需要哪一档功能？**
      - **`2d`（轻量纯 2D 版）**：仅补齐核心渲染/字体/音效依赖（`requirements.txt`，约 180 MB），不装 Blender 和 PyTorch；
      - **`3d`（2D + Blender 3D / MCP 旗舰版）**：核心 2D + 绑定 Blender 路径（`CHIAKI_BLENDER`）+ 免费 3D 素材缓存（`CHIAKI_ASSETS3D`）+ 自动把零依赖 `scripts/blender/mcp_bridge.py` 接入当前 AI 客户端（Antigravity / Codex / Claude Code）；
-     - **`full`（全功能满血版）**：以上全部 + 2.5D AI 深度图依赖（`torch` + `transformers`，约 1.5–3 GB）。
+     - **`full`（全功能满血版）**：以上全部 + PyTorch 视觉依赖（`vision/cutout.py` MIT 2K 抠图、`vision/part_cutout.py` 二次元 19 部位精拆与 `vision/depth.py` 深度图，约 1.5–3 GB）。
    - **② 想安装/存放到哪个目录或盘符？**
      - Python 虚拟环境路径（例如默认 `<SKILL_DIR>/.venv`，或指定非 C 盘目录如 `D:\AI\chiaki-venv`；也可选择直接装入当前 Python）；
      - 若选 `3d`/`full`：本机已有 `blender.exe` 的路径（若未装，给出 Windows `winget` / macOS `brew` / 官网安装引导）、3D 素材库缓存目录（`CHIAKI_ASSETS3D`）、以及是否自动配置当前 AI 客户端的 Blender MCP；
      - 可选共享字体库目录（`CHIAKI_FONTS`）。
+   - **③ 是否开启「工作室自迭代记忆」？（仅首次未初始化时问一次，以后永不重复打扰）**
+     - 选模式：`ask`（默认推荐：每片完片出 ≤ 5 行确认卡，点头再记）/ `auto`（完片自动沉淀）/ `readonly`（只读不写）/ `off`（关闭）；
+     - 存哪儿：默认 `~/.chiaki-studio/`（独立于 Skill 仓库、升级永不丢失、三端共享），或指定自定义目录（`CHIAKI_MEMORY_DIR`）。
 3. **经用户点头后一键落地并复查**：
-   - 运行 `python -X utf8 "<SKILL_DIR>/scripts/setup_env.py" --profile <2d|3d|full> --venv "<用户指定路径>" [--blender "<路径>"] [--assets3d "<路径>"] [--fonts-dir "<路径>"] [--wire-mcp <antigravity|codex|claude|none>]`（先跑 `--dry-run` 或直接按确认方案执行）。
+   - 运行 `python -X utf8 "<SKILL_DIR>/scripts/setup_env.py" --profile <2d|3d|full> --venv "<用户指定路径>" [--blender "<路径>"] [--assets3d "<路径>"] [--fonts-dir "<路径>"] [--memory-mode <ask|auto|readonly|off>] [--memory-dir "<路径>"] [--wire-mcp <antigravity|codex|claude|none>]`（先跑 `--dry-run` 或直接按确认方案执行）。
    - 若缺 **Node.js ≥ 22** 或 **Chrome/Edge** 等系统软件，给出对应系统的一键命令（如 `winget` / `brew`）或在用户明确同意后代为执行。
    - 装完自动用目标 Python 重跑 `doctor.py`，把最终全绿验收报告发给用户。
 
 ### 1. 开新片（13 步旗舰全流程：`new` 或直接写需求）
-1. **环境体检 & Brief**：跑 `python -X utf8 "<SKILL_DIR>/scripts/doctor.py"`；补齐主题、幕数、时长、FPS（24/30）、音乐、**音效策略**（成曲/歌词 PV 默认纯原曲洁净母带 `pure_song`；片头/宣传片/原创编曲默认全套 `full_sfx`）、出图路线（`user_files` / `gemini` / `codex` / `custom_api` / `code_only`）、Blender 3D 范围并一行汇报；有音乐立即跑 `scripts/beats.py` + `scripts/onsets.py` 锁鼓点，**带人声歌词的成曲 PV 按宿主死规矩执行：Gemini 跑 `vocal_spec.py --wav-only` 用 `read_file` 原生直听微 WAV 锁起唱帧，Claude/Codex 跑 `vocal_spec.py` 查 300Hz–4kHz 帧号声谱图**。
+1. **环境体检 & Brief**：跑 `python -X utf8 "<SKILL_DIR>/scripts/doctor.py" --json`；若 `studio_memory.initialized` 为 `false` 且用户需求表未填「自迭代记忆开关」，先顺带确认一次是否开启及模式（`ask`/`auto`/`off`）并用 `memory.py mode` 落盘，之后永不重复打扰。补齐主题、幕数、时长、FPS（24/30）、音乐、**音效策略**（成曲/歌词 PV 默认纯原曲洁净母带 `pure_song`；片头/宣传片/原创编曲默认全套 `full_sfx`）、出图路线（`user_files` / `gemini` / `codex` / `custom_api` / `code_only`）、Blender 3D 范围并一行汇报；有音乐立即跑 `scripts/beats.py` + `scripts/onsets.py` 锁鼓点，**带人声歌词的成曲 PV 按宿主死规矩执行：Gemini 跑 `vocal_spec.py --wav-only` 用 `read_file` 原生直听微 WAV 锁起唱帧，Claude/Codex 跑 `vocal_spec.py` 查 300Hz–4kHz 帧号声谱图**。
 2. **开工前一行报成本**：说明预计子代理数、模型档位与总耗时。
 3. **提案会（3 套方案）**：跑 `<SKILL_DIR>/assets/workflows_agy/pitch.py`（或 `assets/workflows/pitch.js`）：媒介设计师 / 演出策划 / 摄影指导并行交 3 份方案 → 创意总监拍板 → 执行制片核查各幕不撞型（15 种 `mg-styles.md` 严禁同片重复）。
 4. **分镜表 + Gate A（先锁分镜再出图）**：写完整分镜表（精确有理数帧界、人声起唱帧、镜头配方 `shot-recipes.md`、动效 ID、出图来源、`work/cues.csv`）和 `work/art_manifest.json`，**先过 Gate A 再动出图额度**。

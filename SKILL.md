@@ -64,11 +64,13 @@ Commands: `<py>` = `python -X utf8` (or your venv Python with `requirements.txt`
 
 ### 0. Preflight Dependency Check & Guided Setup (mandatory on first run or when asked to check deps)
 - Before starting a new video — or whenever the client asks to check/install dependencies (`/chiaki 检查依赖`, `$chiaki setup`, "检查依赖") — run `python -X utf8 <sk>/scripts/doctor.py --json` (read-only).
-- If all required items are `[OK]` and the client is starting a film, proceed straight to Stage 1 with a one-line status note.
-- If required dependencies are missing or the client explicitly asks to configure the environment, show a concise status table and ask **two questions before installing anything**:
+- If all required items are `[OK]` and `studio_memory.initialized` is `true` (or the client already specified a memory switch in their prompt), proceed straight to Stage 1 with a one-line status note.
+- If `studio_memory.initialized` is `false` on a brand-new user's first run (and their prompt did not specify a switch), ask once alongside any needed setup questions whether they want Studio Self-Iteration Memory enabled (`ask` default / `auto` / `readonly` / `off`) and save it via `scripts/memory.py mode <mode>` (never re-ask on subsequent runs).
+- If required dependencies are missing or the client explicitly asks to configure the environment, show a concise status table and ask **three questions before installing anything**:
   1. **Which tier they want**: `2d` (lightweight core `requirements.txt`), `3d` (`2d` + Blender + `CHIAKI_ASSETS3D` + zero-dependency `scripts/blender/mcp_bridge.py`), or `full` (`3d` + PyTorch vision stack for `vision/cutout.py`, `vision/part_cutout.py` & `vision/depth.py`).
   2. **Where to install**: custom Python venv path (e.g. a non-system drive) or current Python, plus optional `CHIAKI_BLENDER`, `CHIAKI_ASSETS3D`, `CHIAKI_FONTS`, and MCP client target (`antigravity` / `codex` / `claude`).
-- Once confirmed, run `python -X utf8 <sk>/scripts/setup_env.py --profile ...` and re-run `doctor.py` to confirm green.
+  3. **Studio self-iteration memory (`~/.chiaki-studio/` or custom `CHIAKI_MEMORY_DIR`)**: `ask` (default: ≤ 5-line confirmation card after each film), `auto` (auto-record after Gate B2), `readonly`, or `off`.
+- Once confirmed, run `python -X utf8 <sk>/scripts/setup_env.py --profile ... [--memory-mode ... --memory-dir ...]` and re-run `doctor.py` to confirm green.
 
 ### 1. Brief & Audio / Vocal / Reference Analysis (never guess beats or vocals)
 - Confirm topic, duration, act count, target FPS (`24` or `30`), music track (or procedural `mgaudio` bed), **audio strategy** (`pure_song` default for song/lyric PVs vs `full_sfx` for promos/openers/original scores), visual asset / art generation route (`user_files` / `gemini` / `codex` / `custom_api` / `code_only`), Blender 3D scope, **self-iteration memory switch** (`ask` default | `auto` | `readonly` | `off`), and delivery cadence (720p review first → 2K FLAC final). When memory switch ≠ `off`, run `python -X utf8 <sk>/scripts/memory.py context --stage brief` to recall durable user defaults (explicit brief entries always override). Fill harmless defaults and report them in one concise line.
