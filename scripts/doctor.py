@@ -242,6 +242,10 @@ def check_bundled():
         ok("Studio Memory", f"mode={mode} ({mem_dir})")
     else:
         warn("Studio Memory", f"not configured yet (default mode=ask @ {mem_dir} — ask user once on first setup)")
+    # Online tactile textures & live-action stock footage (scripts/media_lib.py)
+    pro_media = [k for k in ("PEXELS_API_KEY", "PIXABAY_API_KEY", "CHIAKI_FOOTAGE_DIR") if os.environ.get(k, "").strip()]
+    extra_m = f" + {', '.join(pro_media)}" if pro_media else " (+ optional PEXELS_API_KEY / PIXABAY_API_KEY / CHIAKI_FOOTAGE_DIR)"
+    ok("Online Textures & Footage", f"zero-key ambientCG + PolyHaven + Archive.org + NASA ready{extra_m}")
 
 
 def main() -> int:
@@ -282,6 +286,8 @@ def main() -> int:
                 "CHIAKI_ASSETS3D": os.environ.get("CHIAKI_ASSETS3D", ""),
                 "CHIAKI_FONTS": os.environ.get("CHIAKI_FONTS", ""),
                 "CHIAKI_MEMORY_DIR": os.environ.get("CHIAKI_MEMORY_DIR", ""),
+                "CHIAKI_MEDIA_CACHE": os.environ.get("CHIAKI_MEDIA_CACHE", ""),
+                "CHIAKI_FOOTAGE_DIR": os.environ.get("CHIAKI_FOOTAGE_DIR", ""),
                 "HF_HOME": os.environ.get("HF_HOME", ""),
             },
             "studio_memory": {

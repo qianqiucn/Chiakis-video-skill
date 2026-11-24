@@ -21,7 +21,7 @@ description: Chiaki's-video-skill 统一快捷入口（/chiaki、/Chiaki 与 Cod
 |---|---|
 | `/chiaki setup`、`/Chiaki 检查依赖`、`/chiaki doctor` 或 `$chiaki 检查依赖` | **0. 交互式依赖体检与安装向导（先查 → 问需求与安装路径 → 一键配置）** |
 | `/chiaki`、`$chiaki`、`/chiaki new <想法>` 或直接粘贴填好的需求表 | **1. 开新片（完整 13 步旗舰流）** |
-| `/chiaki art <项目路径>` | **2. 多源出图与素材验收（`art_manifest.json` + `art_gen.py`）** |
+| `/chiaki art <项目路径>` | **2. 多源出图、在线质感层/实拍层挑拣下载与验收（`art_gen.py` + `media_lib.py`）** |
 | `/chiaki fonts [关键词 / 项目路径]` | **3. 选字、测缺字与本地打包** |
 | `/chiaki 3d <需求>` 或 `/chiaki relief <图片路径> [参数]` | **4. Blender 2.5D 浮雕 · 相机投影 · 实景搭景 · 免费 3D 素材 · MCP 调光** |
 | `/chiaki preview [起止秒]` | **5. 静态动效检查 + 720p 预览 + SVG 曲线图** |
@@ -61,7 +61,7 @@ description: Chiaki's-video-skill 统一快捷入口（/chiaki、/Chiaki 与 Cod
 2. **开工前一行报成本**：说明预计子代理数、模型档位与总耗时。
 3. **提案会（3 套方案）**：跑 `<SKILL_DIR>/assets/workflows_agy/pitch.py`（或 `assets/workflows/pitch.js`）：媒介设计师 / 演出策划 / 摄影指导并行交 3 份方案 → 创意总监拍板 → 执行制片核查各幕不撞型（15 种 `mg-styles.md` 严禁同片重复）。
 4. **分镜表 + Gate A（先锁分镜再出图）**：写完整分镜表（精确有理数帧界、人声起唱帧、镜头配方 `shot-recipes.md`、动效 ID、出图来源、`work/cues.csv`）和 `work/art_manifest.json`，**先过 Gate A 再动出图额度**。
-5. **多源出图与资产准备**：按 `references/art-pipeline.md` 跑 `scripts/art_gen.py run <proj> --workers 3`（支持多参考图 `refs` 与自动重试，或调用宿主自带 Gemini/Codex 生图）→ 原尺寸肉眼验图 → 按需用 `vision/cutout.py`（全角色/道具抠图：`--model toonout` / `--model hr`）、`vision/part_cutout.py`（二次元 19 部位单层精拆：`--part hair --clean-plate` 一键出 2K 发丝与外背景去重影底图）与 `vision/pasteback.py --align --lf 40`（对齐眨眼/局部修图）→ 打包本地字体（`fonts.py use`，描边字用 `--static`）→ 纸纹高反差提取（`prep_texture.py`）→ 16-bit 柔化深度图（`vision/depth.py --soften`）与免费 3D 素材（`assets3d.py`）。
+5. **多源出图与资产准备**：按 `references/art-pipeline.md` 跑 `scripts/art_gen.py run <proj> --workers 3`（支持多参考图 `refs` 与自动重试，或调用宿主自带 Gemini/Codex 生图）→ 原尺寸肉眼验图 → 按需用 `vision/cutout.py`（全角色/道具抠图）、`vision/part_cutout.py`（二次元 19 部位单层精拆 + `--clean-plate`）与 `vision/pasteback.py` 对齐补图 → **用 `scripts/media_lib.py` 按各幕视觉形式自动挑拣并下载在线免 Key 质感层（`ambientCG` / `Poly Haven` + `--prep`）与实拍特效/空镜（`archive` 4K 水墨/烟雾/烧片/延时、`nasa`、可选 `pexels`/`pixabay` + `--seq` 自动拆 `T3.sequence` 序列帧）** → 打包本地字体（`fonts.py use`，描边字用 `--static`）→ 16-bit 柔化深度图（`vision/depth.py --soften`）与免费 3D 素材（`assets3d.py`）。
 6. **三工种并行搭建**：拷贝 `<SKILL_DIR>/assets/template/` 到 `<proj>/web/`，按 `build.py` / `build.js` 严格分工 **3D 工程师 (`flash`)** + **剪辑合成师 (`pro`)** + **平面设计师 (`flash`)**（全片统一纸纹/颗粒罩层放 `z=45` `film_texture.js`）→ 执行导演一版看样 (`pro`) → **按工种并行修改员 (`flash`)** → 质检 (`flash`)。
 7. **自查（Gate B1）**：静态 `motion_lint.mjs`（0 FAIL）+ `--curves` SVG 曲线图（核查 `Q1` 滞后及 `> 0.90` 悬崖长死尾）+ `qa.mjs` + `snap.mjs --sheet` + 空间 `parallax.py` + 定格 `cadence.py`。
 8. **声音设计与母带**：派独立 **声音设计师** (`flash`) 按所选音效策略执行 —— 成曲/歌词 PV 默认 `pure_song` 洁净母带（零额外 swoosh 干扰人声），片头/原创配乐走 `assets/mgaudio` + Freesound 全套混音与压低 —— 统一母带至 `-14 LUFS / <= -1.1 dBTP` 48 kHz `work/master.wav`。
@@ -71,12 +71,10 @@ description: Chiaki's-video-skill 统一快捷入口（/chiaki、/Chiaki 与 Cod
 12. **重渲染定稿 & 复评**：审片确认后升渲 1080p Web + 2K `--2k`（纹理片带 `--grain`）并封装 48 kHz FLAC 母版，由只读评分员复验扣分项已达标。
 13. **Gate B2 交付 & 自迭代沉淀**：核验硬指标 + 开源鸣谢（`fonts.py credits` 与 `assets3d.py credits`），交付成片、评分卡、决策记录与已验证/未验证清单；按「自迭代记忆开关」运行 `memory.py apply work/memory_proposal.json`（`ask` 先发 ≤ 5 行候选卡待用户确认后再 `--confirm` 落盘，`auto` 自动去重写入并汇报，`readonly`/`off` 跳过写入）。
 
-### 2. 多源出图与素材验收（`art`）
+### 2. 多源出图、在线质感/实拍素材与验收（`art`）
 先读 `<SKILL_DIR>/references/art-pipeline.md`，然后按需执行：
-- 初始化清单：`python -X utf8 "<SKILL_DIR>/scripts/art_gen.py" init <project>`
-- 干跑预览：`python -X utf8 "<SKILL_DIR>/scripts/art_gen.py" run <project> --dry`
-- 执行出图/复制：`python -X utf8 "<SKILL_DIR>/scripts/art_gen.py" run <project>`（或按清单调用当前宿主自带的 Gemini / Codex 生图工具）
-- 完整性核验：`python -X utf8 "<SKILL_DIR>/scripts/art_gen.py" check <project>`，并原尺寸肉眼验收每张图。
+- 初始化/干跑/出图/验收：`art_gen.py init|run|check <project>`（或调用当前宿主自带的 Gemini / Codex 生图工具）并原尺寸肉眼验图；
+- 在线免 Key 挑拣下载质感层与实拍层：`python -X utf8 "<SKILL_DIR>/scripts/media_lib.py" search texture|footage "<关键词>"` → `media_lib.py get <provider> <id> --project <project> [--prep paper|stone|grain | --seq --fps 24 --dur 5]`（自动缓存、抽帧并记录鸣谢到 `work/media_used.json`）。
 
 ### 3. 选字与打包（`fonts`）
 1. 先离线检索内置 59 套商用开源字库：`python -X utf8 "<SKILL_DIR>/scripts/fonts.py" search --local <关键词或分组>`（需要更多字体再搜在线 `search` 并 `get`）。

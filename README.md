@@ -77,7 +77,10 @@
 
 > **Flagship Scope / 旗舰定位说明**：面向 **原创 2D/2.5D/3D 动效、快剪 PV/MV、动态歌词排版、品牌片头、MAD 与复刻学习** 的全流程制片技能。无需私有榜单模板或付费生图 API，开箱即享完整 2D 引擎 + 可选满血 Blender 3D 渲染与 MCP 实时调光。
 >
-> **✨ What's New in `v1.7.0`（工作室自迭代记忆系统 + 四态开关 + 19 类二次元部位 2K 单层精拆）**：新增零依赖外置自迭代记忆管理器 **`scripts/memory.py`**（默认存 `~/.chiaki-studio/`，独立于 Skill 仓库、升级永不丢失且三端共享），每片过 Gate B2 后按四态开关 **`ask`（默认先出 ≤ 5 行确认卡） / `auto` / `readonly` / `off`** 沉淀**长期审美偏好（≤ 25 条）**、**去重避坑规矩（≤ 30 条，复发 `hits >= 2` 自动标星提示升级 Skill 本体）**与**作品履历（`film_log.jsonl`，提案会跨片防撞型）**，支持 `/chiaki memory` 随时查/切开关/删条，并在 `docs/PROMPT_TEMPLATE.md` 中新增**自查精修轮数**（0 / 1 / 2+ 轮）与**自迭代记忆开关**两格。同时包含 `v1.6.2` 零外部依赖的 **`scripts/vision/part_cutout.py`**（19 类动漫部位 2K 精拆 + `--clean-plate` 外背景去重影）、纯 MIT **`cutout.py`**、旗舰质量量化标杆 **`references/benchmark-quality.md`** 与 **`rules/AGENTS.md` §3 宿主多模态死规矩**。
+> **✨ What's New in `v1.7.0`（工作室自迭代记忆 + 在线免 Key 质感/实拍素材库 + 19 类二次元部位 2K 精拆）**：
+> - **外置自迭代记忆系统（`scripts/memory.py`）**：默认存 `~/.chiaki-studio/`（独立于 Skill 仓库、升级永不丢失且三端共享），支持四态开关 **`ask` / `auto` / `readonly` / `off`** 与 `/chiaki memory`，沉淀长期审美偏好、去重避坑规矩（复发 `hits >= 2` 自动标星提示升级 Skill 本体）与作品履历（提案会跨片防撞型）；`docs/PROMPT_TEMPLATE.md` 同步新增**自查精修轮数**（0 / 1 / 2+ 轮）与**自迭代记忆开关**。
+> - **在线免 Key 质感层 & 实拍素材库（`scripts/media_lib.py`）**：装上即可免 Key 自动搜索挑拣并下载 **ambientCG（2,000+ CC0 2K 纸纹/划痕/表面瑕疵）+ Poly Haven（870+ CC0 质感贴图）+ Internet Archive（4K 水墨/烟雾/烧片/延时实拍）+ NASA 实拍**（并支持可选免费 `PEXELS_API_KEY` / `PIXABAY_API_KEY` 与本地库 `CHIAKI_FOOTAGE_DIR`），自动联动 `prep_texture.py` 拉伸纤维、自动用 FFmpeg 拆成 `T3.sequence` 序列帧并输出版权鸣谢。
+> - **视觉抠图与旗舰标杆**：零外部依赖的 **`scripts/vision/part_cutout.py`**（19 类动漫部位 2K 精拆 + `--clean-plate` 外背景去重影）、纯 MIT **`cutout.py`**（`setup_env.py --profile full` 自动检测 N 卡装 CUDA `cu128` PyTorch + `--hf-home`）、旗舰质量量化标杆 **`references/benchmark-quality.md`** 与 **`rules/AGENTS.md` §3 宿主多模态死规矩**。
 
 ---
 
@@ -436,6 +439,9 @@ Chiakis-video-skill/
 | `CHIAKI_ASSETS3D` | `~/.cache/chiaki-video/assets3d` | Local cache directory for Poly Haven / ambientCG / Sketchfab / BlenderKit assets |
 | `CHIAKI_FONTS` | `<repo>/assets/fonts` | Custom local font library directory |
 | `CHIAKI_MEMORY_DIR` | `~/.chiaki-studio` | External studio self-iteration memory directory (`preferences` / `mistakes` / `film_log`, survives skill updates) |
+| `CHIAKI_MEDIA_CACHE` | `~/.cache/chiaki-video/media` | Local cache for online CC0 textures & live-action footage downloaded by `scripts/media_lib.py` |
+| `CHIAKI_FOOTAGE_DIR` | — | Optional local folder of your own stock footage / texture overlays indexed by `scripts/media_lib.py` |
+| `PEXELS_API_KEY` / `PIXABAY_API_KEY` | — | Optional free API keys for `scripts/media_lib.py` (adds 4K Pexels/Pixabay light leaks, ink, smoke & city footage) |
 | `HF_HOME` | `~/.cache/huggingface` | Optional HuggingFace cache directory for `vision/cutout.py`, `part_cutout.py` & `depth.py` model weights (keeps weights off C:) |
 | `CHIAKI_QUEUE_DIR` | `<tempdir>/chiaki_video_queue` | Shared render queue lock directory |
 | `CHIAKI_WEB_SLOTS` | `1` | Max simultaneous headless-Chrome jobs |

@@ -105,4 +105,17 @@ Before handing assets to the 3D, Edit, and Design crafts:
    ```bash
    python -X utf8 <sk>/scripts/vision/depth.py web/assets/art/<id>.png work/<id>_depth_soft.png --bits 16 --soften
    ```
-4. **Pack local fonts & CC0 textures**: run `scripts/fonts.py use <project> ...` (`--static` for stroked/outlined glyphs), stretch raw paper scans via `scripts/prep_texture.py`, copy chosen overlays from `<sk>/assets/textures/` into `web/assets/tex/`, and fetch any Blender 3D models/HDRIs via `scripts/assets3d.py get ... --project <project>`.
+4. **Auto-pick & fetch online tactile textures & live-action overlays (`scripts/media_lib.py`, zero-key out of the box)**:
+   - **Never settle for flat untextured fills**: match each act's chosen medium (`mg-styles.md`) by searching & downloading commercial-safe textures (`bundled` + zero-key `ambientCG` 2,000+ CC0 + `Poly Haven` 870+ CC0) and live-action overlays/footage (zero-key `Internet Archive stock_footage` 4K ink bleed / smoke / film burn / timelapses + `NASA` PD space; plus optional free-key `Pexels` / `Pixabay` & local `CHIAKI_FOOTAGE_DIR`).
+   ```bash
+   # Online CC0 tactile texture -> auto-stretch via prep_texture.py into web/assets/tex/
+   python -X utf8 <sk>/scripts/media_lib.py search texture "paper scratches concrete" --limit 6
+   python -X utf8 <sk>/scripts/media_lib.py get ambientcg SurfaceImperfections017 --kind texture --project <project>
+   python -X utf8 <sk>/scripts/media_lib.py get polyhaven concrete_wall_008 --kind texture --prep stone --project <project>
+
+   # Online live-action overlay/footage -> auto FFmpeg deterministic sequence for T3.sequence
+   python -X utf8 <sk>/scripts/media_lib.py search footage "ink smoke film burn" --limit 6
+   python -X utf8 <sk>/scripts/media_lib.py get archive Ink224kRes --kind footage --project <project> --seq --fps 24 --dur 4 --size 1280x720 --blend multiply
+   ```
+   - Every downloaded item is cached locally (`CHIAKI_MEDIA_CACHE`) and logged into `<project>/work/media_used.json` for automatic Gate B2 end-credits (`scripts/media_lib.py credits <project>`).
+5. **Pack local fonts & 3D assets**: run `scripts/fonts.py use <project> ...` (`--static` for stroked/outlined glyphs) and fetch any Blender 3D models/HDRIs via `scripts/assets3d.py get ... --project <project>`.

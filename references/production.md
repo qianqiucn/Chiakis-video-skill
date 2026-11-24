@@ -77,6 +77,10 @@ python -X utf8 <sk>/scripts/run_queue.py --status
 - **Motion tracking / measurement**: `python -X utf8 <sk>/scripts/measure.py ...`
 - **Frame-to-frame diff / cut detection**: `python -X utf8 <sk>/scripts/framediff.py film.mp4`
 
+### Online Textures & Live-Action Footage (`scripts/media_lib.py`, full guide in `references/art-pipeline.md` §4)
+- **Check active sources**: `python -X utf8 <sk>/scripts/media_lib.py sources` (zero-key `bundled` + `ambientCG` + `Poly Haven` + `Internet Archive stock_footage` + `NASA` ready immediately; optional `PEXELS_API_KEY` / `PIXABAY_API_KEY` / `CHIAKI_FOOTAGE_DIR`).
+- **Search & download**: `media_lib.py search texture|footage "<query>"` → `media_lib.py get <provider> <id> --project <proj> [--prep paper|stone|grain | --seq --fps 24 --dur 5 --blend screen]`; export credits via `media_lib.py credits <proj>`.
+
 ### Vision Cut-outs & Clean Plates (`scripts/vision/`, full flags in `references/art-pipeline.md` §4)
 - **Whole foreground RGBA** (`cutout.py`, MIT): `python -X utf8 <sk>/scripts/vision/cutout.py art.png art_rgba.png --model toonout` (anime characters) or `--model hr` (2K props/objects).
 - **Anime 19-part single-layer + clean plate** (`part_cutout.py`, Apache-2.0 + MIT): `python -X utf8 <sk>/scripts/vision/part_cutout.py art.png hair.png --part hair --clean-plate clean.png --json work/hair_rig.json` (ready for `T3.her.wave` + `T3.her.warp2`).

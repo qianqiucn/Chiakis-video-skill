@@ -134,6 +134,8 @@ def main() -> int:
     ap.add_argument("--assets3d", default="", help="Custom folder for free 3D asset cache (CHIAKI_ASSETS3D)")
     ap.add_argument("--fonts-dir", default="", help="Custom folder for shared font library (CHIAKI_FONTS)")
     ap.add_argument("--hf-home", default="", help="Custom folder for HuggingFace AI model cache (HF_HOME, keeps weights off C:)")
+    ap.add_argument("--media-cache", default="", help="Custom folder for online texture & footage cache (CHIAKI_MEDIA_CACHE)")
+    ap.add_argument("--footage-dir", default="", help="Optional existing local stock footage/texture library folder (CHIAKI_FOOTAGE_DIR)")
     ap.add_argument("--cuda", choices=("auto", "cu128", "cu124", "cpu"), default="auto", help="PyTorch wheel backend for --profile full (default: auto-detect NVIDIA GPU -> cu128)")
     ap.add_argument("--memory-dir", default="", help="Custom folder for studio self-iteration memory (CHIAKI_MEMORY_DIR)")
     ap.add_argument("--memory-mode", choices=("", "ask", "auto", "readonly", "off"), default="", help="Initial studio memory switch mode")
@@ -204,6 +206,13 @@ def main() -> int:
         if not args.dry_run:
             p.mkdir(parents=True, exist_ok=True)
         set_user_env("HF_HOME", str(p), args.dry_run)
+    if args.media_cache:
+        p = Path(args.media_cache).resolve()
+        if not args.dry_run:
+            p.mkdir(parents=True, exist_ok=True)
+        set_user_env("CHIAKI_MEDIA_CACHE", str(p), args.dry_run)
+    if args.footage_dir:
+        set_user_env("CHIAKI_FOOTAGE_DIR", str(Path(args.footage_dir).resolve()), args.dry_run)
     if args.memory_dir:
         p = Path(args.memory_dir).resolve()
         if not args.dry_run:

@@ -25,7 +25,7 @@
 ## 二、授权边界（不再逐项中断询问）
 
 1. **开工前先用一行报**：预计子代理数量、模型档位（`pro` / `flash`）和大致总耗时，然后**直接开工**，不等我二次确认。
-2. **已授权**：在本次选定的出图路线下生成或整理本期分镜清单内的图片（**必须过完 Gate A 再出图**）、下载开源字体（`scripts/fonts.py`）、下载 CC0 / CC BY 免费 3D 素材（`scripts/assets3d.py`）与开源本地工具。
+2. **已授权**：在本次选定的出图路线下生成或整理本期分镜清单内的图片（**必须过完 Gate A 再出图**）、下载开源字体（`scripts/fonts.py`）、按各幕风格自动挑拣并下载免费商用在线质感层与实拍特效素材（`scripts/media_lib.py`，零 Key 免登录即可用）、下载 CC0 / CC BY 免费 3D 素材（`scripts/assets3d.py`）与开源本地工具。
 3. **仍需先问我**：新增额外付费 API/服务、登录我的个人账号、外发内容给第三方、删除本项目目录以外的任何文件、或推翻重做我已经验收通过的片段。
 
 ---
@@ -38,7 +38,7 @@
 2. **三方案提案会**（`pitch.js` / `pitch.py`）：每幕由「媒介设计师 / 演出策划 / 摄影指导」交 3 套独立方案 → 「创意总监」拍板 → 「执行制片」统筹全片，杜绝各幕撞型、撞色、撞字。
 3. **分镜表**：落清精确有理数帧范围（`f0 / FPS`）、人声起唱帧、视觉风格、镜头配方、动效 ID、出图来源、`work/cues.csv` 与 `work/art_manifest.json`。
 4. **Gate A（出图前闸门）**：先锁死分镜、节拍/人声帧与出图清单，确认无返工风险再出图。
-5. **多源出图与资产准备**（`art-pipeline.md` + `scripts/art_gen.py`）：按上表路线出图/整理原图（支持 `refs` 多图参考锚定与并发重试）→ 原尺寸视觉验收（按需用 `vision/cutout.py` 抠主体、`vision/part_cutout.py --part hair --clean-plate` 精拆头发/19 部位与去重影底图、`vision/pasteback.py` 对齐补图）→ 本地打包开源字体（`fonts.py use`，描边字用 `--static`）→ 用 `prep_texture.py` 提取高反差纸纹、生成 16-bit 柔化深度图（`vision/depth.py --soften`）与免费 3D 素材（`assets3d.py`）。
+5. **多源出图与资产准备**（`art-pipeline.md` + `scripts/art_gen.py` + `scripts/media_lib.py`）：按上表路线出图/整理原图（支持 `refs` 多图参考锚定与并发重试）→ 原尺寸视觉验收（按需用 `vision/cutout.py` 抠主体、`vision/part_cutout.py --part hair --clean-plate` 精拆头发/19 部位与去重影底图、`vision/pasteback.py` 对齐补图）→ **自动用 `scripts/media_lib.py` 按各幕气质在线搜索下载 CC0 质感层（纸纹/表面划痕/混凝土等 + `--prep`）与实拍叠加层（4K 水墨/烟雾/烧片/延时等 + `--seq` 自动拆序列帧）** → 本地打包开源字体（`fonts.py use`，描边字用 `--static`）→ 生成 16-bit 柔化深度图（`vision/depth.py --soften`）与免费 3D 素材（`assets3d.py`）。
 6. **三工种并行搭建**（`build.js` / `build.py`）：3D 工程师（`flash`，有 3D/2.5D 时启用）+ 剪辑合成师（`pro`，`z=10/60`）+ 平面设计师（`flash`，`z=20`）+ 统一质感罩层（`film_texture.js`，`z=45`）→ 物理只读「执行导演」一版看样 → **并行分专业修改员** → 质检。
 7. **自查（Gate B1）**：静态 `motion_lint.mjs`（0 FAIL）+ `--curves` SVG 曲线图审阅（核查 `Q1` 滞后与 `> 0.90` 悬崖长死尾）+ `qa.mjs` + `snap.mjs --sheet` + 空间 `parallax.py` + 定格 `cadence.py`。
 8. **声音设计与母带**：派独立「声音设计师」（`flash`）按需求表音效策略执行 —— 成曲/歌词 PV 默认 `pure_song` 洁净母带（零额外 swoosh 破坏原曲听感），片头/原创配乐走 `assets/mgaudio` + Freesound —— 统一母带至 **−14 LUFS / ≤ −1.1 dBTP / 48 kHz**（`work/master.wav`）。
