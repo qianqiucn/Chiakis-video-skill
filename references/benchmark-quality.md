@@ -118,5 +118,5 @@ When a reviewer or independent scorer (`score_brief.md`) evaluates a film, compa
 | `living_motion < 85%` or `flow_p50 < 0.3 px/f` | Dead static freezes between cuts | Add continuous `move.settle` / breathing scale / subtle L1 grid or meter motion on every held shot |
 | Flat cut density across Q1–Q5 (no peak in Q3) | Monotone rhythm; no tension/release arc | Compress Q3 climax shot lengths (`0.25–0.50 s`), add a `0.8 s` pre-drop vacuum, and calm Q5 outro |
 | `arrive Q1 < 0.60` or `> 0.90` (on `≥ 16 f`) | Sluggish symmetric ramps OR cliff-snap with dead tail | Re-curve with `T3.EZ.snap` / `T3.EZ.out3` / AE Soft Bezier (`style-grammar.md` §6b) so `Q1 ∈ [0.62, 0.85]` |
-| `alpha cutouts < 30%` (all rectangular plates) | Boxy collage / no foreground-background depth | Cut out hero subjects (`scripts/vision/segment.py`) for Z-sandwich typography and free silhouette staging |
+| `alpha cutouts < 30%` (all rectangular plates) | Boxy collage / no foreground-background depth | Cut out hero subjects & props (`scripts/vision/cutout.py --model toonout` for anime, `--model hr` for 2K props) for Z-sandwich typography and free silhouette staging |
 | `exit endV < 0.75` or `deadStops > 0` | Elements brake awkwardly before cutting out | Drive exits with accelerating curves (`in3` / `inExpo`) peaking at the cut frame |

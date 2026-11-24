@@ -196,9 +196,9 @@ def check_py_pkgs():
         except Exception:
             dmiss.append(m)
     if not dmiss:
-        ok("Depth AI (optional)", "torch + transformers installed (vision/depth.py ready)")
+        ok("Vision/Depth AI (optional)", "torch + transformers installed (vision/cutout.py & vision/depth.py ready)")
     else:
-        warn("Depth AI (optional)", f"missing {', '.join(dmiss)} — optional, only for vision/depth.py (`pip install torch transformers`)")
+        warn("Vision/Depth AI (optional)", f"missing {', '.join(dmiss)} — optional, for vision/cutout.py & vision/depth.py (`pip install torch torchvision \"transformers<5\" timm einops kornia`)")
 
 
 def check_bundled():

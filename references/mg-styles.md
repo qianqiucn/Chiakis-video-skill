@@ -127,7 +127,7 @@ By medium, what the picture is made of (its route in the entry):
   - Contrast staging: hold a translucent line-art figure dead-still while cycling stark backgrounds every ~6 f (静人动底); swap a standing pose's render style every ~15 f (`lineart → silhouette → tint → duotone`) inside perspective frames; tuck giant type *behind* a foreground cutout figure (depth occlusion) and mirror top lyrics 180° onto the bottom bar like a playing card.
   - Layer stack: paper texture → rotated newsprint / pink cross-grid → big colour shapes → photo cutouts → halftone screen / tape / stickers → grain adjustment layer.
   - Transitions: a hand slaps the element onto the page, whole-page flips/tears, monotone red-sandwich bridges, or defocused foreground petal wipes (`style-grammar.md` §3b).
-- **Route**: DOM/Canvas with PNG cutouts (rembg or paper-key alpha), offscreen-cached halftone/newsprint/duotone patterns and `T3.hold()` sprite preloading so deterministic Canvas 2D timelines render smoothly (~40 fps); render at 30 fps while stepping designated passages via `T3.twos`.
+- **Route**: DOM/Canvas with PNG cutouts (`scripts/vision/cutout.py --model hr` for 2K props/objects or `--model toonout` for anime characters, MIT-licensed), offscreen-cached halftone/newsprint/duotone patterns and `T3.hold()` sprite preloading so deterministic Canvas 2D timelines render smoothly (~40 fps); render at 30 fps while stepping designated passages via `T3.twos`.
 - **Sound**: vinyl crackle, jazzy boom-bap bed, paper rustles, scissor snips, slaps, a comic pop on the big reveal.
 
 ## 7. 液态流动 Liquid Motion

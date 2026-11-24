@@ -1,7 +1,7 @@
 {
   "name": "chiakis-video-skill",
   "displayName": "Chiaki's-video-skill (Flagship 2D + Blender 3D Video Studio)",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Flagship deterministic HTML/JS/Canvas 2D + 2.5D + Blender 3D motion graphics, fast-cut PV/MV, and kinetic typography studio skill with 59 open-source fonts, GSAP 3.15.1, mgaudio SFX engine, Blender relief/projection/asset helpers, and multi-agent craft guardrails.",
   "license": "MIT",
   "skills": ["."],

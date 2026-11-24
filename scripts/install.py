@@ -28,7 +28,7 @@ for _s in (sys.stdout, sys.stderr):
 
 ROOT = Path(__file__).resolve().parent.parent
 SKILL_SLUG = "chiakis-video-skill"
-VERSION = "1.6.0"
+VERSION = "1.6.1"
 SKIP_DIRS = {".git", "__pycache__", "node_modules", ".venv", "venv"}
 
 

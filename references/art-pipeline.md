@@ -82,11 +82,16 @@ python -X utf8 <sk>/scripts/art_gen.py check <project>
 Before handing assets to the 3D, Edit, and Design crafts:
 1. **Inspect every plate at full size**: confirm zero unwanted gibberish text/watermarks, harmonious palette matching the pitch's hex tokens, and clear negative space where kinetic typography will sit.
 2. **Foreground cut-outs & pixel-aligned clean plates (`scripts/vision/`)**:
-   - **Subject cut-out & occlusion masks** (Grounding DINO + SAM 2.1, requires optional `torch` + `transformers`):
+   - **Flagship RGBA foreground cut-out (`scripts/vision/cutout.py`, MIT-licensed, GPU FP16 ~0.8–1.0 s/img + auto edge defringe)**:
+     - **`--model toonout`** (`joelseytre/toonout`, 1024px, MIT): **first choice for stylized anime characters** on dark/busy painted scenes (preserves white sleeves & glowing FX wisps without alpha holes).
+     - **`--model hr`** (`ZhengPeng7/BiRefNet_HR`, 2048px, MIT, default): **first choice for 2K props, flowers, objects & clean-ground characters** (razor-sharp 2048px edges, zero cloth holes).
+     - **`--model hr-matting`** (`ZhengPeng7/BiRefNet_HR-matting`, 2048px, MIT): optional specialist **only** for genuinely translucent glass/veils/smoke/real human hair.
      ```bash
-     python -X utf8 <sk>/scripts/vision/segment.py web/assets/art/<id>.png "girl. sword." work/seg_<id>
+     python -X utf8 <sk>/scripts/vision/cutout.py web/assets/art/<id>.png web/assets/art/<id>_rgba.png --model toonout
+     python -X utf8 <sk>/scripts/vision/cutout.py web/assets/art/<prop>.png web/assets/art/<prop>_rgba.png --model hr
      ```
-   - **Pixel-aligned clean plate / surgical edit composite** (`--align` uses SIFT+RANSAC to cancel AI edit shift/scale drift; `--lf 40` matches low-frequency exposure across the seam):
+   - **Optional sub-part text mask (`scripts/vision/segment.py`, Grounding DINO + SAM 2.1)**: use ONLY when isolating a single labeled sub-part inside a frame (e.g. `"hair."` alone for `T3.her.wave`, or `"hat."` separately), never as the general foreground cutout tool.
+   - **Pixel-aligned clean plate / surgical edit composite (`scripts/vision/pasteback.py`)**: `--align` uses SIFT+RANSAC to cancel AI edit shift/scale drift; `--lf 40` matches low-frequency exposure across the seam:
      ```bash
      python -X utf8 <sk>/scripts/vision/pasteback.py orig.png edit.png diff out.png --align --lf 40 --region x0,y0,x1,y1
      ```
