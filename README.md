@@ -77,7 +77,7 @@
 
 > **Flagship Scope / 旗舰定位说明**：面向 **原创 2D/2.5D/3D 动效、快剪 PV/MV、动态歌词排版、品牌片头、MAD 与复刻学习** 的全流程制片技能。无需私有榜单模板或付费生图 API，开箱即享完整 2D 引擎 + 可选满血 Blender 3D 渲染与 MCP 实时调光。
 >
-> **✨ What's New in `v1.6.2`（19 类二次元部位 2K 单层精拆 + 零重影底图 + 视觉链路去重）**：新增零外部仓库依赖、开箱即用的 **`scripts/vision/part_cutout.py`**（内置精简 Apache-2.0 `24yearsold/l2d_sam_iter2` 19 类二次元部位语义分割 + MIT `ToonOut` 2K 局部放大发丝精修 + 头部锚点去噪 + `--clean-plate` 外背景去重影底图，~1.1–1.4 s/张、100% 原图 2K RGB，直通 `T3.her.wave` 零脸耳变形零双影飘动）；彻底退役旧版文本选区抠图脚本并去重统一全仓视觉链路（`cutout.py` 抠主体 · `part_cutout.py` 拆头发/19 部位 · `pasteback.py` 对齐补图 · `depth.py` 深度图）。延续 `v1.6.x` 的纯 MIT 高清抠图 **`cutout.py`**、旗舰质量量化标杆 **`references/benchmark-quality.md`** 与 **`rules/AGENTS.md` §3 宿主多模态死规矩**。
+> **✨ What's New in `v1.7.0`（工作室自迭代记忆系统 + 四态开关 + 19 类二次元部位 2K 单层精拆）**：新增零依赖外置自迭代记忆管理器 **`scripts/memory.py`**（默认存 `~/.chiaki-studio/`，独立于 Skill 仓库、升级永不丢失且三端共享），每片过 Gate B2 后按四态开关 **`ask`（默认先出 ≤ 5 行确认卡） / `auto` / `readonly` / `off`** 沉淀**长期审美偏好（≤ 25 条）**、**去重避坑规矩（≤ 30 条，复发 `hits >= 2` 自动标星提示升级 Skill 本体）**与**作品履历（`film_log.jsonl`，提案会跨片防撞型）**，支持 `/chiaki memory` 随时查/切开关/删条，并在 `docs/PROMPT_TEMPLATE.md` 中新增**自查精修轮数**（0 / 1 / 2+ 轮）与**自迭代记忆开关**两格。同时包含 `v1.6.2` 零外部依赖的 **`scripts/vision/part_cutout.py`**（19 类动漫部位 2K 精拆 + `--clean-plate` 外背景去重影）、纯 MIT **`cutout.py`**、旗舰质量量化标杆 **`references/benchmark-quality.md`** 与 **`rules/AGENTS.md` §3 宿主多模态死规矩**。
 
 ---
 
@@ -433,6 +433,7 @@ Chiakis-video-skill/
 | `CHIAKI_BLENDER` | Auto-detected Blender (optional) | Blender binary for 2.5D relief, projection & 3D sets |
 | `CHIAKI_ASSETS3D` | `~/.cache/chiaki-video/assets3d` | Local cache directory for Poly Haven / ambientCG / Sketchfab / BlenderKit assets |
 | `CHIAKI_FONTS` | `<repo>/assets/fonts` | Custom local font library directory |
+| `CHIAKI_MEMORY_DIR` | `~/.chiaki-studio` | External studio self-iteration memory directory (`preferences` / `mistakes` / `film_log`, survives skill updates) |
 | `CHIAKI_QUEUE_DIR` | `<tempdir>/chiaki_video_queue` | Shared render queue lock directory |
 | `CHIAKI_WEB_SLOTS` | `1` | Max simultaneous headless-Chrome jobs |
 | `CHIAKI_BLENDER_SLOTS` | `2` | Max simultaneous headless-Blender jobs |

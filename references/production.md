@@ -96,6 +96,11 @@ python -X utf8 <sk>/scripts/run_queue.py --status
 - **Parallax check**: `python -X utf8 <sk>/scripts/vision/parallax.py f001.png f048.png --depth work/art_depth.png --out work/parallax.jpg`
 - **Live look-dev via Blender MCP** (`references/3d.md` §5d): use open Blender MCP (official Blender 5.1+ Lab add-on via `<sk>/scripts/blender/mcp_bridge.py`, or `uvx blender-mcp` on Blender 4.2+) for interactive staging, lighting, and camera tweaks; always run final batch renders headless through `run_queue.py blender`.
 
+### Studio Self-Iteration Memory (`scripts/memory.py`, stored outside repo at `~/.chiaki-studio/` or `$CHIAKI_MEMORY_DIR`)
+- **Check / toggle switch**: `python -X utf8 <sk>/scripts/memory.py status` · `memory.py mode ask|auto|readonly|off` · `memory.py show`
+- **Stage-sliced context injection** (≤ 1800 chars, never bloats prompts): `python -X utf8 <sk>/scripts/memory.py context --stage brief|pitch|craft|review`
+- **Gate B2 retrospective commit**: `python -X utf8 <sk>/scripts/memory.py apply work/memory_proposal.json [--confirm]` (`ask` prints ≤ 5-line confirmation card first; `auto` writes directly and flags `hits >= 2` skill-upgrade candidates; `readonly`/`off` skips writing).
+
 ### Audio (`mgaudio` & Freesound)
 ```python
 import sys

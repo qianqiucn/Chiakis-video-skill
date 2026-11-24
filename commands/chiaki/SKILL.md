@@ -1,6 +1,6 @@
 ---
 name: chiaki
-description: Chiaki's-video-skill 统一快捷入口（/chiaki、/Chiaki 与 Codex $chiaki）：一条指令覆盖依赖体检安装向导（/chiaki 检查依赖 或 /chiaki setup）与旗舰级 13 步 2D + 2.5D + Blender 3D 动效视频全流程 — 开新片（/chiaki 或 /chiaki new）、多源出图（/chiaki art）、选字打包（/chiaki fonts）、Blender 3D 与 2.5D 浮雕/投影/免费素材（/chiaki 3d 或 /chiaki relief）、快速预览与曲线图（/chiaki preview）、三视角物理只读终审（/chiaki review）、终混渲染与独立打分→修一轮→重渲→Gate B2（/chiaki deliver）、进度与环境体检（/chiaki status）。仅在用户明确写 /chiaki、/Chiaki、$chiaki 或要求按 Chiaki's-video-skill 做视频/检查依赖时使用。
+description: Chiaki's-video-skill 统一快捷入口（/chiaki、/Chiaki 与 Codex $chiaki）：一条指令覆盖依赖体检安装向导（/chiaki 检查依赖 或 /chiaki setup）与旗舰级 13 步 2D + 2.5D + Blender 3D 动效视频全流程 — 开新片（/chiaki 或 /chiaki new）、多源出图（/chiaki art）、选字打包（/chiaki fonts）、Blender 3D 与 2.5D 浮雕/投影/免费素材（/chiaki 3d 或 /chiaki relief）、快速预览与曲线图（/chiaki preview）、三视角物理只读终审（/chiaki review）、终混渲染与独立打分→修一轮→重渲→Gate B2（/chiaki deliver）、自迭代记忆管理与开关（/chiaki memory）、进度与环境体检（/chiaki status）。仅在用户明确写 /chiaki、/Chiaki、$chiaki 或要求按 Chiaki's-video-skill 做视频/检查依赖时使用。
 ---
 
 # `/chiaki`（Codex: `$chiaki`）— Chiaki's-video-skill 统一工作台入口
@@ -28,6 +28,7 @@ description: Chiaki's-video-skill 统一快捷入口（/chiaki、/Chiaki 与 Cod
 | `/chiaki review` | **6. Gate B1 自查 + 三视角物理只读终审与复核** |
 | `/chiaki deliver` | **7. 母带 → 一版渲染 → 独立 7 维打分 → 修一轮+质检 → 重渲 2K FLAC → Gate B2** |
 | `/chiaki status` | **8. 只读项目进度、渲染队列与环境体检** |
+| `/chiaki memory [show\|mode <ask\|auto\|readonly\|off>\|forget <ID>\|reset]` | **9. 工作室自迭代记忆：查喜好/避坑/履历、切开关、删条或重置** |
 | `/chiaki help` | 打印本速查表并询问下一步 |
 
 ---
@@ -64,7 +65,7 @@ description: Chiaki's-video-skill 统一快捷入口（/chiaki、/Chiaki 与 Cod
 10. **一版带声渲染**：经 `run_queue.py web` 先出带 `master.wav` 的 720p/1080p 一版全片 MP4（`out/film_v1.mp4`；纸纹/胶片感影片加 `--grain` 保颗粒）。
 11. **独立 7 维评分 → 修一轮 → 质检**：运行 `polish_rerender.py` / `polish_rerender.js`（物理只读 `独立成片评分员` `pro` 按 `score_brief.md` 严格打分，歌词 PV 必抽查 ≥ 2 句高潮人声对口型，每维 ≥ 8 及格 → 若有扣分项则派 `修改员` `flash` 定向修一轮 → `质检` `flash` 逐条原尺寸复验）。
 12. **重渲染定稿 & 复评**：审片确认后升渲 1080p Web + 2K `--2k`（纹理片带 `--grain`）并封装 48 kHz FLAC 母版，由只读评分员复验扣分项已达标。
-13. **Gate B2 交付**：核验硬指标 + 开源鸣谢（`fonts.py credits` 与 `assets3d.py credits`），交付成片、评分卡、决策记录与已验证/未验证清单。
+13. **Gate B2 交付 & 自迭代沉淀**：核验硬指标 + 开源鸣谢（`fonts.py credits` 与 `assets3d.py credits`），交付成片、评分卡、决策记录与已验证/未验证清单；按「自迭代记忆开关」运行 `memory.py apply work/memory_proposal.json`（`ask` 先发 ≤ 5 行候选卡待用户确认后再 `--confirm` 落盘，`auto` 自动去重写入并汇报，`readonly`/`off` 跳过写入）。
 
 ### 2. 多源出图与素材验收（`art`）
 先读 `<SKILL_DIR>/references/art-pipeline.md`，然后按需执行：
@@ -99,4 +100,10 @@ description: Chiaki's-video-skill 统一快捷入口（/chiaki、/Chiaki 与 Cod
 4. 重渲染 1080p + 2K (`--2k`) + 48 kHz FLAC 母版，复评确认全维 ≥ 8，过 Gate B2，附 `fonts.py credits` 与 `assets3d.py credits` 交付。
 
 ### 8. 巡检（`status`）
-只读汇总：当前目录项目进度、最近曲线图/QA 状态、`run_queue.py --status` 以及 `doctor.py` 环境概况（含 Blender 与 Blender MCP 状态）。
+只读汇总：当前目录项目进度、最近曲线图/QA 状态、`run_queue.py --status`、`memory.py status` 以及 `doctor.py` 环境概况（含 Blender 与 Blender MCP 状态）。
+
+### 9. 工作室自迭代记忆（`memory`）
+管理位于 `~/.chiaki-studio/`（可用 `CHIAKI_MEMORY_DIR` 自定义，独立于 Skill 仓库、升级永不丢失）的轻量化长期记忆：
+- 查看状态与条目：`python -X utf8 "<SKILL_DIR>/scripts/memory.py" status` / `show`
+- 切换自迭代开关：`python -X utf8 "<SKILL_DIR>/scripts/memory.py" mode <ask|auto|readonly|off>`
+- 手动增删条目：`add-pref` / `add-mistake` / `forget <P##|M##|F###>` / `reset --yes`（重置前必须经用户明确确认）。

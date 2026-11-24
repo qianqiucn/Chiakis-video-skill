@@ -109,6 +109,8 @@ def main() -> int:
     ap.add_argument("--blender", default="", help="Path to blender executable to save in CHIAKI_BLENDER")
     ap.add_argument("--assets3d", default="", help="Custom folder for free 3D asset cache (CHIAKI_ASSETS3D)")
     ap.add_argument("--fonts-dir", default="", help="Custom folder for shared font library (CHIAKI_FONTS)")
+    ap.add_argument("--memory-dir", default="", help="Custom folder for studio self-iteration memory (CHIAKI_MEMORY_DIR)")
+    ap.add_argument("--memory-mode", choices=("", "ask", "auto", "readonly", "off"), default="", help="Initial studio memory switch mode")
     ap.add_argument("--wire-mcp", choices=("none", "antigravity", "codex", "claude"), default="none", help="Safely wire built-in zero-dependency Blender MCP bridge")
     ap.add_argument("--dry-run", action="store_true", help="Print planned actions without installing or editing files")
     args = ap.parse_args()
@@ -155,6 +157,19 @@ def main() -> int:
         if not args.dry_run:
             p.mkdir(parents=True, exist_ok=True)
         set_user_env("CHIAKI_FONTS", str(p), args.dry_run)
+    if args.memory_dir:
+        p = Path(args.memory_dir).resolve()
+        if not args.dry_run:
+            p.mkdir(parents=True, exist_ok=True)
+        set_user_env("CHIAKI_MEMORY_DIR", str(p), args.dry_run)
+    if args.memory_mode:
+        cmd_mem = [target_py, "-X", "utf8", str(ROOT / "scripts" / "memory.py"), "mode", args.memory_mode]
+        if args.memory_dir:
+            cmd_mem += ["--dir", str(Path(args.memory_dir).resolve())]
+        if args.dry_run:
+            print("[DRY RUN] Would run:", " ".join(cmd_mem))
+        else:
+            subprocess.check_call(cmd_mem)
 
     bridge = ROOT / "scripts" / "blender" / "mcp_bridge.py"
     if args.wire_mcp != "none":

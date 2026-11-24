@@ -71,7 +71,7 @@ Commands: `<py>` = `python -X utf8` (or your venv Python with `requirements.txt`
 - Once confirmed, run `python -X utf8 <sk>/scripts/setup_env.py --profile ...` and re-run `doctor.py` to confirm green.
 
 ### 1. Brief & Audio / Vocal / Reference Analysis (never guess beats or vocals)
-- Confirm topic, duration, act count, target FPS (`24` or `30`), music track (or procedural `mgaudio` bed), **audio strategy** (`pure_song` default for song/lyric PVs vs `full_sfx` for promos/openers/original scores), visual asset / art generation route (`user_files` / `gemini` / `codex` / `custom_api` / `code_only`), Blender 3D scope, and delivery cadence (720p review first → 2K FLAC final). Fill harmless defaults and report them in one concise line.
+- Confirm topic, duration, act count, target FPS (`24` or `30`), music track (or procedural `mgaudio` bed), **audio strategy** (`pure_song` default for song/lyric PVs vs `full_sfx` for promos/openers/original scores), visual asset / art generation route (`user_files` / `gemini` / `codex` / `custom_api` / `code_only`), Blender 3D scope, **self-iteration memory switch** (`ask` default | `auto` | `readonly` | `off`), and delivery cadence (720p review first → 2K FLAC final). When memory switch ≠ `off`, run `python -X utf8 <sk>/scripts/memory.py context --stage brief` to recall durable user defaults (explicit brief entries always override). Fill harmless defaults and report them in one concise line.
 - Run `python -X utf8 <sk>/scripts/beats.py <audio> --fps <FPS>` for BPM & beat grid, and `python -X utf8 <sk>/scripts/onsets.py <audio> <f0-f1> --fps <FPS>` (or `--from <sec> --to <sec>`) to lock key drops/hits onto exact broadband downbeats (`floor(onset_frame)`).
 - **Vocal / lyric timing rule (mandatory for song PVs / lyric MVs — Host-Split Iron Rule)**: `beats.py` / `onsets.py` track drums, NOT sung human vocals.
   - **Gemini hosts**: run `python -X utf8 <sk>/scripts/vocal_spec.py <audio> --out <proj>/work/vocal --fps <FPS> --wav-only` and **listen directly via native multimodal `read_file` on the track & micro-WAVs** to lock sung lyric entries BEFORE Gate A.
@@ -79,7 +79,7 @@ Commands: `<py>` = `python -X utf8` (or your venv Python with `requirements.txt`
 - If studying a reference video, extract frame cadence (`scripts/cadence.py`), optical flow (`scripts/motion.py`), brightness/saturation (`scripts/look.py`), and cut diffs (`scripts/framediff.py`).
 
 ### 2. Pitch Meeting — 3 Competing Concepts (`assets/workflows/pitch.js` or `pitch.py`)
-- Spawn three independent `chiaki-writer` (`Model: "pro"`) angles per act (`媒介设计师` / `演出策划` / `摄影指导`) with verbatim personas from `references/personas.md` → `创意总监` picks one bold cohesive form → `执行制片` checks full-film variety so no two acts repeat the same visual form (`mg-styles.md`), palette, or font pairing.
+- Spawn three independent `chiaki-writer` (`Model: "pro"`) angles per act (`媒介设计师` / `演出策划` / `摄影指导`) with verbatim personas from `references/personas.md` → `创意总监` picks one bold cohesive form → `执行制片` checks full-film variety so no two acts repeat the same visual form (`mg-styles.md`), palette, or font pairing. When memory switch ≠ `off`, pass `scripts/memory.py context --stage pitch` into the brief so recent films' visual forms/fonts are not repeated across projects and user aesthetic red lines are respected.
 
 ### 3. Storyboard / Shot Table (`script-writing.md`)
 - Write the full **Shot Table**: exact rational time bounds (`f0 / FPS` to `f1 / FPS`), non-repeating visual form from `mg-styles.md`, shot recipe from `shot-recipes.md`, library motion IDs from `motion-library.md`, **Asset / Art Provider** (`user_files` | `gemini` | `codex` | `custom_api` | `code_only`), transition hand-off plan, and sound cue sheet (`work/cues.csv`).
@@ -126,8 +126,10 @@ Commands: `<py>` = `python -X utf8` (or your venv Python with `requirements.txt`
 ### 13. Re-Render Final + Re-Score + Gate B2 Delivery (`重渲染 → Gate B2`)
 - Re-render the final 1080p web MP4 + 2K master (`--2k`) and mux lossless 48 kHz FLAC archival master (`references/production.md` §4).
 - Re-verify any previously `< 8` dimensions via read-only `chiaki-reviewer`, pass **Gate B2** (`quality-bar.md`), and deliver final files + scorecard + open-source credits (`fonts.py credits <project>` and `assets3d.py credits <project>`).
+- **Opt-in Self-Iteration Retrospective (`scripts/memory.py`)**: distill a compact `work/memory_proposal.json` (delivered film summary + newly confirmed durable preferences + generalized `[trigger -> mistake -> rule]` guardrails from any `< 8` deductions/reworks — never one-off plot trivia) and run `python -X utf8 <sk>/scripts/memory.py apply work/memory_proposal.json`. In `ask` mode (default), present the ≤ 5-line candidate card and write only with `--confirm` after user approval; in `auto` mode, write immediately and report changes + any `hits >= 2` skill-upgrade candidates; in `readonly` / `off` mode, skip writing cleanly.
 
 ## Toolkit (quick reference)
+- **Studio self-iteration memory (`~/.chiaki-studio/`)**: `python -X utf8 <sk>/scripts/memory.py status | mode ask|auto|readonly|off | context --stage brief|pitch|craft|review | apply <proposal.json> [--confirm]`
 - **Preview contact sheets**: `python -X utf8 <sk>/scripts/run_queue.py web --lane review -- node <sk>/scripts/snap.mjs web/index.html out/snaps "0-240:8" --sheet s1 --fps 24`
 - **Motion lint + SVG curve sheet**: `python -X utf8 <sk>/scripts/run_queue.py web --lane lint -- node <sk>/scripts/motion_lint.mjs web/index.html --curves`
 - **Automated QA**: `python -X utf8 <sk>/scripts/run_queue.py web --lane qa -- node <sk>/scripts/qa.mjs web/index.html --from 0 --to 30`

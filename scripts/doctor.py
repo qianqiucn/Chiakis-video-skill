@@ -220,6 +220,16 @@ def check_bundled():
         ok("Bundled mgaudio", "assets/mgaudio/ present (pure-synth ready)")
     else:
         warn("Bundled mgaudio", "assets/mgaudio/ not found")
+    # Studio self-iteration memory (optional, stored outside repo)
+    mem_dir = Path(os.environ.get("CHIAKI_MEMORY_DIR", "") or (Path.home() / ".chiaki-studio")).expanduser().resolve()
+    mem_cfg = mem_dir / "config.json"
+    mode = "ask"
+    if mem_cfg.exists():
+        try:
+            mode = json.loads(mem_cfg.read_text(encoding="utf-8")).get("mode", "ask")
+        except Exception:
+            pass
+    ok("Studio Memory", f"mode={mode} ({mem_dir})")
 
 
 def main() -> int:
@@ -250,6 +260,7 @@ def main() -> int:
                 "CHIAKI_BLENDER": os.environ.get("CHIAKI_BLENDER", ""),
                 "CHIAKI_ASSETS3D": os.environ.get("CHIAKI_ASSETS3D", ""),
                 "CHIAKI_FONTS": os.environ.get("CHIAKI_FONTS", ""),
+                "CHIAKI_MEMORY_DIR": os.environ.get("CHIAKI_MEMORY_DIR", ""),
             },
             "checks": checks,
             "required_missing": req_missing,

@@ -4,10 +4,13 @@ Args:
   project (str): absolute path to the video project directory
   skill   (str): absolute path to Chiaki's-video-skill
   acts    (list[dict]): [{ "key": "act1", "title": "...", "brief": "..." }, ...]
+  memory_context (str, optional): compact slice from `scripts/memory.py context --stage pitch`
 """
 project = args["project"]
 skill = args["skill"]
 acts = args.get("acts", [])
+memory_context = (args.get("memory_context") or "").strip()
+MEM = f"\n\n工作室记忆参考（跨片防撞型与审美红线，本期简报显式要求优先）：\n{memory_context}" if memory_context else ""
 P = lambda f: f"{skill}/references/{f}"
 STR = {"type": "string"}
 
@@ -43,7 +46,7 @@ async def pitch_act(act):
                 ang[2],
                 f"先读：{P('house-style.md')}、{P('script-writing.md')}、{P('mg-styles.md')}、{P('shot-recipes.md')}、{P('3d.md')}、{P('crafts.md')} §1。",
                 f"任务：为项目 {project} 的幕次「{title}」（key: {key}）写一份完整视觉提案，写入 {project}/work/pitch/{key}_{ang[0]}.md。",
-                f"导演简报：{brief}",
+                f"导演简报：{brief}{MEM}",
             ]),
         ),
     )

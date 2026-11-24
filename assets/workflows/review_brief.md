@@ -17,6 +17,8 @@ Fill in and place at `<project>/work/REVIEW_BRIEF.md` before running `review_fix
 - **Declared intentional departures from defaults (`house-style.md` §0)**:
   - `<e.g. Act B uses deliberate 12 fps Posterize Time (T3.twos n=2.5) for darkroom contact-sheet vibe — do not flag as stutter>`
   - `<e.g. None>`
+- **Studio Memory past-mistake guardrails (`scripts/memory.py context --stage review`, optional)**:
+  - `<paste top mistakes to verify zero regression, or None>`
 - **Key timestamps / beat drops to inspect**:
   - `<f0 / t0s — Hook>`
   - `<f1 / t1s — Hero title / Chorus drop>`

@@ -1,7 +1,8 @@
 // pitch.js — Stage 2 Pitch Meeting for 2D video acts (3 competing angles -> Creative Director -> Executive Producer).
-// Args: { project, skill, acts: [{ key, title, brief }] }
-const { project, skill, acts = [] } = args;
+// Args: { project, skill, acts: [{ key, title, brief }], memoryContext?: string }
+const { project, skill, acts = [], memoryContext = "" } = args;
 const P = (f) => `${skill}/references/${f}`;
+const MEM = memoryContext ? `\n\n工作室记忆参考（跨片防撞型与审美红线，本期简报显式要求优先）：\n${memoryContext}` : "";
 
 const ANGLES = [
   {
@@ -35,7 +36,7 @@ const picks = await Promise.all(
             ang.persona,
             `先读：${P("house-style.md")}、${P("script-writing.md")}、${P("mg-styles.md")}、${P("shot-recipes.md")}、${P("crafts.md")} §1。`,
             `任务：为项目 ${project} 的幕次「${act.title}」（key: ${act.key}）写一份完整 2D 视觉提案，写入 ${project}/work/pitch/${act.key}_${ang.key}.md。`,
-            `导演简报：${act.brief}`,
+            `导演简报：${act.brief}${MEM}`,
             `要求：明确视觉媒介、调色板 Hex、内置开源字体搭配（assets/fonts/catalog.md）、核心 2D 动效机制（style-grammar §6b）、跨幕转场与风险；不写代码。`,
           ].join("\n\n"),
         })

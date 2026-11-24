@@ -11,6 +11,7 @@ Dispatch ONLY to a physically read-only `chiaki-reviewer` (`Model: "pro"`). Neve
    - **Gemini hosts (native video/audio multimodal)**: **MUST directly watch the rendered audiovisual `.mp4` via `read_file`** (full 720p/1080p film, plus 10–25 s per-act 720p clips if > 60 s) to judge real motion feel, rhythm, transitions, and audiovisual sync, and **directly listen to climax vocal micro-WAVs via `read_file`** on song PVs (`±2 f` tolerance). Static stills are secondary pixel checks only — NEVER score motion/rhythm/audio from contact sheets alone!
    - **Claude / Codex hosts (traditional spectrum + image)**: audit via `snap.mjs` contact sheets + transition frame pairs + full-res hero frames + `curves.svg` + (on song PVs) `scripts/vocal_spec.py` 300 Hz–4 kHz PNG spectrograms on ≥ 2 climax lyric lines.
    - Always honor the project's declared audio mode (`pure_song` clean `-14 LUFS` song master vs `full_sfx` — never penalize a declared `pure_song` lyric PV for omitting artificial swooshes).
+   - If studio memory past-mistake guardrails (`scripts/memory.py context --stage review`) are attached, verify zero regression on every listed item and flag any repeat hit.
 3. **Score strictly 1–10 on all 7 dimensions** (`quality-bar.md` «Scorecard»):
    1. Concept & Originality
    2. Motion & Curves

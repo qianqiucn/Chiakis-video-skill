@@ -1,6 +1,6 @@
 {
   "name": "chiakis-video-skill",
-  "version": "1.6.2",
+  "version": "1.7.0",
   "private": true,
   "description": "Chiaki's-video-skill: Flagship deterministic 2D + 2.5D + Blender 3D motion graphics, fast-cut PV/MV, and kinetic typography studio skill for AI coding agents.",
   "license": "MIT",
@@ -10,6 +10,7 @@
   "scripts": {
     "doctor": "python -X utf8 scripts/doctor.py",
     "test": "node assets/examples/motion/run_tests.mjs",
+    "test:memory": "python -X utf8 scripts/test_memory.py",
     "lint:library": "node scripts/motion_lint.mjs --check-library",
     "lint:template": "node scripts/motion_lint.mjs assets/template/index.html",
     "check": "python -X utf8 scripts/skill_check.py"
