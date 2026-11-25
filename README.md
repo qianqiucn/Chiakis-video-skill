@@ -78,6 +78,13 @@
 
 > **Flagship Scope / 旗舰定位说明**：面向 **原创 2D + Three.js 风格化 3D + Blender 电影级 3D 动效、快剪 PV/MV、动态歌词排版、品牌片头、MAD 与复刻学习** 的全流程制片技能。Three.js 与 Blender 并列旗舰品质硬性规格，用户可在需求表自由选择（`全能双 3D 旗舰` / `Three.js 风格化 3D` / `Blender 电影级 3D` / `纯 2D`）。
 >
+> **✨ What's New in `v1.10.0`（面向 Pro 用户的「开片额度档位路由」三档工作流 `Lite` / `Pro` / `Ultra` + 4 项零损画质省额优化）**：
+> - **每次开新片先问额度档位，自动匹配对应工作流（`memory.py tier` 记住上次推荐项）**：安装插件后每次执行 `/chiaki` 开新片（若首句未显式指定）都会先做 1 秒单选确认，并一行报出本档精确子代理与 `pro` 调用预算：
+>   - **`Lite` 极简省额流（省 ~85% 额度 · 4 幕仅 ~6–8 代理 / 2–3 `pro`）**：主线程直接出 2 个方向简案秒选 → 1 幕 1 全栈单画布（副歌 `pro` / 过渡 `flash`）→ 成曲主线程脚本直出 `-14 LUFS` 母带 → 直出 V1 带声片 → 1 名物理只读 `pro` 综合审片评分 → 原代理热修 1 轮 → 重渲定稿；
+>   - **`Pro` 均衡主力流（Pro / Plus 默认推荐 · 省 ~70–75% 额度 · 4 幕仅 ~10–14 代理 / 4–6 `pro`）**：主线程直接出 2–3 套跨幕方向简案拍板（`0` 提案代理）→ 中长片先打穿 10–16 s 样板 → 1 幕 1 全栈单画布（`build.py`/`build.js` `tier="pro"`，真需 Blender 3D 才按幕挂 `flash` 3D 师，跳过幕内 Dailies/QC）→ **合并 Stage 9 + Stage 11**（直出 V1 后 1 名物理只读 `pro` 独立 7 维评委看带声片出单 → 原代理热修 1 轮 → 1 名物理只读 `flash` QC 复验 → 重渲 2K FLAC）；
+>   - **`Ultra` 满血旗舰流（Max / Ultra）**：完整 13 步旗舰工作室（每幕 3 路盲写提案会 + 三工种分拆 + Dailies + Stage 9 三视角三复核 + Stage 11–13 独立评分与多轮精修）。
+> - **4 项三档通用的零损省额底盘升级**：① 每幕简报内置 **20 行浓缩工艺卡**（动效 ID 白名单 + 色板 + 帧界）替代每个子代理冷读 6 本大文档；② 精修优先 **原制作代理热修**（`send_message` / Swarm 复用上下文）替代冷启动新修改员；③ `stem_sync.py` / `motion_lint --curves` / `qa.mjs` / `visual_metrics.py` 全量本地 0 额度拦截硬伤再进 `pro` 审片；④ 按幕重要性分配 `pro` / `flash` 权重，**同时死守底线（绝不自审、绝不跳过本地音轨/曲线硬检、完片必出偏好复盘卡）**。
+>
 > **✨ What's New in `v1.9.1`（Stage 1 给完歌自动判别有无唱词 `has_vocals` + 自动复用同级 Whisper 缓存）**：
 > - **`scripts/stem_sync.py` 自动判定 `vocal_song` vs `instrumental`**：拿到任何外部音乐文件，Stage 1 第一件事统一先跑 `stem_sync.py`——拆轨后自动检测 `vocals.wav` 有效活跃时长/占比与峰值，**检出人声**则走双轨分离卡鼓+卡字；**若为纯器乐（`has_vocals: false`）**则自动跳过空干声切片、声谱图与 Whisper，直接切纯音乐鼓点模式，零误判也不浪费时间；同步支持 `CHIAKI_WHISPER_MODELS` 及自动探测 `<model-dir>/../whisper_models` 复用本地权重。
 >

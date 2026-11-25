@@ -168,6 +168,21 @@ ffmpeg -hide_banner -y -i out/film_2k.mp4 -i work/master.wav -map 0:v:0 -map 1:a
 | Dailies Executive Director, 3 Final Review Lenses, 3 Verifiers, Independent Scorer (`chiaki-reviewer`, read-only) | `pro` | `opus` | High reasoning / flagship | Strict adversarial critique, frame-level evidence & 7-dim scoring |
 | QC Recheck (`chiaki-reviewer`, read-only) | `flash` | `sonnet` | Medium / standard | Fast visual verification of scoped fix checklist |
 
+### 6a. Quota-Adaptive 3-Tier Routing & Token-Efficiency Rules
+Before starting any new film (unless the client already declared a tier in their prompt or `PROMPT_TEMPLATE.md`), ask which quota tier to use (highlighting the last choice stored in `scripts/memory.py status --json`, defaulting to `pro`) and persist the choice with `memory.py tier <lite|pro|ultra>`:
+
+| Tier | Target Client | 4-Act Agent Budget | Pitch | Build (`build.py` / `.js`) | Review & Polish |
+|---|---|---|---|---|---|
+| **`lite`** | Tight Pro / short clips (≤ 60 s) | ~6–8 agents (2–3 `pro`) | Coordinator gives 2 concise 3-line directions (`0` agents) | 1 Full-Stack single-canvas builder/act (`pro` hero acts, `flash` transition acts; no intra-act Dailies/QC) | V1 render → 1 read-only `pro` unified reviewer/scorer → warm-context fix (`skipQc=True`) → final re-render |
+| **`pro`** *(recommended)* | Standard Pro / Plus creators | ~10–14 agents (4–6 `pro`) | Coordinator gives 2–3 cross-act direction briefs (`0` agents) | 1 Full-Stack single-canvas builder/act (`tier="pro"`, optional `flash` Blender 3D; no intra-act Dailies/QC) | Skip Stage 9; V1 render → 1 read-only `pro` 7-dim scorer → warm-context fix → 1 read-only `flash` QC → final 2K FLAC |
+| **`ultra`** | Max / Ultra flagship long films | ~50–70 agents (~33 `pro`) | Full `pitch.py`/`.js` (3 blind writers/act + CD + EP) | Full 3-craft split (`tier="ultra"`) → Dailies → per-craft Fix → QC | Full Stage 9 (`review_fix`) → V1 → Stage 11–13 (`polish_rerender`) → re-score |
+
+Four zero-quality-loss token savers apply across every tier:
+1. **20-line distilled craft slice**: embed each act's motion ID whitelist, hex palette, exact frame bounds, and seam contract at the top of `brief_<act>.md` so builders do not cold-read 6 large reference manuals per subagent.
+2. **Warm-context in-place fixes**: message the original act builder / Swarm worker (`send_message`) for polish fixes instead of spawning cold fixers whenever the original conversation is still alive.
+3. **Zero-token local CLI pre-filters**: run `stem_sync.py`, `motion_lint.mjs --curves`, `qa.mjs`, and `visual_metrics.py` locally before spending any `pro` reviewer tokens.
+4. **Act-weighted model routing**: allocate `pro` to hero/chorus/opening acts and `flash` to bridge/transition acts in `lite`/`pro`.
+
 ## 7. Antigravity Swarm (`/teamwork`) Hybrid Playbook
 
 Use Antigravity's native `swarm` board for **collaborative production stages (Stage 6 Build, Stage 8 Sound, Stage 12 Polish)** where multiple crafts align frame numbers, `layout.js` coordinates, and cut hand-offs live — while keeping **Stage 2 Blind Pitch** (`chiaki-writer`) and **Stage 9 / 11 Read-Only Review & Independent Scoring** (`chiaki-reviewer`) on isolated `invoke_subagent` / `run_workflow`.

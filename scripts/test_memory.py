@@ -26,10 +26,14 @@ def main() -> int:
     with tempfile.TemporaryDirectory(prefix="chiaki_mem_test_") as td:
         d = Path(td)
 
-        # 1. Default status (ask mode, empty)
+        # 1. Default status (ask mode, pro quota_tier, empty)
         st = json.loads(run_mem("status", "--dir", str(d), "--json"))
-        assert st["mode"] == "ask", st
+        assert st["mode"] == "ask" and st["quota_tier"] == "pro", st
         assert st["preferences"] == 0 and st["mistakes"] == 0 and st["films"] == 0
+        t_out = run_mem("tier", "lite", "--dir", str(d))
+        assert "tier -> lite" in t_out, t_out
+        assert json.loads(run_mem("status", "--dir", str(d), "--json"))["quota_tier"] == "lite"
+        run_mem("tier", "pro", "--dir", str(d))
 
         # 2. Add preferences + fuzzy CJK dedup
         o1 = run_mem("add-pref", "--dir", str(d), "--category", "audio", "--text", "歌词 PV 默认纯原曲洁净母带，不加额外 swoosh")

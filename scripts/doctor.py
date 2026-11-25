@@ -290,14 +290,17 @@ def check_bundled():
     mem_cfg = mem_dir / "config.json"
     mem_initialized = mem_cfg.exists()
     mode = "ask"
+    quota_tier = "pro"
     if mem_initialized:
         try:
-            mode = json.loads(mem_cfg.read_text(encoding="utf-8")).get("mode", "ask")
+            _mc = json.loads(mem_cfg.read_text(encoding="utf-8"))
+            mode = _mc.get("mode", "ask")
+            quota_tier = _mc.get("quota_tier", "pro")
         except Exception:
             pass
-        ok("Studio Memory", f"mode={mode} ({mem_dir})", tier="optional")
+        ok("Studio Memory", f"mode={mode}, default_tier={quota_tier} ({mem_dir})", tier="optional")
     else:
-        warn("Studio Memory", f"not configured yet (default mode=ask @ {mem_dir} — ask user once on first setup)", tier="optional")
+        warn("Studio Memory", f"not configured yet (default mode=ask, tier=pro @ {mem_dir} — ask user once on first setup)", tier="optional")
     # Online tactile textures & live-action stock footage (scripts/media_lib.py)
     pro_media = [k for k in ("PEXELS_API_KEY", "PIXABAY_API_KEY", "CHIAKI_FOOTAGE_DIR") if os.environ.get(k, "").strip()]
     extra_m = f" + {', '.join(pro_media)}" if pro_media else " (+ optional PEXELS_API_KEY / PIXABAY_API_KEY / CHIAKI_FOOTAGE_DIR)"
@@ -326,9 +329,12 @@ def main() -> int:
         mem_cfg = mem_dir / "config.json"
         mem_init = mem_cfg.exists()
         mem_mode = "ask"
+        mem_tier = "pro"
         if mem_init:
             try:
-                mem_mode = json.loads(mem_cfg.read_text(encoding="utf-8")).get("mode", "ask")
+                _mc = json.loads(mem_cfg.read_text(encoding="utf-8"))
+                mem_mode = _mc.get("mode", "ask")
+                mem_tier = _mc.get("quota_tier", "pro")
             except Exception:
                 pass
         payload = {
@@ -351,6 +357,7 @@ def main() -> int:
             "studio_memory": {
                 "initialized": mem_init,
                 "mode": mem_mode,
+                "quota_tier": mem_tier,
                 "dir": str(mem_dir),
             },
             "checks": checks,

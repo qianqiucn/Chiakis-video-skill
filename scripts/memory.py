@@ -50,11 +50,13 @@ for _s in (sys.stdout, sys.stderr):
         pass
 
 VALID_MODES = ("ask", "auto", "readonly", "off")
+VALID_TIERS = ("lite", "pro", "ultra")
 PREF_CATEGORIES = ("aesthetic", "audio", "motion", "delivery", "avoid")
 MISTAKE_CATEGORIES = ("general", "motion", "vision", "audio", "type", "3d", "sync", "render")
 
 DEFAULT_CONFIG = {
     "mode": "ask",
+    "quota_tier": "pro",
     "max_preferences": 25,
     "max_mistakes": 30,
     "skill_upgrade_hit_threshold": 2,
@@ -99,6 +101,8 @@ def load_config(mdir: Path) -> dict[str, Any]:
                 cfg[k] = raw[k]
     if cfg["mode"] not in VALID_MODES:
         cfg["mode"] = "ask"
+    if cfg.get("quota_tier") not in VALID_TIERS:
+        cfg["quota_tier"] = "pro"
     return cfg
 
 
@@ -419,6 +423,10 @@ def main() -> int:
     p_md.add_argument("value", choices=VALID_MODES)
     add_dir(p_md)
 
+    p_tr = sub.add_parser("tier", help="Set default recommended quota workflow tier (lite | pro | ultra)")
+    p_tr.add_argument("value", choices=VALID_TIERS)
+    add_dir(p_tr)
+
     p_sh = sub.add_parser("show", help="Display saved preferences, mistakes, and recent films")
     add_dir(p_sh)
     p_sh.add_argument("--limit", type=int, default=10, help="Max recent films to display")
@@ -486,6 +494,7 @@ def main() -> int:
             "dir": str(mdir),
             "initialized": mdir.exists(),
             "mode": cfg["mode"],
+            "quota_tier": cfg["quota_tier"],
             "preferences": len(prefs),
             "max_preferences": cfg["max_preferences"],
             "mistakes": len(mistakes),
@@ -497,7 +506,7 @@ def main() -> int:
             print(json.dumps(payload, ensure_ascii=False, indent=2))
         else:
             print(
-                f"Studio Memory [{cfg['mode']}] @ {mdir}\n"
+                f"Studio Memory [{cfg['mode']} | default_tier={cfg['quota_tier']}] @ {mdir}\n"
                 f"  preferences: {len(prefs)}/{cfg['max_preferences']} | "
                 f"mistakes: {len(mistakes)}/{cfg['max_mistakes']} | films: {len(films)}"
             )
@@ -511,6 +520,13 @@ def main() -> int:
         _write_json(mdir / "config.json", cfg)
         _sync_markdown(mdir, cfg, load_prefs(mdir), load_mistakes(mdir))
         print(f"[OK] Studio memory mode -> {args.value} ({mdir})")
+        return 0
+
+    if args.cmd == "tier":
+        cfg = load_config(mdir)
+        cfg["quota_tier"] = args.value
+        _write_json(mdir / "config.json", cfg)
+        print(f"[OK] Default quota workflow tier -> {args.value} ({mdir})")
         return 0
 
     if args.cmd == "show":

@@ -22,7 +22,8 @@ description: Chiaki's-video-skill 统一快捷入口（/chiaki、/Chiaki 与 Cod
 | 用户输入 | 路由动作 |
 |---|---|
 | `/chiaki setup`、`/Chiaki 检查依赖`、`/chiaki doctor` 或 `$chiaki 检查依赖` | **0. 交互式依赖体检与安装向导（先查 → 问需求与安装路径 → 一键配置）** |
-| `/chiaki`、`$chiaki`、`/chiaki new <想法>` 或直接粘贴填好的需求表 | **1. 开新片（完整 13 步旗舰流）** |
+| `/chiaki`、`$chiaki`、`/chiaki new <想法>` 或直接粘贴填好的需求表 | **1. 开新片（先问本期额度档位 `Lite`/`Pro`/`Ultra` → 自动匹配精简/满血流程）** |
+| `/chiaki tier [lite\|pro\|ultra]` | **1b. 查看或切换默认推荐额度档位（`memory.py tier`）** |
 | `/chiaki art <项目路径>` | **2. 多源出图、在线质感层/实拍层挑拣下载与验收（`art_gen.py` + `media_lib.py`）** |
 | `/chiaki fonts [关键词 / 项目路径]` | **3. 选字、测缺字与本地打包** |
 | `/chiaki 3d <需求>` 或 `/chiaki relief <图片路径> [参数]` | **4. 双 3D 旗舰：Three.js 风格化 3D 字/场景/棱镜/百叶窗 + Blender 2.5D 浮雕/投影/搭景/MCP** |
@@ -59,20 +60,31 @@ description: Chiaki's-video-skill 统一快捷入口（/chiaki、/Chiaki 与 Cod
    - 若缺 **Node.js ≥ 22** 或 **Chrome/Edge** 等系统软件，给出对应系统的一键命令（如 `winget` / `brew`）或在用户明确同意后代为执行。
    - 装完自动用目标 Python 重跑 `doctor.py`，把最终全绿验收报告发给用户。
 
-### 1. 开新片（13 步旗舰全流程：`new` 或直接写需求）
-1. **环境体检 & Brief**：跑 `python -X utf8 "<SKILL_DIR>/scripts/doctor.py" --json`；若 `studio_memory.initialized` 为 `false` 且用户需求表未填「自迭代记忆开关」，先顺带确认一次是否开启及模式（`ask`/`auto`/`off`）并用 `memory.py mode` 落盘，之后永不重复打扰。补齐主题、幕数、时长、FPS（24/30）、音乐、**音效策略**（成曲/歌词 PV 默认纯原曲洁净母带 `pure_song`；片头/宣传片/原创编曲默认全套 `full_sfx`）、出图路线（`user_files` / `gemini` / `codex` / `custom_api` / `code_only`）、**3D 引擎规格**（`全能双 3D 旗舰` Three.js + Blender 共演 / `Three.js 风格化 3D` / `Blender 电影级 3D` / `纯 2D`）并一行汇报；**只要用户提供了外部音乐文件，开剪写分镜前第一件事先跑 `scripts/stem_sync.py <audio> --out <proj>/work/stems --fps <FPS> [--whisper --lyrics <txt>]`** 自动判别有无唱词并拆双轨——检出人声（`vocal_song`）则纯伴奏 `instrumental.wav` 跑 `beats.py` + `onsets.py` 锁鼓与查局部 BPM 漂移、纯干人声 `vocals.wav` 按宿主死规矩锁起唱帧（Gemini 用 `read_file` 原生直听 `dry_*.wav` / `vocal_spec.py --wav-only`，Claude/Codex 看无伴奏污染的 `dry_*.png` + `vocal_phrases.json` / `vocal_words.json`）；若自动判为纯器乐（`instrumental`），脚本自动跳过干声图与 Whisper，直接按实测鼓点继续。
-2. **开工前一行报成本**：说明预计子代理数、模型档位与总耗时。
-3. **提案会（3 套方案）**：跑 `<SKILL_DIR>/assets/workflows_agy/pitch.py`（或 `assets/workflows/pitch.js`）：媒介设计师 / 演出策划 / 摄影指导并行交 3 份方案 → 创意总监拍板 → 执行制片核查各幕不撞型（15 种 `mg-styles.md` 严禁同片重复）。
-4. **分镜表 + Gate A（先锁分镜再出图）**：写完整分镜表（精确有理数帧界、人声起唱帧、镜头配方 `shot-recipes.md`、动效 ID、出图来源、`work/cues.csv`）和 `work/art_manifest.json`，**先过 Gate A 再动出图额度**。
-5. **多源出图与资产准备**：按 `references/art-pipeline.md` 跑 `scripts/art_gen.py run <proj> --workers 3`（支持多参考图 `refs` 与自动重试，或调用宿主自带 Gemini/Codex 生图）→ 原尺寸肉眼验图 → 按需用 `vision/cutout.py`（全角色/道具抠图）、`vision/part_cutout.py`（二次元 19 部位单层精拆 + `--clean-plate`）与 `vision/pasteback.py` 对齐补图 → **用 `scripts/media_lib.py` 按各幕视觉形式自动挑拣并下载在线免 Key 质感层（`ambientCG` / `Poly Haven` + `--prep`）与实拍特效/空镜（`archive` 4K 水墨/烟雾/烧片/延时、`nasa`、可选 `pexels`/`pixabay` + `--seq` 自动拆 `T3.sequence` 序列帧）** → 打包本地字体（`fonts.py use`，描边字用 `--static`）→ 16-bit 柔化深度图（`vision/depth.py --soften`）与免费 3D 素材（`assets3d.py`）。
-6. **三工种并行搭建**：拷贝 `<SKILL_DIR>/assets/template/` 到 `<proj>/web/`，按 `build.py` / `build.js` 或 Swarm 严格分工 **3D 工程师 (`flash`)** + **剪辑合成师 (`pro`)** + **平面设计师 (`flash`)**（动态歌词 PV 允许单幕单画布融合，质感优先逐镜调用 `T3.look.coat`，仅全片共用同一纸面时用 `z=45` `film_texture.js`）→ 执行导演一版看样 (`pro`) → **按工种并行修改员 (`flash`)** → 质检 (`flash`)。
-7. **自查（Gate B1）**：静态 `motion_lint.mjs`（0 FAIL）+ `--curves` SVG 曲线图（核查 `Q1` 滞后及 `> 0.90` 悬崖长死尾）+ `qa.mjs` + `snap.mjs --sheet` + 空间 `parallax.py` + 定格 `cadence.py`。
-8. **声音设计与母带**：派独立 **声音设计师** (`flash`) 按所选音效策略执行 —— 成曲/歌词 PV 默认 `pure_song` 洁净母带（零额外 swoosh 干扰人声），片头/原创配乐走 `assets/mgaudio` + Freesound 全套混音与压低 —— 统一母带至 `-14 LUFS / <= -1.1 dBTP` 48 kHz `work/master.wav`。
-9. **初版三视角内审**：运行 `review_fix.py` / `review_fix.js`（物理只读 `规矩·技术·剪辑感` 三视角 → 三复核 → 定向修阻断项 → 质检；短片 `< 60 s` 快速通道优先清零阻断项直奔带声一版渲染）。
-10. **一版带声渲染**：经 `run_queue.py web` 先出带 `master.wav` 的 720p/1080p 一版全片 MP4（`out/film_v1.mp4`；纸纹/胶片感影片加 `--grain` 保颗粒）。
-11. **独立 7 维评分 → 修一轮 → 质检**：运行 `polish_rerender.py` / `polish_rerender.js`（物理只读 `独立成片评分员` `pro` 按 `score_brief.md` 严格打分，歌词 PV 必抽查 ≥ 2 句高潮人声对口型，每维 ≥ 8 及格 → 若有扣分项则派 `修改员` `flash` 定向修一轮 → `质检` `flash` 逐条原尺寸复验）。
-12. **重渲染定稿 & 复评**：审片确认后升渲 1080p Web + 2K `--2k`（纹理片带 `--grain`）并封装 48 kHz FLAC 母版，由只读评分员复验扣分项已达标。
-13. **Gate B2 交付 & 必发偏好复盘卡（不可跳过）**：核验硬指标 + 开源鸣谢（`fonts.py credits`、`media_lib.py credits` 与 `assets3d.py credits`），交付成片、评分卡、版本账本与已验证/未验证清单；只要 `memory.mode` 不是 `off`/`readonly`，**必须**提炼 `work/memory_proposal.json` 并运行 `python -X utf8 "<SKILL_DIR>/scripts/memory.py" draft-card --proposal work/memory_proposal.json`，**把「🧠 下支片想怎么更合你胃口？」3 条喜好提问与候选记忆卡直接附在最终交付回复末尾**（`ask` 经用户确认后加 `--confirm` 落盘；`auto` 立即 `apply` 并仍附 3 条偏好提问供用户补充）。
+### 1. 开新片（额度自适应三档流：`new` 或直接写需求）
+1. **环境体检 & 必问「本期额度档位」**：跑 `python -X utf8 "<SKILL_DIR>/scripts/doctor.py" --json`；若用户未在首句/需求表里显式指定档位，**每次开新片先用极简单选询问本期额度档位**（默认高亮 `studio_memory.quota_tier` 上次选择，向 Pro 用户推荐 **`Pro` 均衡主力流**），选定后用 `memory.py tier <lite|pro|ultra>` 记住下次默认项：
+   - **`Lite` 极简省额流**（省 ~85% · 4 幕约 6–8 代理 / 2–3 `pro`）：主线程 2 个 3 行方向秒选 → 1 幕 1 全栈单画布（副歌 `pro` / 过渡 `flash`）→ 成曲主线程脚本直出母带 → 直出 V1 带声片 → 1 名只读 `pro` 综合审片评分 → 原代理热修 1 轮 → 重渲定稿；
+   - **`Pro` 均衡主力流（推荐 Pro / Plus）**（省 ~70–75% · 4 幕约 10–14 代理 / 4–6 `pro`）：主线程 2–3 个跨幕方向简案拍板 → 中长片先打穿 10–16 s 样板 → 1 幕 1 全栈单画布（按需挂 `flash` 3D 师）→ `flash` 声音师出 `-14 LUFS` 母带 → 合并 Stage 9+11（直出 V1 后 1 名只读 `pro` 独立 7 维评委 → 原代理热修 1 轮 → 1 名只读 `flash` QC → 重渲 2K FLAC）；
+   - **`Ultra` 满血旗舰流**（Max / Ultra · 4 幕约 50–70 代理 / ~33 `pro`）：完整 13 步（每幕 3 路盲写提案会 + 三工种分拆 + Dailies + Stage 9 三视角三复核 + Stage 11–13 独立评分与多轮精修）。
+   - 若 `studio_memory.initialized` 为 `false` 且需求表未填记忆开关，顺带问一次 `ask`/`auto`/`off` 并落盘。补齐主题、幕数、时长、FPS（24/30）、音乐、**音效策略**（`pure_song` / `full_sfx`）、出图路线、**3D 引擎规格**并一行汇报；**只要用户提供了外部音乐文件，开剪写分镜前第一件事先跑 `scripts/stem_sync.py <audio> --out <proj>/work/stems --fps <FPS> [--whisper --lyrics <txt>]`** 自动判别有无唱词并拆双轨（检出人声走纯伴奏测鼓+纯干声锁字，纯器乐自动跳过干声图与 Whisper）。
+2. **开工前一行报预算**：按所选档位写明预计子代理总数、`pro`/`flash` 次数与总耗时（如：`Pro 均衡档 · 预计 12 代理 [5 pro + 7 flash]`）。
+3. **提案定方向**：
+   - **`Lite` / `Pro`**：总导演（主线程）查 `memory.py context --stage pitch` 防撞型后，直接给出 **2（Lite）或 2–3（Pro）套紧凑跨幕方向简案**（媒介、色板、核心母题、字体，不撞型）让用户直接拍板（`0` 提案子代理）；
+   - **`Ultra`**：跑 `<SKILL_DIR>/assets/workflows_agy/pitch.py`（或 `pitch.js`）每幕 3 路盲写 → 创意总监 → 执行制片。
+4. **分镜表 + Gate A（先锁分镜再出图）**：写完整分镜表（精确有理数帧界、人声起唱帧、动效 ID 白名单、出图来源、`work/cues.csv`）和 `work/art_manifest.json`；**每幕简报顶部附 20 行浓缩工艺卡**（省掉子代理重复冷读 6 本参考书）；先过 Gate A 再动出图额度。
+5. **多源出图与资产准备**：按 `references/art-pipeline.md` 跑 `art_gen.py` → 肉眼验图 → 按需 `vision/cutout.py` / `part_cutout.py` / `pasteback.py` → `media_lib.py` 下载免 Key 质感层与实拍层 → `fonts.py use`（含 `glyph3d`）→ `vision/depth.py` / `assets3d.py`。
+6. **按档搭建**：拷贝 `<SKILL_DIR>/assets/template/` 到 `<proj>/web/`，运行 `build.py` / `build.js`（传 `tier="lite"|"pro"|"ultra"`）或 Swarm：
+   - **`Lite` / `Pro`**：1 幕 1 全栈单画布（真需 Blender 3D 才按幕挂 `flash` 3D 师），跳过幕内 Dailies/QC，保留原制作代理上下文待热修；
+   - **`Ultra`**：三工种并行分拆 → 执行导演一版看样 (`pro`) → 分工种修改员 (`flash`) → 质检 (`flash`)。
+7. **本地 0 额度硬检（Gate B1，三档全保留）**：静态 `motion_lint.mjs`（0 FAIL）+ `--curves` SVG 曲线图 + `qa.mjs` + `visual_metrics.py` + `parallax.py`/`cadence.py`。
+8. **声音设计与母带**：`Lite` 成曲 PV 可由主线程直接脚本母带至 `-14 LUFS / <= -1.1 dBTP` 48 kHz `work/master.wav`；`Pro`/`Ultra` 或原创配乐派独立 `声音设计师` (`flash`)。
+9. **终审、一版渲染与独立评分精修闭环**：
+   - **`Lite` / `Pro`（合并 Stage 9+11）**：直接经 `run_queue.py web` 渲染带声一版 `out/film_v1.mp4` → 运行 `polish_rerender.py` / `.js`（`tier="lite"|"pro"`）：**1 名物理只读 `pro` 独立评分审片员**直看带声片出 7 维分与帧级问题单 → **优先向原制作代理发消息热修 1 轮**（或 `flash` 修改员）→ `Pro` 跑 1 名只读 `flash` QC 复验（`Lite` 静态 lint + 抽帧确认后跳过独立 QC）；
+   - **`Ultra`**：先跑 `review_fix`（三视角+三复核+修+QC）→ 渲 V1 → 再跑 `polish_rerender`（独立 7 维评委 → 修改员 → QC）。
+10. **重渲染定稿 & Gate B2 交付 + 必发偏好复盘卡**：升渲 1080p Web + 2K `--2k`（纹理片带 `--grain`）+ 48 kHz FLAC 母版，过 Gate B2 并附开源鸣谢；只要 `memory.mode` 非 `off`/`readonly`，**必须**运行 `memory.py draft-card` 把「🧠 下支片想怎么更合你胃口？」附在最终交付消息末尾。
+
+### 1b. 查看或切换默认额度档位（`tier`）
+- 查看当前默认档位：`python -X utf8 "<SKILL_DIR>/scripts/memory.py" status`
+- 切换推荐默认档位：`python -X utf8 "<SKILL_DIR>/scripts/memory.py" tier <lite|pro|ultra>`（下次开新片仍会单选确认一次，并高亮此默认项）。
 
 ### 2. 多源出图、在线质感/实拍素材与验收（`art`）
 先读 `<SKILL_DIR>/references/art-pipeline.md`，然后按需执行：

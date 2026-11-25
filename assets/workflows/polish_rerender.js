@@ -1,7 +1,9 @@
-// polish_rerender.js — Stages 11–12 Closed Loop: Independent 7-Dim Scorecard -> Targeted Polish Round -> Read-Only QC.
+// polish_rerender.js — Stages 11–12 Closed Loop (and unified post-V1 review+score loop for `lite` / `pro` tiers).
 // Validates truncation-safe structured scorecard JSON + `<!-- SCORE_COMPLETE -->` sentinel; flags INCOMPLETE_REVIEW if missing.
-// Args: { project, skill, scoreBrief, renderVideo, filesByOwner: [{ owner, files }], taskId = "v1", skipFixIfPass = true }
-const { project, skill, scoreBrief, renderVideo, filesByOwner = [], taskId = "v1", skipFixIfPass = true } = args;
+// Args: { project, skill, scoreBrief, renderVideo, filesByOwner: [{ owner, files }], taskId = "v1", tier = "pro", skipQc, skipFixIfPass = true }
+const { project, skill, scoreBrief, renderVideo, filesByOwner = [], taskId = "v1", tier: rawTier = "pro", skipFixIfPass = true } = args;
+const tier = ["lite", "pro", "ultra"].includes(String(rawTier).toLowerCase()) ? String(rawTier).toLowerCase() : "pro";
+const skipQc = args.skipQc !== undefined ? Boolean(args.skipQc) : tier === "lite";
 const P = (f) => `${skill}/references/${f}`;
 const DIMS = ["concept", "motion", "rhythm", "typography", "depth", "sound", "technical"];
 
@@ -74,14 +76,16 @@ const fixes = await Promise.all(
   )
 );
 
-// 3. Physically read-only QC Recheck on every fixed item before re-rendering V2 final
-const qc = await agent({
-  model: "flash",
-  role: "复修质检（QC）",
-  prompt: [
-    "你的身份：工作室交片前的最后一道质检。性格：不讲情面、只认画面：修好了才签字，看不清或没验到就绝不标 ok；手快，每条只截它涉及的帧、原尺寸一张，没修好的记为未通过交主线程。",
-    `物理只读：按 ${P("crafts.md")} §6 与 ${P("quality-bar.md")} 对照一版独立评分卡的每一条扣分项，逐条截原尺寸图复验是否彻底修好，输出 PASS / FAIL 清单，确认无误后交总导演执行重渲染与 Gate B2 终验：\n\n${scoreV1}`,
-  ].join("\n\n"),
-});
+// 3. Physically read-only QC Recheck on every fixed item before re-rendering V2 final (skipped when skipQc=true in `lite` tier)
+const qc = skipQc
+  ? null
+  : await agent({
+      model: "flash",
+      role: "复修质检（QC）",
+      prompt: [
+        "你的身份：工作室交片前的最后一道质检。性格：不讲情面、只认画面：修好了才签字，看不清或没验到就绝不标 ok；手快，每条只截它涉及的帧、原尺寸一张，没修好的记为未通过交主线程。",
+        `物理只读：按 ${P("crafts.md")} §6 与 ${P("quality-bar.md")} 对照一版独立评分卡的每一条扣分项，逐条截原尺寸图复验是否彻底修好，输出 PASS / FAIL 清单，确认无误后交总导演执行重渲染与 Gate B2 终验：\n\n${scoreV1}`,
+      ].join("\n\n"),
+    });
 
-return { status: "REVISED", scoreMeta, scoreV1, skippedPolish: false, fixes, qc };
+return { status: "REVISED", tier, scoreMeta, scoreV1, skippedPolish: false, fixes, qc };

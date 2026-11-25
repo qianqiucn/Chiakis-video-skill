@@ -12,6 +12,8 @@ Args:
   renderVideo   (str): path to rendered V1 MP4 with mastered audio
   filesByOwner  (list[dict]): [{ "owner": "act1 剪辑合成师", "files": ["web/segments/seg_act1.js"] }, ...]
   taskId        (str): optional identifier for persisted score files (default "v1")
+  tier          (str): "lite" | "pro" | "ultra" (default "pro"; in lite/pro this serves as the unified post-V1 review+score loop, replacing Stage 9; in lite, optional skipQc=True skips separate QC subagent after consolidated flash fix)
+  skipQc        (bool): optional (default True when tier == "lite", else False)
   skipFixIfPass (bool): default True — skip polish ONLY if scorecard is complete AND verdict is DELIVER (all 7 dims >= 8)
 """
 import json
@@ -24,6 +26,10 @@ score_brief = args["scoreBrief"]
 render_video = args["renderVideo"]
 files_by_owner = args.get("filesByOwner", [])
 task_id = re.sub(r"[^a-zA-Z0-9_-]+", "_", str(args.get("taskId", "v1"))).strip("_") or "v1"
+tier = str(args.get("tier", "pro")).strip().lower()
+if tier not in ("lite", "pro", "ultra"):
+    tier = "pro"
+skip_qc = bool(args.get("skipQc", tier == "lite"))
 skip_if_pass = args.get("skipFixIfPass", True)
 P = lambda f: f"{skill}/references/{f}"
 STR = {"type": "string"}
@@ -120,18 +126,22 @@ else:
         ),
     )
 
-    phase("Stage 12b · Read-Only QC Recheck Before Re-Render")
-    qc = await agent(
-        type_name="chiaki-reviewer",
-        model="flash",
-        role="复修质检（QC）",
-        schema=STR,
-        prompt="\n\n".join([
-            "你的身份：工作室交片前的最后一道质检。性格：不讲情面、只认画面：修好了才签字，看不清或没验到就绝不标 ok；手快，每条只截它涉及的帧、原尺寸一张，没修好的记为未通过交主线程。",
-            f"物理只读：按 {P('crafts.md')} §6 与 {P('quality-bar.md')} 逐条复验一版独立评分卡的每一条扣分项是否修好，输出 PASS / FAIL 清单交总导演重渲染与 Gate B2：\n\n{score_v1}",
-        ]),
-    )
-    log("Polish + QC completed; ready for Stage 13 re-render & Gate B2")
-    out = {"status": "REVISED", "score_meta": score_meta, "score_v1": score_v1, "skipped_polish": False, "fixes": fixes, "qc": qc}
+    if skip_qc:
+        qc = None
+        log(f"Polish completed ({tier} tier, skipQc=True); run static motion_lint + coordinator spot-check then Stage 13 re-render & Gate B2")
+    else:
+        phase("Stage 12b · Read-Only QC Recheck Before Re-Render")
+        qc = await agent(
+            type_name="chiaki-reviewer",
+            model="flash",
+            role="复修质检（QC）",
+            schema=STR,
+            prompt="\n\n".join([
+                "你的身份：工作室交片前的最后一道质检。性格：不讲情面、只认画面：修好了才签字，看不清或没验到就绝不标 ok；手快，每条只截它涉及的帧、原尺寸一张，没修好的记为未通过交主线程。",
+                f"物理只读：按 {P('crafts.md')} §6 与 {P('quality-bar.md')} 逐条复验一版独立评分卡的每一条扣分项是否修好，输出 PASS / FAIL 清单交总导演重渲染与 Gate B2：\n\n{score_v1}",
+            ]),
+        )
+        log("Polish + QC completed; ready for Stage 13 re-render & Gate B2")
+    out = {"status": "REVISED", "tier": tier, "score_meta": score_meta, "score_v1": score_v1, "skipped_polish": False, "fixes": fixes, "qc": qc}
 
 out

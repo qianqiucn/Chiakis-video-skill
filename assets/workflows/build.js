@@ -1,20 +1,42 @@
-// build.js — Stage 4 Flagship Studio Build (3D Engineer [optional] + Edit/Motion + Graphic Design -> Dailies -> Fix -> QC).
-// Args: { project, skill, fps = 24, acts: [{ key, title, startF, endF, styleTitle, styleBio, has3D = false, hasDesign = true, briefFile }] }
-const { project, skill, fps = 24, acts = [] } = args;
+// build.js — Stage 6 Quota-Adaptive Build (`lite` | `pro` | `ultra`).
+// - `lite` / `pro` (quota-saving default): 1 act = 1 Full-Stack Single-Canvas Builder (unified Edit+Design unless splitDesign=true),
+//   act-weighted model routing (`pro` on hero acts, `flash` on transition acts in `lite`), 20-line distilled brief slice, skips intra-act Dailies/Fix/QC.
+// - `ultra`: full 3-craft split (3D [optional] + Edit + Design) -> Dailies -> per-craft Fix -> QC.
+// Args: { project, skill, fps = 24, tier = "pro", acts: [{ key, title, startF, endF, styleTitle, styleBio, has3D = false, hasDesign = true, splitDesign = false, isHero = false, model, briefFile }] }
+const { project, skill, fps = 24, tier: rawTier = "pro", acts = [] } = args;
+const tier = ["lite", "pro", "ultra"].includes(String(rawTier).toLowerCase()) ? String(rawTier).toLowerCase() : "pro";
 const P = (f) => `${skill}/references/${f}`;
+
+const pickLeadModel = (act) => {
+  const m = String(act.model || "").trim().toLowerCase();
+  if (m === "pro" || m === "flash" || m === "flash_lite") return m;
+  if (tier === "lite") return act.isHero ? "pro" : "flash";
+  return "pro";
+};
 
 const results = await Promise.all(
   acts.map(async (act) => {
-    const tasks = [
-      agent({
-        model: "pro",
-        role: `${act.key} · 剪辑合成师`,
-        prompt: [
+    const splitDesign = (tier === "ultra" && act.hasDesign !== false) || Boolean(act.splitDesign);
+    const leadModel = pickLeadModel(act);
+
+    const leadPrompt = splitDesign
+      ? [
           `你的身份：工作室的「${act.styleTitle || "2D 动效剪辑合成师"}」，${act.styleBio || "专攻确定性 Canvas 2D / CSS 3D 动效与快剪节奏"}。这段由你剪辑合成、主导 2D 动效与转场总装配。性格：对画面和曲线有洁癖；分镜是起点，节奏、节拍帧号、图层结构先照表做，留出的空间大胆发挥想象力；绝不手写线性或土法缓动公式，所有运动一律先查 motion-library.md、写动效表并挂 T3.motionProbe，交稿前自己跑静态 motion_lint、看 SVG 曲线图和拼图挑一遍毛病。`,
-          `先读：${P("crafts.md")} §2、${P("motion-library.md")}、${P("style-grammar.md")}、${act.briefFile}。`,
+          `先读：${act.briefFile}（优先按简报浓缩工艺卡施工，按需翻查 ${P("crafts.md")} §2、${P("motion-library.md")}、${P("style-grammar.md")}）。`,
           `文件边界：只写 ${project}/work/motion_${act.key}.md、${project}/web/segments/seg_${act.key}.js（z=10）和 ${project}/web/segments/${act.key}_handoff.js（z=60）；严禁修改 index.html 或 *_design.js。`,
           `交稿前必跑静态 motion_lint、--curves SVG 曲线图（--out ${project}/work/motion_${act.key}）及 snap.mjs 拼图（经 run_queue.py web）。`,
-        ].join("\n\n"),
+        ].join("\n\n")
+      : [
+          `你的身份：工作室的全栈单画布「${act.styleTitle || "2D 动效剪辑合成师"}」，${act.styleBio || "专攻确定性 Canvas 2D / CSS 3D 动效与快剪节奏"}。在 \`${tier}\` 省额单画布模式下，本幕由你一体负责镜头、动态排版/歌词与跨幕转场（统一世界坐标，文字即世界物件）。性格：对画面、排版与曲线有洁癖；绝不手写线性或土法缓动公式，所有运动查 motion-library.md 浓缩白名单、写动效表并挂 ≥3 个 T3.motionProbe，交稿前自跑静态 motion_lint 与 1 张关键帧抽查。`,
+          `先读：${act.briefFile}（优先照简报 20 行浓缩工艺卡施工，仅遇细节疑问时按需查阅 ${P("crafts.md")} / ${P("motion-library.md")} / ${P("graphic-design.md")}，避免冗余全量重读）。`,
+          `文件边界：只写 ${project}/work/motion_${act.key}.md、${project}/web/segments/seg_${act.key}.js 和 ${project}/web/segments/${act.key}_handoff.js；严禁修改 index.html 或其他幕次文件。`,
+        ].join("\n\n");
+
+    const tasks = [
+      agent({
+        model: leadModel,
+        role: `${act.key} · ${splitDesign ? "剪辑合成师" : "全栈单画布合成师"}`,
+        prompt: leadPrompt,
       }),
     ];
 
@@ -25,21 +47,21 @@ const results = await Promise.all(
           role: `${act.key} · 3D 工程师`,
           prompt: [
             "你的身份：工作室的 3D 工程师，专管 Blender 与画面纵深：2.5D 深度浮雕（depth_relief.py）、多层平面与真 3D 镜头（相机投影 projection/、实景搭景 asset_lib.py、光学机制，见 3d.md §5c）。你让静态原画与空间自然活起来，画风一笔不改。性格：工程师式的严谨和节约：渲染很贵，开渲前先把方向、幅度、露边风险和停顿算清楚，整段批量渲染前先出首尾 2–3 帧样张（或用 Blender MCP 实时调光看样）定方向和幅度，不对就换方法（分层、换家族），绝不盲目加大角度；露边、撕裂、拉伸和前后穿插一个都不放过；只用数字说话，每个空间镜头带着 parallax.py 实测数据交付，不合格不交，交不了就直说差在哪。",
-            `先读：${P("crafts.md")} §7、${P("3d.md")}、${act.briefFile}。`,
+            `先读：${act.briefFile}（按需查阅 ${P("crafts.md")} §7、${P("3d.md")}）。`,
             `文件边界：只写 ${project}/blender/、${project}/web/assets/rel/ 与 ${project}/web/assets/b3d/；严禁修改任何 .js 或 index.html。所有无头 blender -b 一律经 run_queue.py blender 排队。`,
           ].join("\n\n"),
         })
       );
     }
 
-    if (act.hasDesign !== false) {
+    if (splitDesign) {
       tasks.push(
         agent({
           model: "flash",
           role: `${act.key} · 平面设计师`,
           prompt: [
             "你的身份：工作室的平面设计师，片头字、动态歌词版式、海报结构和装饰图形都出自你手：字体搭配、字号层级、留白对齐、发丝线、标尺、标签、边框和标语卡，画面上的平面设计全归你一个人。性格：先设计后动手，版式与字库没定不写动画；拒绝默认的发光字、PPT 衬条和未打包的远程字体，每一处文字与图形都从本片视觉媒介里长出来；死守可读性与手机端观感，快切歌词必须拆到逐字动态排版（graphic-design §5）；挑字有数，从内置开源字库起步，先写动效表再写代码。",
-            `先读：${P("crafts.md")} §3、${P("graphic-design.md")}、${P("motion-library.md")}、${act.briefFile}。`,
+            `先读：${act.briefFile}（按需查阅 ${P("crafts.md")} §3、${P("graphic-design.md")}、${P("motion-library.md")}）。`,
             `文件边界：只写 ${project}/design/board_${act.key}.md、${project}/work/motion_${act.key}_design.md 和 ${project}/web/segments/${act.key}_design.js（z=20）；严禁修改 seg_${act.key}.js 或 index.html。`,
             `交稿前必跑静态 motion_lint 及局部 snap.mjs 拼图（经 run_queue.py web）。`,
           ].join("\n\n"),
@@ -48,6 +70,9 @@ const results = await Promise.all(
     }
 
     const built = await Promise.all(tasks);
+    if (tier !== "ultra") {
+      return { key: act.key, tier, built, dailies: null, fix: [], qc: null };
+    }
 
     const dailies = await agent({
       model: "pro",
@@ -71,7 +96,7 @@ const results = await Promise.all(
       }),
     ];
 
-    if (act.hasDesign !== false) {
+    if (splitDesign) {
       fixTasks.push(
         agent({
           model: "flash",
@@ -110,8 +135,8 @@ const results = await Promise.all(
       ].join("\n\n"),
     });
 
-    return { key: act.key, built, dailies, fix, qc };
+    return { key: act.key, tier, built, dailies, fix, qc };
   })
 );
 
-return { results };
+return { tier, results };
