@@ -26,9 +26,9 @@ Every `invoke_subagent` call to `chiaki-writer`, `chiaki-builder`, or `chiaki-re
 
 ## 3. 宿主多模态与人音分离双轨卡点死规矩（Hard Rule: Stage-1 Dual-Stem First & Host Multimodal Split）
 
-**Stage 1 人音分离先行铁律（全宿主通用，含 Gemini / Claude / Codex）**：只要是**带人声歌词的成曲 PV / MV**，**在写分镜或锁任何一帧鼓点/歌词之前，必须先用 `scripts/stem_sync.py` 把原曲拆成纯净干人声（`vocals.wav`）与纯净伴奏（`instrumental.wav`）再分开测量**，绝不等剪完发现脱拍再返工：
-- **纯伴奏轨（`instrumental.wav`）测鼓点**：喂给 `beats.py` / `onsets.py` 与 `kick_grid.json`（消除人声齿音对宽带通量的污染，并当场抓出分段落 BPM 漂移，避免全曲死套一条常量节拍公式导致中后段脱拍）。
-- **纯干人声轨（`vocals.wav`）测歌词**：输出绝对静音背景下的分句起止（`vocal_phrases.json`）、音节起音峰、干声微切片/干声声谱图，以及可选 `faster-whisper` 逐字对齐（`vocal_words.json`，并与干声起音峰交叉吸附剔除前导气口）。
+**Stage 1 人音分离先行铁律（全宿主通用，含 Gemini / Claude / Codex）**：只要用户提供了外部音乐/配乐文件（无论是否提前说明有无歌词），**在写分镜或锁任何一帧鼓点/歌词之前，第一件事就是先跑 `scripts/stem_sync.py`** 分离并自动判定人声是否存在（`has_vocals`），绝不等剪完发现脱拍再返工：
+- **检出人声（`track_type: vocal_song`）**：双轨分开测量——**纯伴奏轨（`instrumental.wav`）**喂给 `beats.py` / `onsets.py` 与 `kick_grid.json`（消除人声齿音污染并当场抓出分段落 BPM 漂移）；**纯干人声轨（`vocals.wav`）**输出静音边界分句（`vocal_phrases.json`）、音节起音峰、干声微切片/声谱图与可选 `faster-whisper` 逐字对齐（`vocal_words.json`，自动标出前导气口）。
+- **无人声纯器乐（`track_type: instrumental`）**：`stem_sync.py` 会自动跳过干声图表与 Whisper，直接切纯音乐模式用 `kick_grid.json` + `beats.py`/`onsets.py` 卡鼓（仅由 `mgaudio` 现成生成的纯程序配乐可跳过分轨）。
 
 **宿主看片/听音通道铁律（不可违背）**：根据当前运行的宿主模型能力严格分流看视频与听音频方式，绝不把非多模态宿主的妥协手段套在原生多模态宿主上：
 

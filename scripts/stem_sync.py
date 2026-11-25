@@ -449,6 +449,10 @@ def analyze_dry_vocals(
     flux_norm = flux / (float(np.percentile(flux, 98)) + 1e-6)
 
     active = rms_db > -36.0
+    strong_frames = int(np.sum(rms_db > -34.0))
+    vocal_active_s = strong_frames / fps if fps > 0 else 0.0
+    vocal_active_ratio = strong_frames / max(1, n_f)
+    vocal_peak_db = float(rms_db.max()) if n_f > 0 else -120.0
     gap_merge = max(4, int(round(fps * 0.17)))
     min_pk_gap = max(3, int(round(fps * 0.12)))
 
@@ -492,85 +496,94 @@ def analyze_dry_vocals(
         else:
             i += 1
 
-    charts_dir = out_dir / "vocal_charts"
-    charts_dir.mkdir(parents=True, exist_ok=True)
-    chunk_f = max(int(round(chunk_s * fps)), int(round(fps * 3)))
+    has_vocals = (vocal_peak_db > -30.0) and (len(phrases) >= 1) and ((vocal_active_s >= 1.2) or (vocal_active_ratio >= 0.03))
+    track_type = "vocal_song" if has_vocals else "instrumental"
+
     slices = []
-    smax = max(1.0, float(np.percentile(spec, 99.5))) if n_f > 0 else 1.0
+    if has_vocals:
+        charts_dir = out_dir / "vocal_charts"
+        charts_dir.mkdir(parents=True, exist_ok=True)
+        chunk_f = max(int(round(chunk_s * fps)), int(round(fps * 3)))
+        smax = max(1.0, float(np.percentile(spec, 99.5))) if n_f > 0 else 1.0
 
-    for c_idx, a in enumerate(range(0, n_f, chunk_f)):
-        b = min(n_f, a + chunk_f)
-        wav_p = charts_dir / f"dry_{c_idx:02d}_f{a:04d}_f{b:04d}.wav"
-        subprocess.run(
-            [
-                ff_path, "-v", "error", "-y",
-                "-ss", f"{a / fps:.4f}", "-t", f"{(b - a) / fps:.4f}",
-                "-i", str(voc_wav), "-ac", "1", "-ar", "24000", "-sample_fmt", "s16", str(wav_p),
-            ],
-            check=True,
-        )
-        entry = {"wav": str(wav_p), "start_f": a, "end_f": b}
+        for c_idx, a in enumerate(range(0, n_f, chunk_f)):
+            b = min(n_f, a + chunk_f)
+            wav_p = charts_dir / f"dry_{c_idx:02d}_f{a:04d}_f{b:04d}.wav"
+            subprocess.run(
+                [
+                    ff_path, "-v", "error", "-y",
+                    "-ss", f"{a / fps:.4f}", "-t", f"{(b - a) / fps:.4f}",
+                    "-i", str(voc_wav), "-ac", "1", "-ar", "24000", "-sample_fmt", "s16", str(wav_p),
+                ],
+                check=True,
+            )
+            entry = {"wav": str(wav_p), "start_f": a, "end_f": b}
 
-        if render_charts:
-            from PIL import Image, ImageDraw
-            px_per_f = 6
-            W = (b - a) * px_per_f
-            H_spec, H_env, H_hdr = 200, 110, 40
-            H = H_hdr + H_spec + H_env
-            sub = np.clip(spec[a:b] / smax, 0.0, 1.0)
-            # Vectorized spectrogram RGB rendering (fast pure numpy)
-            spec_t = sub[:, ::-1].T  # (freq_bins, frames)
-            r = np.clip(spec_t * 320.0, 0, 255).astype(np.uint8)
-            g = np.clip(np.maximum(0.0, spec_t - 0.25) * 280.0, 0, 255).astype(np.uint8)
-            bl = np.clip(spec_t * 160.0 + np.where(spec_t > 0.1, 60.0, 0.0), 0, 255).astype(np.uint8)
-            rgb = np.stack([r, g, bl], axis=-1)
-            spec_im = Image.fromarray(rgb, mode="RGB").resize((W, H_spec), Image.BILINEAR)
+            if render_charts:
+                from PIL import Image, ImageDraw
+                px_per_f = 6
+                W = (b - a) * px_per_f
+                H_spec, H_env, H_hdr = 200, 110, 40
+                H = H_hdr + H_spec + H_env
+                sub = np.clip(spec[a:b] / smax, 0.0, 1.0)
+                # Vectorized spectrogram RGB rendering (fast pure numpy)
+                spec_t = sub[:, ::-1].T  # (freq_bins, frames)
+                r = np.clip(spec_t * 320.0, 0, 255).astype(np.uint8)
+                g = np.clip(np.maximum(0.0, spec_t - 0.25) * 280.0, 0, 255).astype(np.uint8)
+                bl = np.clip(spec_t * 160.0 + np.where(spec_t > 0.1, 60.0, 0.0), 0, 255).astype(np.uint8)
+                rgb = np.stack([r, g, bl], axis=-1)
+                spec_im = Image.fromarray(rgb, mode="RGB").resize((W, H_spec), Image.BILINEAR)
 
-            im = Image.new("RGB", (W, H), (14, 15, 20))
-            im.paste(spec_im, (0, H_hdr))
-            dr = ImageDraw.Draw(im)
+                im = Image.new("RGB", (W, H), (14, 15, 20))
+                im.paste(spec_im, (0, H_hdr))
+                dr = ImageDraw.Draw(im)
 
-            y0_env = H_hdr + H_spec
-            for idx_i in range(b - a):
-                x0 = idx_i * px_per_f
-                db = max(-55.0, min(0.0, float(rms_db[a + idx_i])))
-                h_db = int(((db + 55.0) / 55.0) * (H_env - 12))
-                col_bar = (60, 180, 255) if rms_db[a + idx_i] > -36.0 else (45, 50, 62)
-                dr.rectangle([x0, y0_env + H_env - h_db, x0 + px_per_f - 2, y0_env + H_env], fill=col_bar)
-                fl = min(1.0, float(flux_norm[a + idx_i]))
-                if fl > 0.22 and rms_db[a + idx_i] > -36.0:
-                    h_fl = int(fl * (H_env - 16))
-                    dr.rectangle([x0 + 1, y0_env + H_env - h_fl, x0 + px_per_f - 2, y0_env + H_env], fill=(255, 60, 100))
+                y0_env = H_hdr + H_spec
+                for idx_i in range(b - a):
+                    x0 = idx_i * px_per_f
+                    db = max(-55.0, min(0.0, float(rms_db[a + idx_i])))
+                    h_db = int(((db + 55.0) / 55.0) * (H_env - 12))
+                    col_bar = (60, 180, 255) if rms_db[a + idx_i] > -36.0 else (45, 50, 62)
+                    dr.rectangle([x0, y0_env + H_env - h_db, x0 + px_per_f - 2, y0_env + H_env], fill=col_bar)
+                    fl = min(1.0, float(flux_norm[a + idx_i]))
+                    if fl > 0.22 and rms_db[a + idx_i] > -36.0:
+                        h_fl = int(fl * (H_env - 16))
+                        dr.rectangle([x0 + 1, y0_env + H_env - h_fl, x0 + px_per_f - 2, y0_env + H_env], fill=(255, 60, 100))
 
-            for f_abs in range(a - (a % 5), b + 1, 5):
-                if f_abs < a:
-                    continue
-                xx = (f_abs - a) * px_per_f
-                major = (f_abs % 10 == 0)
-                dr.line([(xx, H_hdr), (xx, H)], fill=(120, 125, 140) if major else (45, 48, 58))
-                if major:
-                    dr.text((xx + 2, 4), f"f{f_abs}", fill=(255, 240, 100))
-                    dr.text((xx + 2, 20), f"{f_abs / fps:.1f}s", fill=(160, 180, 220))
+                for f_abs in range(a - (a % 5), b + 1, 5):
+                    if f_abs < a:
+                        continue
+                    xx = (f_abs - a) * px_per_f
+                    major = (f_abs % 10 == 0)
+                    dr.line([(xx, H_hdr), (xx, H)], fill=(120, 125, 140) if major else (45, 48, 58))
+                    if major:
+                        dr.text((xx + 2, 4), f"f{f_abs}", fill=(255, 240, 100))
+                        dr.text((xx + 2, 20), f"{f_abs / fps:.1f}s", fill=(160, 180, 220))
 
-            for p in phrases:
-                for pk in p["syllable_onsets"]:
-                    if a <= pk < b:
-                        xx = (pk - a) * px_per_f
-                        dr.line([(xx, H_hdr), (xx, H)], fill=(255, 80, 120), width=1)
-                if a <= p["start_f"] < b:
-                    xx = (p["start_f"] - a) * px_per_f
-                    dr.line([(xx, H_hdr), (xx, H)], fill=(80, 255, 130), width=2)
+                for p in phrases:
+                    for pk in p["syllable_onsets"]:
+                        if a <= pk < b:
+                            xx = (pk - a) * px_per_f
+                            dr.line([(xx, H_hdr), (xx, H)], fill=(255, 80, 120), width=1)
+                    if a <= p["start_f"] < b:
+                        xx = (p["start_f"] - a) * px_per_f
+                        dr.line([(xx, H_hdr), (xx, H)], fill=(80, 255, 130), width=2)
 
-            png_p = charts_dir / f"dry_{c_idx:02d}_f{a:04d}_f{b:04d}.png"
-            im.save(png_p)
-            entry["png"] = str(png_p)
-        slices.append(entry)
+                png_p = charts_dir / f"dry_{c_idx:02d}_f{a:04d}_f{b:04d}.png"
+                im.save(png_p)
+                entry["png"] = str(png_p)
+            slices.append(entry)
 
     payload = {
         "source": str(voc_wav),
         "fps": fps,
         "duration_s": round(dur_s, 3),
         "total_frames": n_f,
+        "has_vocals": has_vocals,
+        "track_type": track_type,
+        "vocal_active_s": round(vocal_active_s, 2),
+        "vocal_active_ratio": round(vocal_active_ratio, 4),
+        "vocal_peak_db": round(vocal_peak_db, 1),
         "phrase_count": len(phrases),
         "syllable_onset_count": len(all_onsets),
         "phrases": phrases,
@@ -641,7 +654,14 @@ def main() -> int:
     out_dir = Path(args.out).expanduser().resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
     model_dir = Path(args.model_dir).expanduser().resolve() if args.model_dir else _default_model_dir()
-    whisper_dir = Path(args.whisper_dir).expanduser().resolve() if args.whisper_dir else (model_dir / "whisper")
+    if args.whisper_dir:
+        whisper_dir = Path(args.whisper_dir).expanduser().resolve()
+    elif os.environ.get("CHIAKI_WHISPER_MODELS", "").strip():
+        whisper_dir = Path(os.environ["CHIAKI_WHISPER_MODELS"]).expanduser().resolve()
+    elif (model_dir.parent / "whisper_models").exists():
+        whisper_dir = (model_dir.parent / "whisper_models").resolve()
+    else:
+        whisper_dir = model_dir / "whisper"
     ff = _find_ffmpeg(args.ffmpeg)
     worker_env = {**os.environ, "CHIAKI_FFMPEG": ff}
 
@@ -710,8 +730,16 @@ def main() -> int:
         voc_wav, ff, args.fps, out_dir, chunk_s=args.chunk, render_charts=not args.no_charts
     )
 
+    has_vocals = bool(vocal_report.get("has_vocals", False))
     whisper_report = None
-    if args.whisper:
+    if args.whisper and not has_vocals:
+        print(
+            f"[stem_sync] Auto-detected pure instrumental track "
+            f"(vocal_active={vocal_report['vocal_active_s']:.2f}s / {vocal_report['vocal_active_ratio']*100:.1f}%, peak={vocal_report['vocal_peak_db']:.1f} dB); "
+            f"skipping dry-vocal charts & Whisper.",
+            flush=True,
+        )
+    elif args.whisper:
         if not _python_has(stem_py, "faster_whisper"):
             print("[stem_sync] WARN: --whisper requested but `faster-whisper` is not installed; skipping word alignment.", file=sys.stderr)
         else:
@@ -735,6 +763,10 @@ def main() -> int:
     summary = {
         "backend": backend_used,
         "fps": args.fps,
+        "has_vocals": has_vocals,
+        "track_type": vocal_report["track_type"],
+        "vocal_active_s": vocal_report["vocal_active_s"],
+        "vocal_active_ratio": vocal_report["vocal_active_ratio"],
         "vocals_wav": str(voc_wav),
         "instrumental_wav": str(ins_wav),
         "kick_grid_json": str(out_dir / "kick_grid.json"),
@@ -749,9 +781,15 @@ def main() -> int:
     (out_dir / "stem_sync.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
 
     # Compact human/agent summary markdown
+    track_badge = (
+        f"`vocal_song` (has_vocals=true · active `{vocal_report['vocal_active_s']:.1f}s` / `{vocal_report['vocal_active_ratio']*100:.1f}%`)"
+        if has_vocals
+        else f"`instrumental` (has_vocals=false · active `{vocal_report['vocal_active_s']:.2f}s` / `{vocal_report['vocal_active_ratio']*100:.1f}%` — pure instrumental auto-detected, vocal charts/Whisper skipped)"
+    )
     md_lines = [
         "# Stage-1 Dual-Stem Audio Sync Summary",
         "",
+        f"- **Track Type**: {track_badge}",
         f"- **Backend**: `{backend_used}` · **FPS**: `{args.fps:g}`",
         f"- **Pure Instrumental (for beats/kicks)**: `{ins_wav}`",
         f"- **Pure Dry Vocals (for lyrics/ear/spec)**: `{voc_wav}`",
@@ -765,13 +803,15 @@ def main() -> int:
             md_lines.append(f"- {w}")
     if whisper_report:
         md_lines.append(f"- **Whisper Word Alignment**: `{len(whisper_report.get('segments', []))} segments` -> `vocal_words.json` (leading-breath segments flagged: `{whisper_report.get('leading_breath_segments_flagged', 0)}`)")
+    beat_target = ins_wav if has_vocals else (Path(args.audio).resolve() if args.audio and os.path.exists(args.audio) else ins_wav)
     md_lines += [
         "",
-        "## Recommended Next Commands (always feed the separated stems, NOT the mixed track!)",
-        f"- Beat grid (pure backing): `python -X utf8 <sk>/scripts/beats.py \"{ins_wav}\" --fps {args.fps:g} --json work/beats.json`",
-        f"- Exact drop/hit onsets (pure backing): `python -X utf8 <sk>/scripts/onsets.py \"{ins_wav}\" <f0-f1> --fps {args.fps:g}`",
-        f"- Tight lyric micro-WAVs / dry specs (pure vocals): `python -X utf8 <sk>/scripts/vocal_spec.py \"{voc_wav}\" --out work/vocal --fps {args.fps:g} [--wav-only]`",
+        "## Recommended Next Commands",
+        f"- Beat grid: `python -X utf8 <sk>/scripts/beats.py \"{beat_target}\" --fps {args.fps:g} --json work/beats.json`",
+        f"- Exact drop/hit onsets: `python -X utf8 <sk>/scripts/onsets.py \"{beat_target}\" <f0-f1> --fps {args.fps:g}`",
     ]
+    if has_vocals:
+        md_lines.append(f"- Tight lyric micro-WAVs / dry specs (pure vocals): `python -X utf8 <sk>/scripts/vocal_spec.py \"{voc_wav}\" --out work/vocal --fps {args.fps:g} [--wav-only]`")
     (out_dir / "stem_sync_summary.md").write_text("\n".join(md_lines) + "\n", encoding="utf-8")
 
     print("\n".join(md_lines))

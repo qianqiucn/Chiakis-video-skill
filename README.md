@@ -78,6 +78,9 @@
 
 > **Flagship Scope / 旗舰定位说明**：面向 **原创 2D + Three.js 风格化 3D + Blender 电影级 3D 动效、快剪 PV/MV、动态歌词排版、品牌片头、MAD 与复刻学习** 的全流程制片技能。Three.js 与 Blender 并列旗舰品质硬性规格，用户可在需求表自由选择（`全能双 3D 旗舰` / `Three.js 风格化 3D` / `Blender 电影级 3D` / `纯 2D`）。
 >
+> **✨ What's New in `v1.9.1`（Stage 1 给完歌自动判别有无唱词 `has_vocals` + 自动复用同级 Whisper 缓存）**：
+> - **`scripts/stem_sync.py` 自动判定 `vocal_song` vs `instrumental`**：拿到任何外部音乐文件，Stage 1 第一件事统一先跑 `stem_sync.py`——拆轨后自动检测 `vocals.wav` 有效活跃时长/占比与峰值，**检出人声**则走双轨分离卡鼓+卡字；**若为纯器乐（`has_vocals: false`）**则自动跳过空干声切片、声谱图与 Whisper，直接切纯音乐鼓点模式，零误判也不浪费时间；同步支持 `CHIAKI_WHISPER_MODELS` 及自动探测 `<model-dir>/../whisper_models` 复用本地权重。
+>
 > **✨ What's New in `v1.9.0`（Stage 1 人音双轨分离卡点引擎 `scripts/stem_sync.py` + 安装器内置分人声与逐字对齐依赖）**：
 > - **新增 `scripts/stem_sync.py`（Stage 1 开剪前先分人声与伴奏，双轨分别锁鼓点与歌词）**：
 >   - **一刀分离、双倍精度**：自动调用本地 **`audio-separator`**（默认 SOTA `vocals_mel_band_roformer.ckpt`，`--fast` 可切 60 MB 轻量 ONNX `UVR-MDX-NET-Inst_HQ_3.onnx`；亦兼容 `demucs` 与独立环境 `CHIAKI_STEM_PYTHON`）将原曲拆成 **`vocals.wav`**（纯净干人声）与 **`instrumental.wav`**（纯净伴奏）；

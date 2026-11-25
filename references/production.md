@@ -76,16 +76,16 @@ python -X utf8 <sk>/scripts/run_queue.py --status
 - **Generate open-source font end-credits**: `python -X utf8 <sk>/scripts/fonts.py credits <project>`
 
 ### Audio, Dual-Stem Separation & Rhythm Analysis (`stem_sync.py`, `beats.py`, `onsets.py`, `vocal_spec.py`)
-- **Stage-1 Vocal/Instrumental Stem Separation & Dual-Stem Sync (`stem_sync.py` — run FIRST on any vocal song PV before storyboarding or locking beats/lyrics)**:
+- **Stage-1 Vocal/Instrumental Stem Separation & Auto Vocal-Presence Sync (`stem_sync.py` — run FIRST on any user-provided music track before storyboarding or locking beats/lyrics)**:
   ```bash
-  # SOTA Mel-Band RoFormer split + pure-backing kick/BPM drift check + dry-vocal phrases/charts + optional faster-whisper word alignment:
+  # SOTA Mel-Band RoFormer split + auto vocal-presence detection + pure-backing kick/BPM drift check + dry-vocal phrases/charts + optional faster-whisper word alignment:
   python -X utf8 <sk>/scripts/stem_sync.py song.wav --out work/stems --fps 30 --whisper --lang ja --lyrics work/lyrics.txt
   # Faster lightweight 60 MB ONNX model (CPU-friendly):
   python -X utf8 <sk>/scripts/stem_sync.py song.wav --out work/stems --fps 30 --fast
   # Reuse an existing audio-separator / demucs venv without reinstalling:
   python -X utf8 <sk>/scripts/stem_sync.py song.wav --out work/stems --fps 30 --stem-python "<path/to/stem-venv/python>" --model-dir "<path/to/stem-models>"
   ```
-  - Produces `work/stems/vocals.wav` (dry vocals) + `work/stems/instrumental.wav` (pure backing/drums), `kick_grid.json` (with 30 s per-section local BPM drift warnings), `vocal_phrases.json`, `vocal_charts/dry_*.wav` + `dry_*.png`, and optional `vocal_words.json` (cross-snapped to dry vocal flux attacks to flag Whisper leading-breath padding).
+  - Automatically classifies `track_type` (`vocal_song` vs `instrumental` via `has_vocals`): when vocals are present, produces `work/stems/vocals.wav` + `work/stems/instrumental.wav`, `kick_grid.json` (with 30 s per-section local BPM drift warnings), `vocal_phrases.json`, `vocal_charts/dry_*.wav` + `dry_*.png`, and optional `vocal_words.json` (cross-snapped to dry vocal flux attacks to flag Whisper leading-breath padding; auto-discovers `CHIAKI_WHISPER_MODELS` or sibling `whisper_models/`). When pure instrumental is detected, automatically skips empty vocal charts & Whisper.
 - **BPM, beat grid & top accents** (stdlib only — feed `work/stems/instrumental.wav` on vocal songs!): `python -X utf8 <sk>/scripts/beats.py work/stems/instrumental.wav --fps 30 --json work/beats.json`
 - **Exact broadband onset frame** (numpy — feed `work/stems/instrumental.wav` on vocal songs!): `python -X utf8 <sk>/scripts/onsets.py work/stems/instrumental.wav 210-240 420-450 --fps 30`
 - **Targeted dry-vocal micro-WAVs / spectrograms** (`vocal_spec.py` — feed `work/stems/vocals.wav`!): `python -X utf8 <sk>/scripts/vocal_spec.py work/stems/vocals.wav --out work/vocal --fps 30 [--wav-only] [--ranges f4200-f4725]`
