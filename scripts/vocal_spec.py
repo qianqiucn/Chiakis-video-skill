@@ -1,6 +1,9 @@
 """vocal_spec.py — host-aware vocal & lyric timing helper for Chiaki's-video-skill.
 
 Drum/onset trackers (`beats.py`, `onsets.py`) lock percussion transients, NOT human vocal syllables.
+Best practice (Stage 1 Dual-Stem Rule): run `scripts/stem_sync.py <song> --out work/stems --fps <FPS>` FIRST,
+then feed the isolated dry vocal stem (`work/stems/vocals.wav`) into `vocal_spec.py` (zero drum/synth bleed!),
+and feed the isolated instrumental stem (`work/stems/instrumental.wav`) into `beats.py` / `onsets.py`.
 Hard Host-Split Rule (rules/AGENTS.md §3):
   - Gemini hosts (native audio/video multimodal): run with `--wav-only` to slice clean 3-6 s mono WAV
     clips quickly, then listen directly via multimodal `read_file` on the WAVs (render spectrograms only

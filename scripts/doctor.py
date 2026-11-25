@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import importlib
+import importlib.util
 import json
 import os
 import re
@@ -210,6 +211,41 @@ def check_py_pkgs():
     else:
         warn("Vision/Depth AI (optional)", f"missing {', '.join(dmiss)} — optional, for vision/cutout.py, part_cutout.py & depth.py (`setup_env.py --profile full` auto-detects NVIDIA CUDA)", tier="optional")
 
+    # Vocal / instrumental stem separation + word alignment (scripts/stem_sync.py)
+    stem_py = os.environ.get("CHIAKI_STEM_PYTHON", "").strip()
+    sep_ok = False
+    sep_backend = ""
+    wh_ok = False
+    if stem_py and os.path.exists(stem_py):
+        try:
+            r = subprocess.run(
+                [stem_py, "-c", "import importlib.util as u; print(int(bool(u.find_spec('audio_separator'))), int(bool(u.find_spec('demucs'))), int(bool(u.find_spec('faster_whisper'))))"],
+                capture_output=True, text=True, timeout=15,
+            )
+            if r.returncode == 0 and len(r.stdout.strip().split()) == 3:
+                a_s, dm, fw = [int(x) for x in r.stdout.strip().split()]
+                sep_ok = bool(a_s or dm)
+                sep_backend = "audio-separator" if a_s else ("demucs" if dm else "")
+                wh_ok = bool(fw)
+        except Exception:
+            pass
+    else:
+        stem_py = ""
+        for name, mod in (("audio-separator", "audio_separator"), ("demucs", "demucs")):
+            if importlib.util.find_spec(mod) is not None:
+                sep_ok = True
+                sep_backend = name
+                break
+        wh_ok = importlib.util.find_spec("faster_whisper") is not None
+
+    stem_models = os.environ.get("CHIAKI_STEM_MODELS", "").strip() or str((Path.home() / ".chiaki-studio" / "stem-models").resolve())
+    via = f" via CHIAKI_STEM_PYTHON={stem_py}" if stem_py else ""
+    if sep_ok:
+        wh_note = " + faster-whisper" if wh_ok else " (install `faster-whisper` for word-level lyric alignment)"
+        ok("Vocal/Drum Stem Sync", f"{sep_backend}{wh_note} ready{via}; models={stem_models}", tier="optional")
+    else:
+        warn("Vocal/Drum Stem Sync", "missing audio-separator/demucs — recommended for song/lyric PV Stage-1 vocal+drum split (`setup_env.py` installs it by default, or set CHIAKI_STEM_PYTHON)", tier="optional")
+
 
 def check_bundled():
     cat = ROOT / "assets" / "fonts" / "catalog.json"
@@ -308,6 +344,8 @@ def main() -> int:
                 "CHIAKI_MEMORY_DIR": os.environ.get("CHIAKI_MEMORY_DIR", ""),
                 "CHIAKI_MEDIA_CACHE": os.environ.get("CHIAKI_MEDIA_CACHE", ""),
                 "CHIAKI_FOOTAGE_DIR": os.environ.get("CHIAKI_FOOTAGE_DIR", ""),
+                "CHIAKI_STEM_PYTHON": os.environ.get("CHIAKI_STEM_PYTHON", ""),
+                "CHIAKI_STEM_MODELS": os.environ.get("CHIAKI_STEM_MODELS", ""),
                 "HF_HOME": os.environ.get("HF_HOME", ""),
             },
             "studio_memory": {

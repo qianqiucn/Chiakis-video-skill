@@ -75,9 +75,20 @@ python -X utf8 <sk>/scripts/run_queue.py --status
   ```
 - **Generate open-source font end-credits**: `python -X utf8 <sk>/scripts/fonts.py credits <project>`
 
-### Audio & Rhythm Analysis (`beats.py`, `onsets.py`)
-- **BPM, beat grid & top accents** (stdlib only): `python -X utf8 <sk>/scripts/beats.py music.mp3 --fps 24 --json work/beats.json`
-- **Exact broadband onset frame** (numpy): `python -X utf8 <sk>/scripts/onsets.py music.mp3 210-240 420-450 --fps 24`
+### Audio, Dual-Stem Separation & Rhythm Analysis (`stem_sync.py`, `beats.py`, `onsets.py`, `vocal_spec.py`)
+- **Stage-1 Vocal/Instrumental Stem Separation & Dual-Stem Sync (`stem_sync.py` — run FIRST on any vocal song PV before storyboarding or locking beats/lyrics)**:
+  ```bash
+  # SOTA Mel-Band RoFormer split + pure-backing kick/BPM drift check + dry-vocal phrases/charts + optional faster-whisper word alignment:
+  python -X utf8 <sk>/scripts/stem_sync.py song.wav --out work/stems --fps 30 --whisper --lang ja --lyrics work/lyrics.txt
+  # Faster lightweight 60 MB ONNX model (CPU-friendly):
+  python -X utf8 <sk>/scripts/stem_sync.py song.wav --out work/stems --fps 30 --fast
+  # Reuse an existing audio-separator / demucs venv without reinstalling:
+  python -X utf8 <sk>/scripts/stem_sync.py song.wav --out work/stems --fps 30 --stem-python "<path/to/stem-venv/python>" --model-dir "<path/to/stem-models>"
+  ```
+  - Produces `work/stems/vocals.wav` (dry vocals) + `work/stems/instrumental.wav` (pure backing/drums), `kick_grid.json` (with 30 s per-section local BPM drift warnings), `vocal_phrases.json`, `vocal_charts/dry_*.wav` + `dry_*.png`, and optional `vocal_words.json` (cross-snapped to dry vocal flux attacks to flag Whisper leading-breath padding).
+- **BPM, beat grid & top accents** (stdlib only — feed `work/stems/instrumental.wav` on vocal songs!): `python -X utf8 <sk>/scripts/beats.py work/stems/instrumental.wav --fps 30 --json work/beats.json`
+- **Exact broadband onset frame** (numpy — feed `work/stems/instrumental.wav` on vocal songs!): `python -X utf8 <sk>/scripts/onsets.py work/stems/instrumental.wav 210-240 420-450 --fps 30`
+- **Targeted dry-vocal micro-WAVs / spectrograms** (`vocal_spec.py` — feed `work/stems/vocals.wav`!): `python -X utf8 <sk>/scripts/vocal_spec.py work/stems/vocals.wav --out work/vocal --fps 30 [--wav-only] [--ranges f4200-f4725]`
 
 ### Reference Video Analysis (`motion.py`, `cadence.py`, `look.py`, `measure.py`, `framediff.py`)
 - **In-shot motion energy & front/back ratio**: `python -X utf8 <sk>/scripts/motion.py film.mp4 0 15 [ref.mp4 0 15]`

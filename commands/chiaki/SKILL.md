@@ -11,7 +11,7 @@ description: Chiaki's-video-skill 统一快捷入口（/chiaki、/Chiaki 与 Cod
 
 > **硬性工作室分工纪律**：你只担任**总导演兼制片人**，绝不退化成「主线程大包大揽写完所有代码再自审」。每次调用 `chiaki-writer` / `chiaki-builder` / `chiaki-reviewer`（或 Codex/Claude 等价子代理）必须在 Prompt 顶部贴入 `references/personas.md` 原话身份与性格、附 `references/crafts.md` 工种卡与任务简报、并显式锁定 `Model`（`pro` / `flash` / `flash_lite`）；所有无头 Chrome 与 `blender -b` 命令一律经 `<SKILL_DIR>/scripts/run_queue.py` 排队执行。
 >
-> **宿主多模态死规矩（`rules/AGENTS.md` §3）**：**Gemini 宿主（Antigravity）**听音与审片**必须直接用 `read_file` 原生多模态直听 `.wav`/`.mp3`（`vocal_spec.py --wav-only`）并直看带声 720p/1080p `.mp4` 成片/分幕视频**，严禁跳过看视频仅凭静态拼图或频谱图审节奏、动效与对口型；**Claude / Codex 宿主**严格走**传统频谱分析（`vocal_spec.py` 声谱图 + `beats.py`/`onsets.py`）+ `snap.mjs` 密集截图拼图 + `motion_lint --curves` SVG 曲线图**路线。
+> **宿主多模态与人音双轨分离死规矩（`rules/AGENTS.md` §3）**：带人声歌词的成曲 PV **在写分镜或锁帧前必须先跑 `scripts/stem_sync.py`** 拆出纯干人声（`vocals.wav`）与纯伴奏（`instrumental.wav`）——伴奏轨喂 `beats.py`/`onsets.py` 精准抓鼓与局部 BPM 漂移，干人声轨锁逐字；**Gemini 宿主（Antigravity）**听音与审片**必须直接用 `read_file` 原生多模态直听干人声 `.wav` 并直看带声 720p/1080p `.mp4` 成片/分幕视频**，严禁跳过看视频仅凭静态拼图或混合频谱图审节奏、动效与对口型；**Claude / Codex 宿主**严格走**干声声谱（`dry_*.png` / `vocal_spec.py vocals.wav` + `vocal_words.json`）+ 纯伴奏 `beats.py`/`onsets.py` + `snap.mjs` 密集截图拼图 + `motion_lint --curves` SVG 曲线图**路线。
 >
 > **Gemini / AGY 专属导演纪律（`rules/AGENTS.md` §4–§5 · Claude Opus 豁免）**：在 Gemini / Antigravity 会话中，> 30 s 中长片须先做出 **10–16 s Gate A 黄金样板**（含总导演独占共享引擎 + 分幕 HTML + `scripts/visual_metrics.py` 饱和度/实黑/帧差波形体检）再开 Swarm 铺全片；Swarm 指挥须大改先 `kill` 清上下文、动态歌词 PV 优先 1 幕 1 全栈单画布、两段门禁审分镜跨幕查重并锁 `open.actN` 纯函数预调用接缝、总导演集中出图（≤ 4 张/幕）+ 占位并行 + 交图附朝向/裁切/尺度/动效备注、公屏 3–6 行去情绪短帖；把 Skill 当零件军火库灵活组合 `T3.look.coat`/`bakePrint`/`lumaMatte`/`okMix` + `T3.blur.shutter`（不服务母题的工具主动弃用）；汇报只写事实与数字严禁自夸词；Claude Opus 完全豁免此节额外限制。
 
@@ -42,11 +42,12 @@ description: Chiaki's-video-skill 统一快捷入口（/chiaki、/Chiaki 与 Cod
 1. **只读全盘体检**：运行 `python -X utf8 "<SKILL_DIR>/scripts/doctor.py" --json`，把结果整理成一张简明中文状态表发给用户（区分「核心 2D 必选」「Blender 3D / MCP 可选」「2.5D AI 深度图可选」）。
 2. **向用户确认三件事**（若核心依赖已全绿且 `studio_memory.initialized` 为 `true`，直接告知已就绪无需配置；否则把未配项一次问清）：
    - **① 需要哪一档功能？**
-     - **`2d`（轻量纯 2D 版）**：仅补齐核心渲染/字体/音效依赖（`requirements.txt`，约 180 MB），不装 Blender 和 PyTorch；
-     - **`3d`（2D + Blender 3D / MCP 旗舰版）**：核心 2D + 绑定 Blender 路径（`CHIAKI_BLENDER`）+ 免费 3D 素材缓存（`CHIAKI_ASSETS3D`）+ 自动把零依赖 `scripts/blender/mcp_bridge.py` 接入当前 AI 客户端（Antigravity / Codex / Claude Code）；
-     - **`full`（全功能满血版）**：以上全部 + PyTorch 视觉依赖（`vision/cutout.py` MIT 2K 抠图、`vision/part_cutout.py` 二次元 19 部位精拆与 `vision/depth.py` 深度图，约 1.5–3 GB）。
+     - **`2d`（2D 动效 + 人音分离卡点版）**：核心渲染/字体/音效依赖（`requirements.txt`）+ **人声/伴奏分离与逐字对齐工具（`audio-separator` + `faster-whisper`，自动适配 N 卡 CUDA；如只需 ~180 MB 极简纯 2D 可加 `--no-stems` 跳过）**；
+     - **`3d`（2D + 人音分离 + Blender 3D / MCP 旗舰版）**：以上全部 + 绑定 Blender 路径（`CHIAKI_BLENDER`）+ 免费 3D 素材缓存（`CHIAKI_ASSETS3D`）+ 自动把零依赖 `scripts/blender/mcp_bridge.py` 接入当前 AI 客户端（Antigravity / Codex / Claude Code）；
+     - **`full`（全功能满血版）**：以上全部 + PyTorch 视觉依赖（`vision/cutout.py` MIT 2K 抠图、`vision/part_cutout.py` 二次元 19 部位精拆与 `vision/depth.py` 深度图）。
    - **② 想安装/存放到哪个目录或盘符？**
      - Python 虚拟环境路径（例如默认 `<SKILL_DIR>/.venv`，或指定非 C 盘目录如 `D:\AI\chiaki-venv`；也可选择直接装入当前 Python）；
+     - 分人声/Whisper 模型缓存目录（`CHIAKI_STEM_MODELS`，建议放非 C 盘；如本机已有现成 `audio-separator`/`demucs` 环境可直接传 `--stem-python <python路径>` 复用，免重装）；
      - 若选 `3d`/`full`：本机已有 `blender.exe` 的路径（若未装，给出 Windows `winget` / macOS `brew` / 官网安装引导）、3D 素材库缓存目录（`CHIAKI_ASSETS3D`）、以及是否自动配置当前 AI 客户端的 Blender MCP；
      - 若选 `full`：HuggingFace AI 模型权重缓存目录（`HF_HOME`，建议指到非 C 盘目录防占满系统盘；`setup_env.py` 会自动检测 N 卡安装 CUDA `cu128` 版 PyTorch）；
      - 可选共享字体库目录（`CHIAKI_FONTS`）。
@@ -54,12 +55,12 @@ description: Chiaki's-video-skill 统一快捷入口（/chiaki、/Chiaki 与 Cod
      - 选模式：`ask`（默认推荐：每片完片出 ≤ 5 行确认卡，点头再记）/ `auto`（完片自动沉淀）/ `readonly`（只读不写）/ `off`（关闭）；
      - 存哪儿：默认 `~/.chiaki-studio/`（独立于 Skill 仓库、升级永不丢失、三端共享），或指定自定义目录（`CHIAKI_MEMORY_DIR`）。
 3. **经用户点头后一键落地并复查**：
-   - 运行 `python -X utf8 "<SKILL_DIR>/scripts/setup_env.py" --profile <2d|3d|full> --venv "<用户指定路径>" [--blender "<路径>"] [--assets3d "<路径>"] [--fonts-dir "<路径>"] [--hf-home "<路径>"] [--memory-mode <ask|auto|readonly|off>] [--memory-dir "<路径>"] [--wire-mcp <antigravity|codex|claude|none>]`（先跑 `--dry-run` 或直接按确认方案执行）。
+   - 运行 `python -X utf8 "<SKILL_DIR>/scripts/setup_env.py" --profile <2d|3d|full> --venv "<用户指定路径>" [--stem-models "<路径>" | --stem-python "<路径>" | --no-stems] [--blender "<路径>"] [--assets3d "<路径>"] [--fonts-dir "<路径>"] [--hf-home "<路径>"] [--memory-mode <ask|auto|readonly|off>] [--memory-dir "<路径>"] [--wire-mcp <antigravity|codex|claude|none>]`（先跑 `--dry-run` 或直接按确认方案执行）。
    - 若缺 **Node.js ≥ 22** 或 **Chrome/Edge** 等系统软件，给出对应系统的一键命令（如 `winget` / `brew`）或在用户明确同意后代为执行。
    - 装完自动用目标 Python 重跑 `doctor.py`，把最终全绿验收报告发给用户。
 
 ### 1. 开新片（13 步旗舰全流程：`new` 或直接写需求）
-1. **环境体检 & Brief**：跑 `python -X utf8 "<SKILL_DIR>/scripts/doctor.py" --json`；若 `studio_memory.initialized` 为 `false` 且用户需求表未填「自迭代记忆开关」，先顺带确认一次是否开启及模式（`ask`/`auto`/`off`）并用 `memory.py mode` 落盘，之后永不重复打扰。补齐主题、幕数、时长、FPS（24/30）、音乐、**音效策略**（成曲/歌词 PV 默认纯原曲洁净母带 `pure_song`；片头/宣传片/原创编曲默认全套 `full_sfx`）、出图路线（`user_files` / `gemini` / `codex` / `custom_api` / `code_only`）、**3D 引擎规格**（`全能双 3D 旗舰` Three.js + Blender 共演 / `Three.js 风格化 3D` / `Blender 电影级 3D` / `纯 2D`）并一行汇报；有音乐立即跑 `scripts/beats.py` + `scripts/onsets.py` 锁鼓点，**带人声歌词的成曲 PV 按宿主死规矩执行：Gemini 跑 `vocal_spec.py --wav-only` 用 `read_file` 原生直听微 WAV 锁起唱帧，Claude/Codex 跑 `vocal_spec.py` 查 300Hz–4kHz 帧号声谱图**。
+1. **环境体检 & Brief**：跑 `python -X utf8 "<SKILL_DIR>/scripts/doctor.py" --json`；若 `studio_memory.initialized` 为 `false` 且用户需求表未填「自迭代记忆开关」，先顺带确认一次是否开启及模式（`ask`/`auto`/`off`）并用 `memory.py mode` 落盘，之后永不重复打扰。补齐主题、幕数、时长、FPS（24/30）、音乐、**音效策略**（成曲/歌词 PV 默认纯原曲洁净母带 `pure_song`；片头/宣传片/原创编曲默认全套 `full_sfx`）、出图路线（`user_files` / `gemini` / `codex` / `custom_api` / `code_only`）、**3D 引擎规格**（`全能双 3D 旗舰` Three.js + Blender 共演 / `Three.js 风格化 3D` / `Blender 电影级 3D` / `纯 2D`）并一行汇报；**带人声歌词的成曲 PV 开剪前先跑 `scripts/stem_sync.py <audio> --out <proj>/work/stems --fps <FPS> [--whisper --lyrics <txt>]` 分离干人声与纯伴奏**——拿纯伴奏 `instrumental.wav` 跑 `beats.py` + `onsets.py` 锁鼓点并查局部 BPM 漂移，拿纯干人声 `vocals.wav` 按宿主死规矩锁起唱帧（Gemini 用 `read_file` 原生直听 `dry_*.wav` / `vocal_spec.py --wav-only`，Claude/Codex 看无伴奏污染的 `dry_*.png` + `vocal_phrases.json` / `vocal_words.json`）。
 2. **开工前一行报成本**：说明预计子代理数、模型档位与总耗时。
 3. **提案会（3 套方案）**：跑 `<SKILL_DIR>/assets/workflows_agy/pitch.py`（或 `assets/workflows/pitch.js`）：媒介设计师 / 演出策划 / 摄影指导并行交 3 份方案 → 创意总监拍板 → 执行制片核查各幕不撞型（15 种 `mg-styles.md` 严禁同片重复）。
 4. **分镜表 + Gate A（先锁分镜再出图）**：写完整分镜表（精确有理数帧界、人声起唱帧、镜头配方 `shot-recipes.md`、动效 ID、出图来源、`work/cues.csv`）和 `work/art_manifest.json`，**先过 Gate A 再动出图额度**。

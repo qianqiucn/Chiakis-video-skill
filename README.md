@@ -78,6 +78,15 @@
 
 > **Flagship Scope / 旗舰定位说明**：面向 **原创 2D + Three.js 风格化 3D + Blender 电影级 3D 动效、快剪 PV/MV、动态歌词排版、品牌片头、MAD 与复刻学习** 的全流程制片技能。Three.js 与 Blender 并列旗舰品质硬性规格，用户可在需求表自由选择（`全能双 3D 旗舰` / `Three.js 风格化 3D` / `Blender 电影级 3D` / `纯 2D`）。
 >
+> **✨ What's New in `v1.9.0`（Stage 1 人音双轨分离卡点引擎 `scripts/stem_sync.py` + 安装器内置分人声与逐字对齐依赖）**：
+> - **新增 `scripts/stem_sync.py`（Stage 1 开剪前先分人声与伴奏，双轨分别锁鼓点与歌词）**：
+>   - **一刀分离、双倍精度**：自动调用本地 **`audio-separator`**（默认 SOTA `vocals_mel_band_roformer.ckpt`，`--fast` 可切 60 MB 轻量 ONNX `UVR-MDX-NET-Inst_HQ_3.onnx`；亦兼容 `demucs` 与独立环境 `CHIAKI_STEM_PYTHON`）将原曲拆成 **`vocals.wav`**（纯净干人声）与 **`instrumental.wav`**（纯净伴奏）；
+>   - **纯伴奏精准抓鼓 + 局部 BPM 漂移检测（`kick_grid.json`）**：消除人声齿音对宽带通量的污染，自动按 30 s 窗口实测各段局部 BPM 与全局网格偏差，开剪前就抓出副歌/终副歌微速漂移（不再死套一条常量公式导致中后段脱拍）；
+>   - **纯干人声零污染锁字（`vocal_phrases.json` + `vocal_charts/dry_*.wav/.png` + 可选 `--whisper`）**：在绝对静音背景上提取分句起止与 `180–4500 Hz` 音节起音峰，输出干声微切片（Gemini 原生直听）与无伴奏污染声谱图（Claude/Codex）；开启 `--whisper --lyrics <txt>` 时经 FFmpeg 直喂 16 kHz float32 给 `faster-whisper`（绕过 PyAV 兼容性坑）并与干声起音峰交叉吸附，自动标出前导气口静音段。
+> - **依赖安装器与体检同步集成（`scripts/setup_env.py`、`scripts/doctor.py`）**：
+>   - `setup_env.py` 在 `2d` / `3d` / `full` 档位默认随核心依赖一起安装 **`audio-separator[gpu|cpu]` + `faster-whisper`**（自动检测 NVIDIA GPU 先装 CUDA PyTorch，支持 `--stem-models` 指定非 C 盘模型缓存、`--stem-python` 复用已有分人声环境，以及 `--no-stems` 极简跳过）；
+>   - `doctor.py` 新增 `Vocal/Drum Stem Sync` 体检项；`rules/AGENTS.md` §3、`SKILL.md` Stage 0/1、`commands/chiaki/SKILL.md` 与 `references/production.md` §3 全面升级为「成曲 PV 开剪前先分人声/伴奏双轨测量」。
+>
 > **✨ What's New in `v1.8.3`（Gemini / AGY 专属 Swarm 总导演指挥手册 · Claude Opus 豁免）**：
 > - **沉淀 Swarm 多工协同实操规范（`rules/AGENTS.md` §4 + `references/production.md` §7，仅限 Gemini / AGY 会话，Claude Opus 完全豁免）**：将实战验证有效的总导演编排方法固化为 5 条可执行纪律——
 >   - **大改先 `kill` 清上下文 + 精简单画布编队**：跨版本重做先 `kill` 旧编队清干净旧习惯记忆；动态歌词 PV 优先「1 幕 1 全栈强模型单画布」（并发 ≤ 5），减少幕内跨工种内耗；

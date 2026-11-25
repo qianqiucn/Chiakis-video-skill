@@ -2,7 +2,7 @@
 
 Called by the agent AFTER running `scripts/doctor.py` and asking the user:
   1. Which profile they want:
-       - `2d`   : core 2D motion, bundled fonts, mgaudio & MP4 render (`requirements.txt`, ~180 MB)
+       - `2d`   : core 2D motion, bundled fonts, mgaudio, MP4 render & vocal/drum stem separation (`audio-separator` + `faster-whisper`; pass `--no-stems` for ultra-slim ~180 MB core only)
        - `3d`   : `2d` + Blender path (`CHIAKI_BLENDER`), 3D asset cache (`CHIAKI_ASSETS3D`), optional Blender MCP bridge wiring
        - `full` : `3d` + PyTorch/Vision stack for `vision/cutout.py`, `vision/part_cutout.py` & `vision/depth.py` (+1.5-3 GB)
   2. Where they want virtual environments / caches installed (so nothing fills up C: uninvited).
@@ -136,7 +136,10 @@ def main() -> int:
     ap.add_argument("--hf-home", default="", help="Custom folder for HuggingFace AI model cache (HF_HOME, keeps weights off C:)")
     ap.add_argument("--media-cache", default="", help="Custom folder for online texture & footage cache (CHIAKI_MEDIA_CACHE)")
     ap.add_argument("--footage-dir", default="", help="Optional existing local stock footage/texture library folder (CHIAKI_FOOTAGE_DIR)")
-    ap.add_argument("--cuda", choices=("auto", "cu128", "cu124", "cpu"), default="auto", help="PyTorch wheel backend for --profile full (default: auto-detect NVIDIA GPU -> cu128)")
+    ap.add_argument("--cuda", choices=("auto", "cu128", "cu124", "cpu"), default="auto", help="PyTorch wheel backend for stems / --profile full (default: auto-detect NVIDIA GPU -> cu128)")
+    ap.add_argument("--no-stems", action="store_true", help="Skip vocal/drum stem separation tools (audio-separator + faster-whisper) for an ultra-slim ~180 MB 2D-only install")
+    ap.add_argument("--stem-models", default="", help="Custom folder for vocal/drum separator & Whisper weights (CHIAKI_STEM_MODELS, keeps weights off C:)")
+    ap.add_argument("--stem-python", default="", help="Optional existing Python executable with audio-separator/demucs already installed (sets CHIAKI_STEM_PYTHON and skips reinstalling stems)")
     ap.add_argument("--memory-dir", default="", help="Custom folder for studio self-iteration memory (CHIAKI_MEMORY_DIR)")
     ap.add_argument("--memory-mode", choices=("", "ask", "auto", "readonly", "off"), default="", help="Initial studio memory switch mode")
     ap.add_argument("--wire-mcp", choices=("none", "antigravity", "codex", "claude"), default="none", help="Safely wire built-in zero-dependency Blender MCP bridge")
@@ -166,28 +169,46 @@ def main() -> int:
             print("[DRY RUN] Would run:", " ".join(cmd_core))
         else:
             subprocess.check_call(cmd_core)
-        if args.profile == "full":
+
+        install_stems = (not args.no_stems) and (not args.stem_python)
+        need_torch = (args.profile == "full") or install_stems
+        if need_torch:
             has_nv, gpu_name = detect_nvidia_gpu()
             if args.cuda == "auto":
                 cuda_tag = "cu128" if has_nv else "cpu"
             else:
                 cuda_tag = args.cuda
+            torch_pkgs = ["torch", "torchvision"] if args.profile == "full" else ["torch"]
             if cuda_tag in ("cu128", "cu124"):
                 idx_url = f"https://download.pytorch.org/whl/{cuda_tag}"
-                cmd_torch = [target_py, "-m", "pip", "install", "torch", "torchvision", "--index-url", idx_url]
+                cmd_torch = [target_py, "-m", "pip", "install", *torch_pkgs, "--index-url", idx_url]
                 print(f"[INFO] PyTorch CUDA backend: {cuda_tag}" + (f" (detected GPU: {gpu_name})" if gpu_name else ""))
             else:
-                cmd_torch = [target_py, "-m", "pip", "install", "torch", "torchvision"]
+                cmd_torch = [target_py, "-m", "pip", "install", *torch_pkgs]
                 print("[INFO] PyTorch backend: default PyPI (CPU / Apple Silicon MPS)")
-            cmd_vision = [
-                target_py, "-m", "pip", "install",
-                "transformers<5", "huggingface_hub<1", "timm", "einops", "kornia",
-            ]
-            for cmd in (cmd_torch, cmd_vision):
+            if args.dry_run:
+                print("[DRY RUN] Would run:", " ".join(cmd_torch))
+            else:
+                subprocess.check_call(cmd_torch)
+
+            if install_stems:
+                sep_pkg = "audio-separator[gpu]" if cuda_tag in ("cu128", "cu124") else "audio-separator[cpu]"
+                cmd_stems = [target_py, "-m", "pip", "install", sep_pkg, "faster-whisper"]
+                print(f"[INFO] Vocal/drum stem sync toolkit: {sep_pkg} + faster-whisper (scripts/stem_sync.py)")
                 if args.dry_run:
-                    print("[DRY RUN] Would run:", " ".join(cmd))
+                    print("[DRY RUN] Would run:", " ".join(cmd_stems))
                 else:
-                    subprocess.check_call(cmd)
+                    subprocess.check_call(cmd_stems)
+
+            if args.profile == "full":
+                cmd_vision = [
+                    target_py, "-m", "pip", "install",
+                    "transformers<5", "huggingface_hub<1", "timm", "einops", "kornia",
+                ]
+                if args.dry_run:
+                    print("[DRY RUN] Would run:", " ".join(cmd_vision))
+                else:
+                    subprocess.check_call(cmd_vision)
 
     if args.blender:
         set_user_env("CHIAKI_BLENDER", str(Path(args.blender).resolve()), args.dry_run)
@@ -213,6 +234,13 @@ def main() -> int:
         set_user_env("CHIAKI_MEDIA_CACHE", str(p), args.dry_run)
     if args.footage_dir:
         set_user_env("CHIAKI_FOOTAGE_DIR", str(Path(args.footage_dir).resolve()), args.dry_run)
+    if args.stem_models:
+        p = Path(args.stem_models).resolve()
+        if not args.dry_run:
+            p.mkdir(parents=True, exist_ok=True)
+        set_user_env("CHIAKI_STEM_MODELS", str(p), args.dry_run)
+    if args.stem_python:
+        set_user_env("CHIAKI_STEM_PYTHON", str(Path(args.stem_python).resolve()), args.dry_run)
     if args.memory_dir:
         p = Path(args.memory_dir).resolve()
         if not args.dry_run:
