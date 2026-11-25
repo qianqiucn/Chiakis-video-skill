@@ -13,7 +13,7 @@ description: Chiaki's-video-skill 统一快捷入口（/chiaki、/Chiaki 与 Cod
 >
 > **宿主多模态死规矩（`rules/AGENTS.md` §3）**：**Gemini 宿主（Antigravity）**听音与审片**必须直接用 `read_file` 原生多模态直听 `.wav`/`.mp3`（`vocal_spec.py --wav-only`）并直看带声 720p/1080p `.mp4` 成片/分幕视频**，严禁跳过看视频仅凭静态拼图或频谱图审节奏、动效与对口型；**Claude / Codex 宿主**严格走**传统频谱分析（`vocal_spec.py` 声谱图 + `beats.py`/`onsets.py`）+ `snap.mjs` 密集截图拼图 + `motion_lint --curves` SVG 曲线图**路线。
 >
-> **Gemini / AGY 专属导演纪律（`rules/AGENTS.md` §5 · Claude Opus 豁免）**：在 Gemini / Antigravity 会话中，> 30 s 中长片须先做出 **10–16 s Gate A 黄金样板**（含共享视觉引擎 + `scripts/visual_metrics.py` 饱和度/实黑/帧差波形体检）再开 Swarm 铺全片，Swarm 工人须先交「因为…所以…」因果分镜再写代码，把 Skill 当零件军火库灵活组合 `T3.look.coat`/`bakePrint`/`lumaMatte`/`okMix` + `T3.blur.shutter`（不服务母题的工具主动弃用），动态歌词 PV 允许单幕单画布融合世界物件与文字，汇报只写事实与数字严禁自夸词；Claude Opus 完全豁免此节额外限制。
+> **Gemini / AGY 专属导演纪律（`rules/AGENTS.md` §4–§5 · Claude Opus 豁免）**：在 Gemini / Antigravity 会话中，> 30 s 中长片须先做出 **10–16 s Gate A 黄金样板**（含总导演独占共享引擎 + 分幕 HTML + `scripts/visual_metrics.py` 饱和度/实黑/帧差波形体检）再开 Swarm 铺全片；Swarm 指挥须大改先 `kill` 清上下文、动态歌词 PV 优先 1 幕 1 全栈单画布、两段门禁审分镜跨幕查重并锁 `open.actN` 纯函数预调用接缝、总导演集中出图（≤ 4 张/幕）+ 占位并行 + 交图附朝向/裁切/尺度/动效备注、公屏 3–6 行去情绪短帖；把 Skill 当零件军火库灵活组合 `T3.look.coat`/`bakePrint`/`lumaMatte`/`okMix` + `T3.blur.shutter`（不服务母题的工具主动弃用）；汇报只写事实与数字严禁自夸词；Claude Opus 完全豁免此节额外限制。
 
 ---
 
@@ -64,7 +64,7 @@ description: Chiaki's-video-skill 统一快捷入口（/chiaki、/Chiaki 与 Cod
 3. **提案会（3 套方案）**：跑 `<SKILL_DIR>/assets/workflows_agy/pitch.py`（或 `assets/workflows/pitch.js`）：媒介设计师 / 演出策划 / 摄影指导并行交 3 份方案 → 创意总监拍板 → 执行制片核查各幕不撞型（15 种 `mg-styles.md` 严禁同片重复）。
 4. **分镜表 + Gate A（先锁分镜再出图）**：写完整分镜表（精确有理数帧界、人声起唱帧、镜头配方 `shot-recipes.md`、动效 ID、出图来源、`work/cues.csv`）和 `work/art_manifest.json`，**先过 Gate A 再动出图额度**。
 5. **多源出图与资产准备**：按 `references/art-pipeline.md` 跑 `scripts/art_gen.py run <proj> --workers 3`（支持多参考图 `refs` 与自动重试，或调用宿主自带 Gemini/Codex 生图）→ 原尺寸肉眼验图 → 按需用 `vision/cutout.py`（全角色/道具抠图）、`vision/part_cutout.py`（二次元 19 部位单层精拆 + `--clean-plate`）与 `vision/pasteback.py` 对齐补图 → **用 `scripts/media_lib.py` 按各幕视觉形式自动挑拣并下载在线免 Key 质感层（`ambientCG` / `Poly Haven` + `--prep`）与实拍特效/空镜（`archive` 4K 水墨/烟雾/烧片/延时、`nasa`、可选 `pexels`/`pixabay` + `--seq` 自动拆 `T3.sequence` 序列帧）** → 打包本地字体（`fonts.py use`，描边字用 `--static`）→ 16-bit 柔化深度图（`vision/depth.py --soften`）与免费 3D 素材（`assets3d.py`）。
-6. **三工种并行搭建**：拷贝 `<SKILL_DIR>/assets/template/` 到 `<proj>/web/`，按 `build.py` / `build.js` 严格分工 **3D 工程师 (`flash`)** + **剪辑合成师 (`pro`)** + **平面设计师 (`flash`)**（全片统一纸纹/颗粒罩层放 `z=45` `film_texture.js`）→ 执行导演一版看样 (`pro`) → **按工种并行修改员 (`flash`)** → 质检 (`flash`)。
+6. **三工种并行搭建**：拷贝 `<SKILL_DIR>/assets/template/` 到 `<proj>/web/`，按 `build.py` / `build.js` 或 Swarm 严格分工 **3D 工程师 (`flash`)** + **剪辑合成师 (`pro`)** + **平面设计师 (`flash`)**（动态歌词 PV 允许单幕单画布融合，质感优先逐镜调用 `T3.look.coat`，仅全片共用同一纸面时用 `z=45` `film_texture.js`）→ 执行导演一版看样 (`pro`) → **按工种并行修改员 (`flash`)** → 质检 (`flash`)。
 7. **自查（Gate B1）**：静态 `motion_lint.mjs`（0 FAIL）+ `--curves` SVG 曲线图（核查 `Q1` 滞后及 `> 0.90` 悬崖长死尾）+ `qa.mjs` + `snap.mjs --sheet` + 空间 `parallax.py` + 定格 `cadence.py`。
 8. **声音设计与母带**：派独立 **声音设计师** (`flash`) 按所选音效策略执行 —— 成曲/歌词 PV 默认 `pure_song` 洁净母带（零额外 swoosh 干扰人声），片头/原创配乐走 `assets/mgaudio` + Freesound 全套混音与压低 —— 统一母带至 `-14 LUFS / <= -1.1 dBTP` 48 kHz `work/master.wav`。
 9. **初版三视角内审**：运行 `review_fix.py` / `review_fix.js`（物理只读 `规矩·技术·剪辑感` 三视角 → 三复核 → 定向修阻断项 → 质检；短片 `< 60 s` 快速通道优先清零阻断项直奔带声一版渲染）。
