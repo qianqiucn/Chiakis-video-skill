@@ -6,7 +6,7 @@ Everything required for 2D animation, fonts, textures, and procedural sound is b
 - **Headless Chrome / Chromium / Edge**: auto-detected across Windows, macOS, and Linux in `scripts/_cdp.mjs` (override with `CHIAKI_CHROME`).
 - **FFmpeg**: auto-detected via `CHIAKI_FFMPEG`, system `PATH`, or Python's `imageio-ffmpeg`.
 - **Python ≥ 3.10**: install packages once with `pip install -r <sk>/requirements.txt` (`fonttools`, `brotli`, `Pillow`, `numpy`, `opencv-python`, `imageio-ffmpeg`, `scipy`, `numba`, `soundfile`, `pedalboard`).
-- **Bundled 2D + Stylized 3D Motion Runtime**: `assets/template/` (`engine.js`, GSAP 3.15.1 UMD + `lib/gsap-bridge.js`, **Three.js r160 MIT + `lib/three_kit.js`**, `lib/motion/*`, `lib/accents.js`, `lib/choreo.js`, `lib/depth3d.js`, `lib/emblem3d.js`, `lib/fonts.js`, `lib/meshwarp.js`, `lib/multiplane.js`, `lib/sequence.js`).
+- **Bundled 2D + Stylized 3D Motion Runtime**: `assets/template/` (`engine.js`, GSAP 3.15.1 UMD + `lib/gsap-bridge.js`, **`lib/look_fx.js`** per-shot coat / print-plate shaders / `lumaMatte` / OKLCH `okMix`, **Three.js r160 MIT + `lib/three_kit.js`**, `lib/motion/*`, `lib/accents.js`, `lib/choreo.js`, `lib/depth3d.js`, `lib/emblem3d.js`, `lib/fonts.js`, `lib/meshwarp.js`, `lib/multiplane.js`, `lib/sequence.js`).
 - **Bundled Open-Source Fonts (`assets/fonts/`)**: 59 commercial-safe OFL-1.1 / Apache-2.0 families (47 Latin/Display/Mono/Pixel + 12 CJK/JP), indexed in `assets/fonts/catalog.json` and `assets/fonts/catalog.md`.
 - **Bundled Procedural Audio Engine (`assets/mgaudio/`)**: MIT-licensed 48 kHz synth, drums, SFX, mixing & `-14 LUFS` mastering engine.
 - **Bundled CC0 2D Textures (`assets/textures/`)**: 4K dust, film/fine grain, paper, and washi overlays.

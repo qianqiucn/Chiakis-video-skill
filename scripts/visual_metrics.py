@@ -79,6 +79,15 @@ def probe_fps(ff: str, path: str) -> float:
                 return float(val)
             except Exception:
                 pass
+    # Fallback when ffprobe is absent (e.g. imageio-ffmpeg only): parse `ffmpeg -i` stderr `NN fps`
+    r = subprocess.run([ff, "-hide_banner", "-i", path], capture_output=True, text=True, encoding="utf-8", errors="replace")
+    import re
+    m = re.search(r",\s*([0-9]+(?:\.[0-9]+)?)\s*fps\b", r.stderr or "")
+    if m:
+        try:
+            return float(m.group(1))
+        except Exception:
+            pass
     return 30.0
 
 

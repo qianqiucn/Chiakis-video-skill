@@ -78,6 +78,15 @@
 
 > **Flagship Scope / 旗舰定位说明**：面向 **原创 2D + Three.js 风格化 3D + Blender 电影级 3D 动效、快剪 PV/MV、动态歌词排版、品牌片头、MAD 与复刻学习** 的全流程制片技能。Three.js 与 Blender 并列旗舰品质硬性规格，用户可在需求表自由选择（`全能双 3D 旗舰` / `Three.js 风格化 3D` / `Blender 电影级 3D` / `纯 2D`）。
 >
+> **✨ What's New in `v1.8.2`（`lib/look_fx.js` 逐镜材质/印刷着色/实拍遮罩/OKLCH 走色零件库 + Gemini/AGY「零件军火库」法则）**：
+> - **新增 `assets/template/lib/look_fx.js`（`T3.look.*`，零依赖纯净 Canvas 2D）**：把实拍水墨转场、逐镜材质、二次印刷着色与 OKLCH 走色沉淀为开箱即用零件——
+>   - **`T3.look.coat(ctx, f, { paper, grain, dust, scanline, faceGuard })`**：逐镜按需开关纸纹/颗粒/尘埃/扫描线（暗场/黑胶镜关纸纹保实黑、近景人脸可开 `faceGuard`），取代「全片硬蒙一层 `z=45` `multiply` 灰膜」；
+>   - **`T3.look.bakePrint(img, h)` + `T3.look.drawPrint(ctx, B, mode, opts)`（`fx.print-plate`）**：一次缓存烘焙 6 种高反差印刷处理（`screen` 60° 线网 / `dots` 双色半调网点 / `neg` 黑底负片 / `sil` 双版剪影 / `two` 错版叠印 / `key` 墨线），告别 3 分钟裸贴同一质感原图；
+>   - **`T3.look.lumaMatte(ctx, fromSrc, toSrc, maskImg, opts)`（`trans.luma-matte`）**：把 `media_lib.py` 下载的 4K 实拍水墨/烟雾/烧片直接变成真实亮度遮罩转场，不再只挂背景飘淡烟；
+>   - **`T3.look.okMix(hexA, hexB, k, hintHex, bump)`（`trans.ground-walk` 从 `Pending` 正式转正）**：切镜前 2–4 帧 OKLCH 色相顺滑走色（端点精确锁色零跳变），杜绝 RGB 线性插值发灰；
+>   - **`T3.look.monoSpline(keys)` + `T3.look.framed(...)`**：带 Fritsch–Carlson 单调钳制的逐字起唱样条与带自动过扫的持续微推画幅。
+> - **拆除文档诱导死板的旧约束 + 补齐 Gemini/AGY 第 7 条法则**：更新 `graphic-design.md` §8、`art-pipeline.md` §4、`SKILL.md` 与 `motion-library.md`（66 条 `0 FAIL / 0 NOTE`）；在 `rules/AGENTS.md` §5（**仅限 Gemini / AGY，Claude Opus 豁免**）新增「零件军火库思维」——不服务母题的工具主动弃用是加分项、实拍素材优先当因果遮罩用、高速运镜调用真时间快门 `T3.blur.shutter` 禁画假速度线；`scripts/visual_metrics.py` 同步补齐无 `ffprobe` 时的 24/30 fps 自动探测。
+>
 > **✨ What's New in `v1.8.1`（Gemini / AGY 宿主专属导演与审美纪律 + 像素/运动波形量化体检 + Canvas 文本报错拦截）**：
 > - **Gemini / Antigravity（AGY）专属 6 条导演与审美护栏（`rules/AGENTS.md` §5 · Claude Opus 完全豁免）**：仅面向 Gemini 系列模型与 AGY 默认会话补齐工程与审美防呆——① > 30 s 中长片强制先打穿 **10–16 s Gate A 黄金样板**再铺全片；② Swarm 开工前先落共享视觉着色/世界坐标引擎，工人须先交「因为…所以…」因果分镜 + 相邻三换矩阵再写代码；③ 锁 1 根单核视觉物理主线，严禁对工具箱集邮打卡或四角堆静态装饰；④ 动态歌词 PV 允许单幕单画布融合「世界物件 + 文字」，禁用凭空 `alpha → 0` 淡出；⑤ 验图走五指/地标/透明黑块挑错清单；⑥ 汇报只写事实与实测数字，禁用「完美/彻底/100%」等乐观自夸词。
 > - **像素与运动密度量化体检（`scripts/visual_metrics.py`）**：零额外依赖（`ffmpeg` + `numpy` + `Pillow`），一键输出饱和度均值 `sat_mean`（防发灰褪色）、实黑占比 `true_black_pct`（仅统计全通道低亮真黑、不误算高饱蓝/红）、逐帧运动 `MAD` 均值与 `still_ratio`、> 2.0 s 低动量停留告警，以及纯 Pillow 生成的 `motion_wave.png` 波形图（支持 `--ref` 双轨对标）。

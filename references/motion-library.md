@@ -171,6 +171,10 @@ Even a short preview sample follows the same workflow: template `lib/motion` loa
   Look: outgoing frame or highlight lingers across frames 0–3 of the incoming shot (`afterimage`: 38 / 16 / 5 / 2 %, `afterglow`: 30 / 14 / 6 / 2 %) · Timing: → `style-grammar.md` §3c.
 - **`trans.3d-louver`** · `z = 60` 3D flipping louver blinds transition · H · craft · edit · EXISTING three_kit.js T3.three.louverTransition
   Look: physical 3D vertical/horizontal slats flipping 180° in wave stagger across a cut, replacing flat 2D wipes · Timing: → `3d.md` §5e.
+- **`trans.ground-walk`** · background colour walked smoothly in OKLCH across a cut · H · craft · edit · EXISTING look_fx.js T3.look.okMix
+  Look: perceptual OKLCH colour interpolation with optional midpoint chroma lift starting 2–4 f ahead of a cut so palettes shift richly without muddy RGB grey · Timing: → `graphic-design.md` §8.
+- **`trans.luma-matte`** · live-action footage luminance-matte transition · H · craft · edit · EXISTING look_fx.js T3.look.lumaMatte
+  Look: converts real 4K ink bloom, smoke, or film-burn footage (`media_lib.py`) into a physical alpha matte revealing the incoming shot · Timing: → `art-pipeline.md` §4.
 
 ### fx
 - **`fx.shutter`** · sub-frame 2D motion blur · A · craft · edit · LIB blur.js T3.blur.shutter
@@ -189,6 +193,8 @@ Even a short preview sample follows the same workflow: template `lib/motion` loa
   Timing: → `graphic-design.md` §5; polygon strobe accent restraint in `house-style.md` §6.
 - **`fx.3d-prism`** · real-time 3D chromatic glass prism bars refracting the live 2D scene · H · craft · edit, design · EXISTING three_kit.js T3.three.prismOverlay
   Look: bevelled WebGL glass prism rods with RGB chromatic dispersion, specular sheen, and fresnel rim sweeping across a live 2D canvas · Timing: → `3d.md` §5e.
+- **`fx.print-plate`** · cached 2D print/halftone/negative/two-plate stylization engine · H · craft · edit, design · EXISTING look_fx.js T3.look.drawPrint
+  Look: bakes any illustration or line-art plate once (`T3.look.bakePrint`) into 6 cohesive graphic treatments (`screen` 60° line screen, `dots` duotone halftone, `neg` negative on ink, `sil` two-plate silhouette, `two` misregistered multiply overprint, `key` ink line) · Timing: → `graphic-design.md` §8.
 
 ### time
 - **`time.twos`** · stepped clock (`Posterize Time`) with optional landing re-anchors · A · craft · edit · LIB timing.js T3.twos
@@ -199,7 +205,6 @@ Even a short preview sample follows the same workflow: template `lib/motion` loa
 ## Pending
 - **`trans.sheet`** · shared-plane rotation transition · P · signature · edit · PROSE
 - **`fx.loupe`** · live scene-redrawing 2D magnifier lens · P · craft · edit · PROSE
-- **`trans.ground-walk`** · background colour walked smoothly in OKLCH across a cut · P · craft · edit · PROSE
 - **`type.letter-land`** · letter landing with bump + ink splash · P · craft · design · PROSE
 
 ## Retired

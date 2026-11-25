@@ -69,3 +69,8 @@ Every `invoke_subagent` call to `chiaki-writer`, `chiaki-builder`, or `chiaki-re
    - **看片必须配量化体检（双保险）**：Gemini 除原生多模态直看带声 `.mp4` 外，**每次样片/分幕渲染必须同步运行 `python -X utf8 <sk>/scripts/visual_metrics.py <mp4> --out <dir>`**，必检 `sat_mean`（警惕 `< 0.22` 发灰褪色）、`true_black_pct`（警惕 `< 10%` 缺实黑压不住画面）、`motion_mad_mean` / `still_ratio` / `longest_shot_s`（警惕单一构图停留 > 2.0 s 或 `motion_wave.png` 呈「尖峰→死平→尖峰」弹入定住），绝不只凭第一眼主观印象放行。
 6. **冷酷实证汇报（禁止自夸词）**：
    - 思考结论与交付/阶段简报中**严禁使用「完美 / 彻底 / 100% / 惊艳 / 无瑕疵 / 像素级锁定」等情绪化自评词**；只写实测数字、代码/帧号事实与尚存短板，未验证或未达标项必须主动明说。
+7. **零件军火库思维（反考卷打卡，灵活组合质感 / 实拍 / 真快门）**：
+   - **Skill 是零件库而非必答考卷**：任何内置工具（`three_kit.js`、全片 `z = 45` 罩层、某类转场/滤镜）若不服务本片单核母题，**主动弃用是加分项而非违规**；严禁为了显得「工具全用上了」而机械堆砌。
+   - **质感长进材质里，不蒙在镜头外**：优先在单镜内按需调用 `T3.look.coat(ctx, f, { paper, grain, dust, scanline, faceGuard })` 逐镜切换材质（暗场/黑胶/高饱和镜关纸纹保黑位），并用 `T3.look.bakePrint` + `drawPrint`（`screen`/`dots`/`neg`/`sil`/`two`）或同类着色管线对原画做二次处理，禁止全片糊一层统一 `multiply` 灰膜配裸贴原始线稿。
+   - **实拍素材优先当因果机制用**：通过 `media_lib.py` 下载的 4K 水墨/烟雾/烧片，优先用 `T3.look.lumaMatte` 驱动有物理因果的场景显影转场或前景视差遮挡，不要只塞在背景低透明 `screen` 飘烟交差。
+   - **真光学快门 + OKLCH 走色，禁画假速度线**：高速甩镜与页面行走直接调用 `T3.blur.shutter`（180° 5-tap / 360° 10-tap 真实时间采样模糊）配 `T3.look.okMix` 切镜前 2–4 帧 OKLCH 走色，禁止手画几条斜线条冒充运动模糊。

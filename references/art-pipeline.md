@@ -117,5 +117,9 @@ Before handing assets to the 3D, Edit, and Design crafts:
    python -X utf8 <sk>/scripts/media_lib.py search footage "ink smoke film burn" --limit 6
    python -X utf8 <sk>/scripts/media_lib.py get archive Ink224kRes --kind footage --project <project> --seq --fps 24 --dur 4 --size 1280x720 --blend multiply
    ```
+   - **Use downloaded live-action footage actively — never just dump 4K ink/smoke as faint background fog**:
+     1. **Physical luminance-matte transition (`T3.look.lumaMatte`, `trans.luma-matte`)**: drive motivated cut reveals directly from real 4K ink blooms, smoke billows, or film burns (`lib/look_fx.js`);
+     2. **Camera-coupled foreground depth cue**: let high-contrast real sparks/dust/bokeh sweep in foreground parallax matching the shot's camera vector;
+     3. **Per-shot tactile materialization (`T3.look.coat`)**: apply stretched paper/concrete/grain selectively per shot rather than washing out dark ink with one blanket `multiply` sheet over the whole film.
    - Every downloaded item is cached locally (`CHIAKI_MEDIA_CACHE`) and logged into `<project>/work/media_used.json` for automatic Gate B2 end-credits (`scripts/media_lib.py credits <project>`).
 5. **Pack local fonts & 3D assets**: run `scripts/fonts.py use <project> ...` (`--static` for stroked/outlined glyphs) and fetch any Blender 3D models/HDRIs via `scripts/assets3d.py get ... --project <project>`.
