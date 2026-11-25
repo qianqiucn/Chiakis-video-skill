@@ -12,6 +12,8 @@ description: Chiaki's-video-skill 统一快捷入口（/chiaki、/Chiaki 与 Cod
 > **硬性工作室分工纪律**：你只担任**总导演兼制片人**，绝不退化成「主线程大包大揽写完所有代码再自审」。每次调用 `chiaki-writer` / `chiaki-builder` / `chiaki-reviewer`（或 Codex/Claude 等价子代理）必须在 Prompt 顶部贴入 `references/personas.md` 原话身份与性格、附 `references/crafts.md` 工种卡与任务简报、并显式锁定 `Model`（`pro` / `flash` / `flash_lite`）；所有无头 Chrome 与 `blender -b` 命令一律经 `<SKILL_DIR>/scripts/run_queue.py` 排队执行。
 >
 > **宿主多模态死规矩（`rules/AGENTS.md` §3）**：**Gemini 宿主（Antigravity）**听音与审片**必须直接用 `read_file` 原生多模态直听 `.wav`/`.mp3`（`vocal_spec.py --wav-only`）并直看带声 720p/1080p `.mp4` 成片/分幕视频**，严禁跳过看视频仅凭静态拼图或频谱图审节奏、动效与对口型；**Claude / Codex 宿主**严格走**传统频谱分析（`vocal_spec.py` 声谱图 + `beats.py`/`onsets.py`）+ `snap.mjs` 密集截图拼图 + `motion_lint --curves` SVG 曲线图**路线。
+>
+> **Gemini / AGY 专属导演纪律（`rules/AGENTS.md` §5 · Claude Opus 豁免）**：在 Gemini / Antigravity 会话中，> 30 s 中长片须先做出 **10–16 s Gate A 黄金样板**（含共享视觉引擎 + `scripts/visual_metrics.py` 饱和度/实黑/帧差波形体检）再开 Swarm 铺全片，Swarm 工人须先交「因为…所以…」因果分镜再写代码，动态歌词 PV 允许单幕单画布融合世界物件与文字，汇报只写事实与数字严禁自夸词；Claude Opus 完全豁免此节额外限制。
 
 ---
 

@@ -81,6 +81,10 @@ python -X utf8 <sk>/scripts/run_queue.py --status
 
 ### Reference Video Analysis (`motion.py`, `cadence.py`, `look.py`, `measure.py`, `framediff.py`)
 - **In-shot motion energy & front/back ratio**: `python -X utf8 <sk>/scripts/motion.py film.mp4 0 15 [ref.mp4 0 15]`
+- **Visual density, colour saturation, true-black ink & per-frame MAD waveform** (`visual_metrics.py` — mandatory on Gemini/AGY Gate A & act previews per `rules/AGENTS.md` §5; optional on Opus):
+  ```bash
+  python -X utf8 <sk>/scripts/visual_metrics.py out/preview_720p.mp4 --out work/metrics [--ref ref.mp4 --ref-from 192.08 --ref-dur 15.25]
+  ```
 - **Stepped cadence & `Posterize Time` verification**: `python -X utf8 <sk>/scripts/cadence.py film.mp4 0 15 --snap work/cad_snaps`
 - **Luma / saturation / colour profile**: `python -X utf8 <sk>/scripts/look.py film.mp4 0 15`
 - **Motion tracking / measurement**: `python -X utf8 <sk>/scripts/measure.py ...`

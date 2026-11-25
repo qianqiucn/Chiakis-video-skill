@@ -15,9 +15,10 @@ python -X utf8 <sk>/scripts/run_queue.py web --lane qa -- node <sk>/scripts/qa.m
 ```
 Every item must pass before dispatching the 3-lens final review:
 - **0 render errors & 0 page errors** across every frame of the timeline.
-- **0 broken text** (`NaN`, `undefined`, `null`, missing glyphs via `T3.fonts.missing`).
+- **0 broken text** (`NaN`, `undefined`, `null` across both DOM text nodes AND Canvas `fillText`/`strokeText`, plus missing glyphs via `T3.fonts.missing`).
 - **0 unintended black or frozen stretches** (except declared dramatic holds or `Posterize Time` steps).
 - **0 `motion_lint.mjs` FAILs & clean curve audit**: all `// motion:` IDs valid, no hand-rolled ease functions, ≥ 3 `T3.motionProbe` curves per segment, SVG curve sheet inspected (`0.60 <= Q1 <= 0.90` on long arrivals — catch both sluggish starts and `Q1 > 0.90` cliff arrivals with long flat tails, plus verify continuous in-shot motion and readable dark-frame luminance `p5 >= 30` unless deliberate fade-to-black).
+- **Visual & motion-density telemetry (`scripts/visual_metrics.py` — mandatory on Gemini / Antigravity hosts, optional on Claude Opus)**: run `python -X utf8 <sk>/scripts/visual_metrics.py <draft_720p.mp4> --out work/metrics` and inspect `metrics.json` + `motion_wave.png` to catch faded washed-out colour (`sat_mean < 0.22`), missing dark ink anchor (`true_black_pct < 10%` on high-contrast graphic styles), parked holds (`still_ratio > 0.02` or unmotivated holds `> 2.0 s`), and "spike → flat hold → spike" pop-and-freeze waveforms. (Gemini / AGY hosts also enforce `rules/AGENTS.md` §5: 10–16 s Gate A prototype before full-film Swarm rollout on > 30 s films, 5-finger/landmark audit checklist, and factual no-hype reporting; Claude Opus is exempt from §5.)
 - **Font & texture check clean**: `T3.fonts.report()` shows every packed local font `status: 'loaded'`, zero remote web font requests; tactile paper/grain overlays visibly survive 720p encoding (`prep_texture.py` + `z = 45` coat + `render_fast.mjs --grain`).
 - **Default pre-export visual spot-check (`snap.mjs --sheet`)**: inspect every transition frame pair (`cut-1, cut, cut+1`) and every subtitle/caption hold midpoint BEFORE rendering the full film — catches black wipe corners, text-over-foreground collisions, weak emblem contrast, and over-exposed first frames early.
 

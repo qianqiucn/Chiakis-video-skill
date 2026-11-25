@@ -78,6 +78,11 @@
 
 > **Flagship Scope / 旗舰定位说明**：面向 **原创 2D + Three.js 风格化 3D + Blender 电影级 3D 动效、快剪 PV/MV、动态歌词排版、品牌片头、MAD 与复刻学习** 的全流程制片技能。Three.js 与 Blender 并列旗舰品质硬性规格，用户可在需求表自由选择（`全能双 3D 旗舰` / `Three.js 风格化 3D` / `Blender 电影级 3D` / `纯 2D`）。
 >
+> **✨ What's New in `v1.8.1`（Gemini / AGY 宿主专属导演与审美纪律 + 像素/运动波形量化体检 + Canvas 文本报错拦截）**：
+> - **Gemini / Antigravity（AGY）专属 6 条导演与审美护栏（`rules/AGENTS.md` §5 · Claude Opus 完全豁免）**：仅面向 Gemini 系列模型与 AGY 默认会话补齐工程与审美防呆——① > 30 s 中长片强制先打穿 **10–16 s Gate A 黄金样板**再铺全片；② Swarm 开工前先落共享视觉着色/世界坐标引擎，工人须先交「因为…所以…」因果分镜 + 相邻三换矩阵再写代码；③ 锁 1 根单核视觉物理主线，严禁对工具箱集邮打卡或四角堆静态装饰；④ 动态歌词 PV 允许单幕单画布融合「世界物件 + 文字」，禁用凭空 `alpha → 0` 淡出；⑤ 验图走五指/地标/透明黑块挑错清单；⑥ 汇报只写事实与实测数字，禁用「完美/彻底/100%」等乐观自夸词。
+> - **像素与运动密度量化体检（`scripts/visual_metrics.py`）**：零额外依赖（`ffmpeg` + `numpy` + `Pillow`），一键输出饱和度均值 `sat_mean`（防发灰褪色）、实黑占比 `true_black_pct`（仅统计全通道低亮真黑、不误算高饱蓝/红）、逐帧运动 `MAD` 均值与 `still_ratio`、> 2.0 s 低动量停留告警，以及纯 Pillow 生成的 `motion_wave.png` 波形图（支持 `--ref` 双轨对标）。
+> - **Canvas `NaN`/`undefined` 文本审计升级（`scripts/qa.mjs`）**：Stage 2 文本巡检同时拦截 DOM 文本节点与 Canvas `fillText` / `strokeText`，根治画布内隐蔽的 `MASTER BPM: undefined` / `-0NaN` 漏网问题。
+>
 > **✨ What's New in `v1.8.0`（双 3D 旗舰架构：Three.js 风格化 3D 字/场景工具链 × Blender 电影级 3D + 完片强制偏好复盘卡）**：
 > - **离线内置 Three.js r160（MIT）+ `lib/three_kit.js` 风格化图形 3D 工具箱**：单一共享 `WebGLRenderer`（`NoToneMapping` + `SRGBColorSpace` 零色偏、不爆 Chrome 上下文），完整提供 8 大 2D 原生质感 3D 原语 —— **`extrudeText`**（`flat`/`toon`+黑描边/`glass`/`wire` 真 3D 立体字）、**`textRing`**（角色 Z 夹心 `drawBack`/`drawFront` 360° 歌词环，自动测宽防叠字）、**`textCorridor`**（3D 歌词海报走廊，内置 `maxWidth` 防越界）、**`prismOverlay`**（实时色散玻璃棱镜折穿 2D 画面）、**`louverTransition`**（`z=60` 真透视 3D 百叶窗翻转转场）、**`field`**（风格化 3D 地平线网格与建筑方柱）、**`relief`**（免 Blender GPU 深度浮雕）与 **`stage`**（2D 抠图真 Z 舞台），并全部注册进 `references/motion-library.md`（64 条 `0 FAIL / 0 NOTE`）。
 > - **离线中/日/英真 3D 矢量字形提取（`scripts/fonts.py glyph3d`）**：基于 `fontTools` + `skia-pathops` 仅抽取本片用到的标题/歌词字符并自动合并可变字重笔画，生成 4–60 KB 离线 `assets/fonts/glyph3d.js`（比 15 MB 传统 Three.js 字体 JSON 小千倍以上），`lib/three_kit.js` 自动判定 TTF/OTF 环绕方向保证中文字内孔（如「星」「破」「晓」）零反转。

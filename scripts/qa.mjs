@@ -232,14 +232,21 @@ if (errorsOnly) {
 fs.mkdirSync(outDir, { recursive: true });
 say(`QA ${path.resolve(page)}  frames ${F0}..${F1} @${fps}fps`);
 
-// ---- Stage 2: fast DOM text audit (ZERO screenshots — eliminates 120x double-rAF/capture hang!) ------------
-const tS2 = beginStage('2/5:text-audit', `every ${every} f via seekOnly`);
+// ---- Stage 2: fast DOM + Canvas text audit (ZERO screenshots — eliminates 120x double-rAF/capture hang!) ---
+const tS2 = beginStage('2/5:text-audit', `every ${every} f via seekOnly (DOM + Canvas)`);
 const badText = [];
 try {
+  await pg.evaluate(`(()=>{if(window.__t3CanvasTextHooked)return;window.__t3CanvasTextHooked=true;window.__t3BadCanvasText=[];
+    const re=/\\b(NaN|undefined|null)\\b/;
+    for(const m of ['fillText','strokeText']){const orig=CanvasRenderingContext2D.prototype[m];
+      CanvasRenderingContext2D.prototype[m]=function(t,...rest){const s=String(t);
+        if(re.test(s))window.__t3BadCanvasText.push('canvas:'+s.trim().slice(0,60));
+        return orig.call(this,t,...rest);};}})()`);
   let checked = 0;
   for (let f = F0; f <= F1; f += every) {
+    await pg.evaluate(`window.__t3BadCanvasText=[]`);
     await pg.seekOnly((f + 0.5) / fps);
-    const hits = (await pg.evaluate(`(()=>{const out=[];const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;
+    const hits = (await pg.evaluate(`(()=>{const out=[...(window.__t3BadCanvasText||[])];const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;
       while((n=w.nextNode())){const t=n.nodeValue;if(!/\\b(NaN|undefined|null)\\b/.test(t))continue;const e=n.parentElement;if(!e)continue;
         const r=e.getBoundingClientRect(),cs=getComputedStyle(e);if(r.width<1||r.height<1||cs.visibility==='hidden'||+cs.opacity===0)continue;
         let p=e,vis=true;while(p){const s=getComputedStyle(p);if(s.display==='none'||+s.opacity===0){vis=false;break;}p=p.parentElement;}
